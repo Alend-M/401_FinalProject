@@ -1,7 +1,12 @@
 # This file is used to create methods to fetch data from the database in supabase
-
 import supabase 
+from dotenv import load_dotenv
+import os 
 
+# Load the environment variables for supabase instance to be used correctly
+load_dotenv()
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 def getAllUserPastBuilds(user_id: int) -> list:
     """
@@ -40,6 +45,10 @@ def getAllUserPastBuilds(user_id: int) -> list:
     # This is a placeholder that should be replaced with actual implementation
     return []
 
+# makes it so you need to import it to run the code
+if __name__ != "__main__":
+    # This file is meant to be imported only
+    pass
 
 
 
