@@ -10,6 +10,11 @@ export default {
   theme: {
   	extend: {
   		colors: {
+			// Custom brand Colors
+			primaryColor: '#C16DE5',
+			secondaryColor: '#2C2C2C',
+			tertiaryColor: '#E0B6F2',
+
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
