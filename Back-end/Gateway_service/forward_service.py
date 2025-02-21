@@ -16,7 +16,8 @@ async def getPastBuilds(user_id: int):
 
     Returns
     -------
-    Retreived json object created by the Database Service.
+    list: JSON
+        A list of JSON objects containing the user's past PC builds
     
     """
     try:
@@ -26,11 +27,12 @@ async def getPastBuilds(user_id: int):
                 timeout=5.0
             )
             response.raise_for_status()
-            return response.json()
+            print("[O] Successfully forwarded request to database service")
+            return response
     except httpx.HTTPStatusError as e:
-        return {"error": f"HTTP error: {e.response.status_code}"}
+        return {"[X] error": f"HTTP error: {e.response.status_code}"}
     except httpx.RequestError as e:
-        return {"error": f"Request failed: {str(e)}"}
+        return {"[X] error": f"Request failed: {str(e)}"}
     
 if __name__ == "__main__":
     pass
