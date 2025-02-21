@@ -7,6 +7,8 @@ import {
 	signInWithGoogle,
 } from "@/utils/supabaseClient";
 import Link from "next/link";
+import { Button } from "./ui/button"; // Assuming Button component exists and is reusable
+import { GitHub, Google } from "@mui/icons-material";
 
 const SignUpForm = () => {
 	const [email, setEmail] = useState("");
@@ -30,9 +32,10 @@ const SignUpForm = () => {
 			}
 		}
 	};
+
 	return (
-		<div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-			<h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+		<div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
+			<h2 className="text-7xl mb-6 font-normal text-center">Sign Up</h2>
 			<form onSubmit={signInWithEmail} className="mb-4">
 				<div className="mb-4">
 					<label
@@ -42,10 +45,9 @@ const SignUpForm = () => {
 						Email
 					</label>
 					<input
-						className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 						id="email"
 						type="email"
-						placeholder="Email"
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
 					/>
@@ -58,10 +60,9 @@ const SignUpForm = () => {
 						Password
 					</label>
 					<input
-						className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
 						id="password"
 						type="password"
-						placeholder="******************"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
 					/>
@@ -74,10 +75,9 @@ const SignUpForm = () => {
 						Confirm Password
 					</label>
 					<input
-						className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
 						id="confirmPassword"
 						type="password"
-						placeholder="******************"
 						value={confirmPassword}
 						onChange={(e) => setConfirmPassword(e.target.value)}
 					/>
@@ -89,27 +89,28 @@ const SignUpForm = () => {
 					</p>
 				</div>
 				<div className="flex items-center justify-between">
-					<button
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-						type="submit"
-					>
+					<Button type="submit" variant={"default"} fullWidth>
 						Sign Up
-					</button>
+					</Button>
 				</div>
 			</form>
-			<h1 className="mb-4 font-extrabold">OR</h1>
-			<div>
+			<div className="flex justify-center mb-4">
+				<h1 className="font-extrabold">OR</h1>
+			</div>
+			<div className="flex justify-center flex-col items-center">
 				<button
 					onClick={signInWithGoogle}
-					className="p-2 bg-blue-500 text-white rounded mr-4"
+					className="flex items-center p-2 bg-blue-500 text-white rounded-xl w-3/4 mb-3 hover:bg-blue-600"
 				>
-					Sign in with Google
+					<Google className="mr-8" />
+					Continue with Google
 				</button>
 				<button
 					onClick={signInWithGitHub}
-					className="p-2 bg-gray-800 text-white rounded"
+					className="flex items-center p-2 bg-gray-800 text-white rounded-xl w-3/4 hover:bg-black"
 				>
-					Sign in with GitHub
+					<GitHub className="mr-8" />
+					Continue with GitHub
 				</button>
 			</div>
 		</div>
