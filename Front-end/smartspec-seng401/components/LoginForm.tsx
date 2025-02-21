@@ -21,7 +21,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { GitHub, Google } from "@mui/icons-material";
-import { kMajorSpacing, kMediumSpacing } from "@/lib/constants";
+
 import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
 
@@ -82,13 +82,16 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      {/* <h1 className="text-7xl leading-loose text-white font-semibold tracking-tight">Login</h1> */}
-      <Title>Login</Title>
+      <Title className="text-secondaryColor">Login</Title>
       <div
-        className={`flex flex-col bg-white rounded-md p-${kMajorSpacing} space-y-${kMediumSpacing} p-`}
+        // className={`flex flex-col bg-white rounded-md ${kMajorPadding} ${kMediumVerticalSpacing}`}
+        className="flex flex-col bg-white rounded-md p-major space-y-medium"
       >
         {/* Alternate Login Strategies */}
-        <div className={`flex flex-row space-x-${kMediumSpacing}`}>
+        <div
+          // className={`flex flex-row space-x-${kMediumSpacing}`}
+          className="flex flex-row space-x-medium"
+        >
           <Button variant={"secondary"} onClick={signInWithGitHub}>
             <GitHub />
             Log in with GitHub
@@ -114,7 +117,8 @@ const LoginForm: React.FC = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className={`space-y-${kMediumSpacing}`}
+            // className={`space-y-${kMediumSpacing}`}
+            className="space-y-medium"
           >
             <FormField
               control={form.control}
