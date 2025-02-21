@@ -14,8 +14,8 @@ This means that <b>ALL</b> communication between containers will be done via API
 
 from backend directory:
 
-    uvicorn ./API_service/:app --port 8001 <br>
-    uvicorn server2:app --port 9000 <br>
+    uvicorn API_service:app --port 8001 <br>
+    uvicorn Gateway_service:app --port 8000 <br>
 
 * This runs two micro-services separately with their own ports.
 
