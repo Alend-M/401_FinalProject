@@ -14,6 +14,7 @@ export default {
 			primaryColor: '#C16DE5',
 			secondaryColor: '#2C2C2C',
 			tertiaryColor: '#E0B6F2',
+			offWhite: '#F5F5F5',
 
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
