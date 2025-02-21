@@ -84,12 +84,10 @@ const LoginForm: React.FC = () => {
     <div className="flex flex-col items-center">
       <Title className="text-secondaryColor">Login</Title>
       <div
-        // className={`flex flex-col bg-white rounded-md ${kMajorPadding} ${kMediumVerticalSpacing}`}
         className="flex flex-col bg-white rounded-md p-major space-y-medium"
       >
         {/* Alternate Login Strategies */}
         <div
-          // className={`flex flex-row space-x-${kMediumSpacing}`}
           className="flex flex-row space-x-medium"
         >
           <Button variant={"secondary"} onClick={signInWithGitHub}>
@@ -103,7 +101,7 @@ const LoginForm: React.FC = () => {
         </div>
 
         {/* Separator */}
-        <div className="flex flex-row items-center">
+        <div className="flex flex-row items-center space-x-tiny">
           <div className="flex-grow">
             <Separator />
           </div>

@@ -1,120 +1,184 @@
 "use client";
 
-import React, { useState } from "react";
 import {
-	supabase,
-	signInWithGitHub,
-	signInWithGoogle,
+  supabase,
+  signInWithGitHub,
+  signInWithGoogle,
 } from "@/utils/supabaseClient";
 import Link from "next/link";
-import { Button } from "./ui/button"; // Assuming Button component exists and is reusable
+
+import { Button } from "./ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+import { Input } from "./ui/input";
 import { GitHub, Google } from "@mui/icons-material";
 
-const SignUpForm = () => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
+import { Separator } from "./ui/separator";
+import { Title } from "./ui/title";
 
-	const signInWithEmail = async (event: React.FormEvent) => {
-		event.preventDefault();
-		if (password !== confirmPassword) {
-			alert("Passwords do not match");
-			return;
-		} else {
-			const { user, error } = await supabase.auth.signUp({
-				email: email,
-				password: password,
-			});
-			if (error) {
-				alert(error.message);
-			} else {
-				alert("Sign up successful");
-			}
-		}
-	};
+const DEBUG = 1; // Debug flag
 
-	return (
-		<div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-			<h2 className="text-7xl mb-6 font-normal text-center">Sign Up</h2>
-			<form onSubmit={signInWithEmail} className="mb-4">
-				<div className="mb-4">
-					<label
-						className="block text-gray-700 text-sm font-bold mb-2"
-						htmlFor="email"
-					>
-						Email
-					</label>
-					<input
-						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-						id="email"
-						type="email"
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-				</div>
-				<div className="mb-4">
-					<label
-						className="block text-gray-700 text-sm font-bold mb-2"
-						htmlFor="password"
-					>
-						Password
-					</label>
-					<input
-						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-						id="password"
-						type="password"
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-				</div>
-				<div className="mb-6">
-					<label
-						className="block text-gray-700 text-sm font-bold mb-2"
-						htmlFor="confirmPassword"
-					>
-						Confirm Password
-					</label>
-					<input
-						className="shadow appearance-none border rounded-xl w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-						id="confirmPassword"
-						type="password"
-						value={confirmPassword}
-						onChange={(e) => setConfirmPassword(e.target.value)}
-					/>
-					<p className="text-center text-gray-600 text-sm">
-						Already have an account?{" "}
-						<Link href="/login" className="text-blue-500">
-							Login
-						</Link>
-					</p>
-				</div>
-				<div className="flex items-center justify-between">
-					<Button type="submit" variant={"default"} fullWidth>
-						Sign Up
-					</Button>
-				</div>
-			</form>
-			<div className="flex justify-center mb-4">
-				<h1 className="font-extrabold">OR</h1>
-			</div>
-			<div className="flex justify-center flex-col items-center">
-				<button
-					onClick={signInWithGoogle}
-					className="flex items-center p-2 bg-blue-500 text-white rounded-xl w-3/4 mb-3 hover:bg-blue-600"
-				>
-					<Google className="mr-8" />
-					Continue with Google
-				</button>
-				<button
-					onClick={signInWithGitHub}
-					className="flex items-center p-2 bg-gray-800 text-white rounded-xl w-3/4 hover:bg-black"
-				>
-					<GitHub className="mr-8" />
-					Continue with GitHub
-				</button>
-			</div>
-		</div>
-	);
+// Defining the Form field rules
+const formSchema = z
+  .object({
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Please enter a valid email address")
+      .max(255, "Email must be less than 255 characters")
+      .toLowerCase()
+      .trim(),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(100, "Password must be less than 100 characters"),
+    // #TODO: Uncomment the below for production
+    //   .regex(
+    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+    //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    //   ),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"], // path of error
+  });
+
+const SignUpForm: React.FC = () => {
+  // Defining the Sign up Form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  // Defining Sign up Handler
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // ✅ This will be type-safe and validated.
+
+    if (DEBUG) console.log("Values: ", values);
+
+    const { email, password } = values;
+    const response = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    const { error } = response;
+
+    if (error) {
+      // #TODO: Add a shadcn alert for failure
+      alert(error.message);
+    } else {
+      // #TODO: Add shadcn alert for success
+      alert("Sign up successful");
+    }
+  }
+
+  return (
+    <div className="flex flex-col items-center">
+      <Title className="text-secondaryColor">Sign up</Title>
+      <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
+        {/* Alternate Signup Strategies */}
+        <div className="flex flex-row space-x-medium">
+          <Button variant={"secondary"} onClick={signInWithGitHub}>
+            <GitHub />
+            Sign up with GitHub
+          </Button>
+          <Button variant={"outline"} onClick={signInWithGoogle}>
+            <Google />
+            Sign up with Google
+          </Button>
+        </div>
+
+        {/* Separator */}
+        <div className="flex flex-row items-center space-x-tiny">
+          <div className="flex-grow">
+            <Separator />
+          </div>
+          <p className="text-sm text-gray-400">Or sign up with</p>
+          <div className="flex-grow">
+            <Separator />
+          </div>
+        </div>
+
+        {/* Email & Password Login Form */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-medium"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <p className="text-sm">
+              Already have an account?{" "}
+              <Link href="/login" className="text-primaryColor">
+                Log in
+              </Link>
+            </p>
+            <Button fullWidth type="submit">
+              Sign up
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
 };
 
 export default SignUpForm;
