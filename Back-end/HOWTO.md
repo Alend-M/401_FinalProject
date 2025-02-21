@@ -1,7 +1,7 @@
 # Guide for running backend-services #
 
 Since we have chosen a microservice architecture, each service <b>MUST</b> run separately from eachother in containers.<br>
-This means that <b>ALL</b> communication between containers will be done via API.
+This means that <b>ALL</b> communication between containers will be done via APIs.
 
 ## Dependencies ##
 - pip install fastapi (api service for each container)
@@ -14,8 +14,8 @@ This means that <b>ALL</b> communication between containers will be done via API
 
 from backend directory:
 
-    uvicorn API_service:app --port 8001 <br>
-    uvicorn Gateway_service:app --port 8000 <br>
+    uvicorn API_service.app:app --port 8001 <br>
+    uvicorn Gateway_service.app:app --port 8000 <br>
 
 * This runs two micro-services separately with their own ports.
 
