@@ -28,7 +28,7 @@ async def getPastBuilds(user_id: int):
             )
             response.raise_for_status()
             print("[O] Successfully forwarded request to database service")
-            return response
+            return response.json()
     except httpx.HTTPStatusError as e:
         return {"[X] error": f"HTTP error: {e.response.status_code}"}
     except httpx.RequestError as e:
