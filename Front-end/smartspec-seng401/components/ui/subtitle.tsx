@@ -5,12 +5,12 @@ interface TitleProps {
   className?: string
 }
 
-// Defining custom Title Component
-export function Title({ children, className }: TitleProps) {
+// Defining custom Subtitle Component
+export function Subtitle({ children, className }: TitleProps) {
   return (
     <h1 
       className={cn(
-        "text-7xl text-white font-semibold tracking-tighter",
+        "text-3xl text-gray-500 font-light tracking-tight",
         className
       )}
     >

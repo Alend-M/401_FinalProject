@@ -10,11 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
+          // Edited with custom company colors
           "bg-primaryColor text-primary-foreground shadow hover:bg-primaryColor/90",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+          // Edited with custom company colors
         secondary:
           "bg-secondaryColor text-offWhite shadow-sm hover:bg-secondaryColor/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",

@@ -1,4 +1,7 @@
+"use client"
+
 import React from "react";
+import { useRouter } from "next/navigation";
 
 // Navigation Components:
 import {
@@ -14,8 +17,10 @@ import {
 } from "@/components/ui/navigation-menu";
 
 import Link from "next/link";
+import { Button } from "./ui/button";
 
 function NavigationBar() {
+  const router = useRouter();
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -39,6 +44,16 @@ function NavigationBar() {
               Contact Us
             </NavigationMenuLink>
           </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Button variant={"secondary"} onClick={() => router.push("/login")}>
+            Login
+          </Button>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <Button variant={"default"} onClick={() => router.push("/signup")}>
+            Sign up
+          </Button>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
