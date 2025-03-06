@@ -1,9 +1,9 @@
-import React from "react";
 import SignUpForm from "@/components/signUpForm";
+import React from "react";
 
 const SignupPage = () => {
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-gray-100">
+		<div className="flex items-center justify-center min-h-screen bg-offWhite">
 			<SignUpForm />
 		</div>
 	);

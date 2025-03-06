@@ -28,50 +28,43 @@ import { Title } from "./ui/title";
 const DEBUG = 1; // Debug flag
 
 // Defining the Form field rules
-const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email("Please enter a valid email address")
-      .max(255, "Email must be less than 255 characters")
-      .toLowerCase()
-      .trim(),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(100, "Password must be less than 100 characters"),
-    // #TODO: Uncomment the below for production
-    //   .regex(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    //   ),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"], // path of error
-  });
+const formSchema = z.object({
+  email: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address")
+    .max(255, "Email must be less than 255 characters")
+    .toLowerCase()
+    .trim(),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(100, "Password must be less than 100 characters"),
+  // #TODO: Uncomment the below for production
+  //   .regex(
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+  //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+  //   ),
+});
 
-const SignUpForm: React.FC = () => {
-  // Defining the Sign up Form
+const LoginForm: React.FC = () => {
+  // Defining the Login Form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  // Defining Sign up Handler
+  // Defining Login Handler
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // ✅ This will be type-safe and validated.
 
     if (DEBUG) console.log("Values: ", values);
 
     const { email, password } = values;
-    const response = await supabase.auth.signUp({
+    const response = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -83,23 +76,27 @@ const SignUpForm: React.FC = () => {
       alert(error.message);
     } else {
       // #TODO: Add shadcn alert for success
-      alert("Sign up successful");
+      alert("Sign in successful");
     }
   }
 
   return (
     <div className="flex flex-col items-center">
-      <Title className="text-secondaryColor">Sign up</Title>
-      <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
-        {/* Alternate Signup Strategies */}
-        <div className="flex flex-row space-x-medium">
+      <Title className="text-secondaryColor">Login</Title>
+      <div
+        className="flex flex-col bg-white rounded-md p-major space-y-medium"
+      >
+        {/* Alternate Login Strategies */}
+        <div
+          className="flex flex-row space-x-medium"
+        >
           <Button variant={"secondary"} onClick={signInWithGitHub}>
             <GitHub />
-            Sign up with GitHub
+            Log in with GitHub
           </Button>
           <Button variant={"outline"} onClick={signInWithGoogle}>
             <Google />
-            Sign up with Google
+            Log in with Google
           </Button>
         </div>
 
@@ -108,7 +105,7 @@ const SignUpForm: React.FC = () => {
           <div className="flex-grow">
             <Separator />
           </div>
-          <p className="text-sm text-gray-400">Or sign up with</p>
+          <p className="text-sm text-gray-400">Or continue with</p>
           <div className="flex-grow">
             <Separator />
           </div>
@@ -118,6 +115,7 @@ const SignUpForm: React.FC = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
+            // className={`space-y-${kMediumSpacing}`}
             className="space-y-medium"
           >
             <FormField
@@ -150,29 +148,14 @@ const SignUpForm: React.FC = () => {
                 );
               }}
             />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
             <p className="text-sm">
-              Already have an account?{" "}
-              <Link href="/login" className="text-primaryColor">
-                Log in
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="text-primaryColor">
+                Sign Up
               </Link>
             </p>
             <Button fullWidth type="submit">
-              Sign up
+              Log in
             </Button>
           </form>
         </Form>
@@ -181,4 +164,4 @@ const SignUpForm: React.FC = () => {
   );
 };
 
-export default SignUpForm;
+export default LoginForm;
