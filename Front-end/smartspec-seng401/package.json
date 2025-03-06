@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^4.1.0",
     "@mui/icons-material": "^6.4.5",
     "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
     "@supabase/supabase-js": "^2.48.1",

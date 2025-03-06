@@ -1,5 +1,5 @@
 // import SignInForm from "@/components/signInForm";
-import LoginForm from "@/components/loginForm";
+import LoginForm from "@/components/LoginForm";
 import React from "react";
 
 const LoginPage = () => {
