@@ -9,6 +9,8 @@ app = FastAPI()
 
 @app.post("/generate-text")
 async def generate_text(prompt: Request):
-    # print(prompt)
-    response = await getPcRecommendation(prompt.json())
-    return None
+
+    
+    promptJSON = await prompt.json()
+    response = await getPcRecommendation(promptJSON)
+    return response

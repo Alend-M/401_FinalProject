@@ -16,7 +16,9 @@ async def forwardPastBuilds(user_id: int):
     return response
 
 @app.post("/build/{user_id}")
-async def buildPC(user_id: int, query: dict):
+async def buildPC(user_id: int, query: Request):
+    queryJSON = await query.json()
     response = await getLLMResponse(query)
+    
     # TODO: Save to the database the query based on the user_id
     return response

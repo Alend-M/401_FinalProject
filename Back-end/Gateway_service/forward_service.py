@@ -1,7 +1,7 @@
 import httpx
 from LLM_service.llm_formats import LLM_Query
 import json
-from fastapi import HTTPException
+from fastapi import HTTPException, Request
 
 # addresses for micro-services
 DATABASE_SERVICE_URL = "http://localhost:8001"
@@ -37,7 +37,7 @@ async def getPastBuilds(user_id: int):
     except httpx.RequestError as e:
         return {"[X] error": f"Request failed: {str(e)}"}
     
-async def getLLMResponse(query: dict):
+async def getLLMResponse(query: Request):
     """
     Forwards request to build a PC to the LLM service
 
@@ -53,19 +53,20 @@ async def getLLMResponse(query: dict):
         A JSON object containing strings with the build returned by the LLM
     """
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=30) as client:
+            query_data = await query.json()
+
             response = await client.post(
                 LLM_SERVICE_URL + "/generate-text",
-                # timeout=5.0,
-                data=query
+                json = query_data
             )
             response.raise_for_status()
             print("[O] Successfully forwarded request to LLM service")
             return response.json()
     except httpx.HTTPStatusError as e:
-        return {"[X] error": f"HTTP error: {e.response.status_code}"}
+        # return {"[X] error": f"HTTP error {e.response.status_code}: {e}"}
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
     except httpx.RequestError as e:
-        # print(e) 
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
         # return {"[X] error": f"Request failed: {e}"}
