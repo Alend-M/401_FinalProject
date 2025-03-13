@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/ui/footer";
+import HeroNavBar from "@/components/HeroNavBar";
 
 // Using Font from Figma Design
 const inter = Inter({
