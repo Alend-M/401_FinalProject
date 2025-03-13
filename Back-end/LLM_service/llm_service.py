@@ -149,7 +149,7 @@ def initAI():
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-2.0-flash')
 
-def getPcRecommendation(pc_requirements: json) -> dict:
+async def getPcRecommendation(pc_requirements: json) -> dict:
     """
     Parameters
     ----------
@@ -256,9 +256,13 @@ def getPcRecommendation(pc_requirements: json) -> dict:
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following. You MUST provide a live working link for a product you cannot give dead links and the links must all be Canadian.
 All prices provided must be in Canadian Dollars. If the requirements parts names are given, you MUST use them in your provided build.
 """
-    response = model.generate_content(prompt).text
+    response = model.generate_content(prompt).text # Sends the request to AI and extracts the response
+
+    # Post Processing of the response from the ai to remove MarkDown structure that the AI loves responding with
     response = response.replace("```json", "")
     response = response.replace("```", "")
+
+    # Loads turns the text based reponse into a python dictionary for return (does this because apparently really similar to json for python)
     response = json.loads(response)
     return response
 
@@ -267,11 +271,18 @@ if __name__ == "__main__":
     pc_requirements ="""
     {
         "Games": 
+          [
             {
                 "name": "Cyberpunk 2077",
                 "fps": "60",
                 "quality": "High"
             },
+            { 
+                "name": "Valorant",
+                "fps": "144",
+                "quality": "High"
+            }
+          ],
         "CPU":
             {
                 "name": "Intel Core i9-14900K",

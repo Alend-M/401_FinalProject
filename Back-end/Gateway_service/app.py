@@ -1,6 +1,7 @@
-from fastapi import FastAPI
+from fastapi import Request, FastAPI
 from Gateway_service.forward_service import *
 from LLM_service.llm_formats import LLM_Query
+import json
 
 # Creates a instance for FastAPI
 app = FastAPI()
@@ -15,6 +16,7 @@ async def forwardPastBuilds(user_id: int):
     return response
 
 @app.post("/build/{user_id}")
-async def buildPC(user_id: int, query: LLM_Query):
+async def buildPC(user_id: int, query: dict):
     response = await getLLMResponse(query)
+    # TODO: Save to the database the query based on the user_id
     return response

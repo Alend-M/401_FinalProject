@@ -8,6 +8,8 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
+
+supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 def getAllUserPastBuilds(user_id: int) -> list:
     """
     Retrieves all past PC builds based on the user ID
@@ -43,25 +45,41 @@ def getAllUserPastBuilds(user_id: int) -> list:
     """
     # TODO: Implement the actual database query to fetch builds
     # This is a placeholder that should be replaced with actual implementation
+    try:
+        response = supabaseClient.table("BuildHistory").select("buildjson").eq("userid", user_id).execute()
+        data = response.data
+        
+        if not data:
+            print("No builds found for user: ", user_id)
+            return []
+        
+        return data
+        
+    except Exception as e:
+        print(f"Error fetching builds: {e}")
+        return []
     
-    # placeholder data to confirm connection between services
-    return [
-        {
-            "build_id": 1,
-            "cpu": "Intel Core i7-9700K",
-            "gpu": "Nvidia RTX 3070"
-        },
-        {
-            "build_id": 2,
-            "cpu": "AMD Ryzen 5 5600X",
-            "gpu": "Nvidia RTX 3060"
-        }
-    ]
 
 # makes it so you need to import it to run the code
 if __name__ == "__main__":
-    # This file is meant to be imported only
-    pass
+    user_id = 32
+    builds = getAllUserPastBuilds(user_id)
+    print(f"Type of builds: {type(builds)}")
+    print(f"Length: {len(builds)}")
+    
+    # If builds is a list, you can also check the type of the first item
+    if builds and len(builds) > 0:
+        print(f"Type of first build: {type(builds[0])}")
+        
+        # If you want to check the type of the buildjson field specifically
+        #if 'buildjson' in builds[0]:
+            #print(f"Type of buildjson: {type(builds[0]['buildjson'])}")
+           # print(f"Output:\n{builds[0]['buildjson']}")
+    
+    # Still print the actual data too
+    #print(f"new:\n\n{builds}")
+    
+    #TODO 
 
 
 
