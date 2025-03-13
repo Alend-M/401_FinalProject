@@ -10,12 +10,12 @@ export default {
   theme: {
     extend: {
       colors: {
-
         // Custom brand Colors
         primaryColor: "#C16DE5",
         secondaryColor: "#2C2C2C",
         tertiaryColor: "#E0B6F2",
         offWhite: "#F5F5F5",
+        veryNiceGray: "#D9D9D9",
 
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -65,7 +65,7 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
 
-	  // Custom brand spacing
+      // Custom brand spacing
       spacing: {
         tiny: "9px", // 9px
         minor: "15px", // 15px
@@ -73,7 +73,11 @@ export default {
         major: "40px", // 40px
         massive: "64px", // 64px
         supermassive: "103px", // 103px
+        smallCard: "500px",
       },
+
+      cardSizes: {
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],

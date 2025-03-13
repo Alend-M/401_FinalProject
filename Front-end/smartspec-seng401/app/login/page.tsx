@@ -4,7 +4,7 @@ import React from "react";
 
 const LoginPage = () => {
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-offWhite">
+		<div className="flex items-center justify-center m-14 mb-40 bg-offWhite">
 			<LoginForm />
 		</div>
 	);

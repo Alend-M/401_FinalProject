@@ -1,34 +1,33 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import NavigationBar from "@/components/NavigationBar";
+import Footer from "@/components/ui/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+// Using Font from Figma Design
+const inter = Inter({
+	subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "SmartSpec",
-  description: "Your PC Building Pal",
+	title: "SmartSpec",
+	description: "Your PC Building Pal",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en">
+			<body className={inter.className}>
+				<NavigationBar />
+				<div className="flex flex-col justify-start items-center px-supermassive bg-offWhite">
+					{children}
+				</div>
+				<Footer />
+			</body>
+		</html>
+	);
 }
