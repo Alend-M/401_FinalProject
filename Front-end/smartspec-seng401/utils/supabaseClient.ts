@@ -10,7 +10,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const signInWithGoogle = async () => {
-	const { user, error } = await supabase.auth.signInWithOAuth({
+	const { error } = await supabase.auth.signInWithOAuth({
 		provider: "google",
 	});
 	if (error) {
@@ -19,7 +19,7 @@ export const signInWithGoogle = async () => {
 };
 
 export const signInWithGitHub = async () => {
-	const { user, error } = await supabase.auth.signInWithOAuth({
+	const { error } = await supabase.auth.signInWithOAuth({
 		provider: "github",
 	});
 	if (error) {
