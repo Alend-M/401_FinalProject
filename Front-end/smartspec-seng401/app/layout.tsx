@@ -14,6 +14,7 @@ import Footer from "@/components/ui/footer";
 //   subsets: ["latin"],
 // });
 
+// Using Font from Figma Design
 const inter = Inter({
   subsets: ["latin"],
 });
