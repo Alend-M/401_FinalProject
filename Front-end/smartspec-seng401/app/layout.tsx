@@ -7,35 +7,35 @@ import { cn } from "@/lib/utils";
 
 // Using Font from Figma Design
 const inter = Inter({
-  subsets: ["latin"],
+	subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "SmartSpec",
-  description: "Your PC Building Pal",
+	title: "SmartSpec",
+	description: "Your PC Building Pal",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      {/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
+	return (
+		<html lang="en">
+			{/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
 
-      <body
-        className={cn(
-          inter.className,
-          "flex flex-col justify-start bg-red-700 min-h-screen"
-        )}
-      >
-        <NavigationBar />
-        <div className="flex flex-col flex-grow justify-start items-center px-supermassive bg-offWhite">
-          {children}
-        </div>
-        <Footer />
-      </body>
-    </html>
-  );
+			<body
+				className={cn(
+					inter.className,
+					"flex flex-col justify-start bg-red-700 min-h-screen"
+				)}
+			>
+				<NavigationBar />
+				<div className="flex flex-col flex-grow justify-start items-center px-supermassive bg-offWhite">
+					{children}
+				</div>
+				<Footer />
+			</body>
+		</html>
+	);
 }
