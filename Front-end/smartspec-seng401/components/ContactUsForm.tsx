@@ -139,7 +139,7 @@ const ContactUsForm: React.FC = () => {
                     <FormLabel>Message</FormLabel>
                     <FormControl>
                       <Textarea
-                        className="h-[100px]"
+                        className="h-[100px] resize-none"
                         {...field}
                       />
                     </FormControl>

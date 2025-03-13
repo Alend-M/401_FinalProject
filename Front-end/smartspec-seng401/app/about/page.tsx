@@ -20,7 +20,7 @@ function AboutPage() {
         <Title className="text-secondaryColor">Meet the Team</Title>
         <Subtitle>Subheading</Subtitle>
       </div>
-      <div className="grid grid-cols-3 grid-rows-2 auto-cols-min gap-4 ">
+      <div className="grid grid-cols-3 grid-rows-2 auto-cols-min gap-major ">
       {devs.map((dev) => {
           return (
             <AboutCard key={dev.name} devName={dev.name} devAbout={dev.about} />
