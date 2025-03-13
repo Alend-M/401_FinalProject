@@ -15,19 +15,19 @@ function AboutPage() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-between min-h-screen bg-offWhite">
+    <>
       <div className="flex flex-col items-center">
         <Title className="text-secondaryColor">Meet the Team</Title>
         <Subtitle>Subheading</Subtitle>
       </div>
-      <div className="grid grid-cols-3 gap-major">
-        {devs.map((dev) => {
+      <div className="grid grid-cols-3 grid-rows-2 auto-cols-min gap-4 ">
+      {devs.map((dev) => {
           return (
             <AboutCard key={dev.name} devName={dev.name} devAbout={dev.about} />
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
 

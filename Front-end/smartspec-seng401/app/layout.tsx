@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/ui/footer";
-
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
 
 // Using Font from Figma Design
 const inter = Inter({
@@ -32,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         className={inter.className}
       >
         <NavigationBar />
+        <div className="flex flex-col justify-start items-center px-supermassive py-massive space-y-major min-h-screen bg-offWhite">
         {children}
+
+        </div>
         <Footer />
       </body>
     </html>

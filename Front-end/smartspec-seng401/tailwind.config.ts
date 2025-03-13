@@ -73,7 +73,11 @@ export default {
         major: "40px", // 40px
         massive: "64px", // 64px
         supermassive: "103px", // 103px
+        smallCard: "500px",
       },
+
+      cardSizes: {
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
