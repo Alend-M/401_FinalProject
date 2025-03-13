@@ -13,7 +13,7 @@ const NavigationMenu = React.forwardRef<
     ref={ref}
     className={cn(
       // Custom styling to match the Figma design
-      "relative z-10 flex min-w-full bg-secondaryColor items-center justify-center p-medium",
+      "relative z-10 flex min-w-full bg-secondaryColor items-center justify-end p-medium",
       className
     )}
     {...props}
@@ -31,7 +31,8 @@ const NavigationMenuList = React.forwardRef<
   <NavigationMenuPrimitive.List
     ref={ref}
     className={cn(
-      "group flex flex-1 list-none items-center justify-center space-x-1",
+      // Custom styling to match the Figma design
+      "group flex flex-1 list-none items-center justify-center space-x-tiny",
       className
     )}
     {...props}

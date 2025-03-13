@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 // Navigation Components:
@@ -20,13 +20,19 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 
 function NavigationBar() {
+  const [activeTab, setActiveTab] = useState('');
   const router = useRouter();
+
+  function handleClickNavMenu() {
+    // If the user clicks on a nav menu, menu should stay highlighted
+  }
+
   return (
-    <NavigationMenu>
+    <NavigationMenu className="space-x-medium">
       <NavigationMenuList>
         <NavigationMenuItem>
           <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            <NavigationMenuLink active className={navigationMenuTriggerStyle()}>
               Home
             </NavigationMenuLink>
           </Link>
@@ -45,17 +51,15 @@ function NavigationBar() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Button variant={"secondary"} onClick={() => router.push("/login")}>
-            Login
-          </Button>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Button variant={"default"} onClick={() => router.push("/signup")}>
-            Sign up
-          </Button>
-        </NavigationMenuItem>
       </NavigationMenuList>
+      <div className="flex flex-row justify-center align-center space-x-minor">
+        <Button variant={"secondary"} onClick={() => router.push("/login")}>
+          Login
+        </Button>
+        <Button variant={"default"} onClick={() => router.push("/signup")}>
+          Sign up
+        </Button>
+      </div>
     </NavigationMenu>
   );
 }
