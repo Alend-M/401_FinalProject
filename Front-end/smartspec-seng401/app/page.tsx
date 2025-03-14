@@ -1,8 +1,12 @@
-import NavigationBar from "@/components/NavigationBar";
+import Hero from "@/components/Hero";
 import React from "react";
 
 function Home() {
-  return;
+	return (
+		<div>
+			<Hero />
+		</div>
+	);
 }
 
 export default Home;
