@@ -15,7 +15,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-background text-primaryColor hover:border-primaryColor",
           // Edited with custom company colors
         secondary:
           "bg-secondaryColor text-offWhite shadow-sm hover:bg-secondaryColor/80",
@@ -30,7 +30,7 @@ const buttonVariants = cva(
       },
       fullWidth: {
         true: "w-full",
-        false: "",
+        false: "w-fit",
       },
     },
     defaultVariants: {

@@ -7,5 +7,5 @@ interface TitleProps {
 
 // Defining custom Title Component
 export function BaseText({ children, className }: TitleProps) {
-  return <p className={cn("", className)}>{children}</p>;
+  return <p className={cn("text-base text-secondaryColor", className)}>{children}</p>;
 }

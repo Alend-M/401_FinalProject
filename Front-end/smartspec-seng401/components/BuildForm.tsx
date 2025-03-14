@@ -1,9 +1,11 @@
 import React from "react";
 import SliderInput from "./SliderInput";
+import { Separator } from "@/components/ui/separator";
+import GamesInput from "./GamesInput";
 
 function BuildForm() {
   return (
-    <div className="flex flex-col w-bigCard p-major space-y-minor bg-white border rounded-md border-veryNiceGray">
+    <div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
       <SliderInput
         name="Budget"
         description="Choose how much you want to spend on this build"
@@ -14,6 +16,8 @@ function BuildForm() {
         unit="$"
         prefix
       />
+      <Separator />
+      <GamesInput />
     </div>
   );
 }
