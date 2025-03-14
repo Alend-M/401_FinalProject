@@ -13,17 +13,17 @@ function GamesInput() {
 
   function handleAddGame() {
     setGamesList((prev) => {
-        return prev.concat(['']);
-    })
+      return prev.concat([""]);
+    });
   }
 
-  function handleDeleteGame(index) {
+  function handleDeleteGame(index: number) {
     // DEBUG
     // console.log(index);
-    
+
     setGamesList((prev) => {
-        return prev.filter((_, i) => i !== index);
-    })
+      return prev.filter((_, i) => i !== index);
+    });
   }
 
   return (
@@ -39,7 +39,12 @@ function GamesInput() {
             className="flex flex-row justify-between items-center space-x-minor"
           >
             <Input defaultValue={game} />
-            <X size={16} onClick={() => handleDeleteGame(i)} />
+            <div className="w-fit">
+              <X
+                size={16}
+                onClick={() => handleDeleteGame(i)}
+              />
+            </div>
           </div>
         );
       })}

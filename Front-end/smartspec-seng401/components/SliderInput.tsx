@@ -35,11 +35,11 @@ function SliderInput({
   return (
     <div className="flex flex-col space-y-tiny">
       <BaseText>{name}</BaseText>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row justify-between items-end">
         <SmallText className="text-subheadingGray">{description}</SmallText>
-        <SmallText>
+        <BaseText>
           {prefix ? unit + sliderValue : sliderValue + " " + unit}
-        </SmallText>
+        </BaseText>
       </div>
       <Slider
         value={[sliderValue]}

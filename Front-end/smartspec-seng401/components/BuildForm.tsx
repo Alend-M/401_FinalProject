@@ -3,6 +3,12 @@ import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
 import RadioInput from "@/components/RadioInput";
+import { BaseText } from "./ui/baseText";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import ComponentInput from "./ComponentInput";
+import { Button } from "./ui/button";
+import { Zap } from "lucide-react";
 
 function BuildForm() {
   return (
@@ -11,8 +17,8 @@ function BuildForm() {
         name="Budget"
         description="Choose how much you want to spend on this build"
         lowerBound={500}
-        upperBound={10000}
-        defaultValue={5000}
+        upperBound={5000}
+        defaultValue={1500}
         step={50}
         unit="$"
         prefix
@@ -36,6 +42,51 @@ function BuildForm() {
         step={5}
         unit="FPS"
       />
+      <Separator />
+      <RadioInput
+        name="Graphical Quality"
+        description="Choose graphical fidelity you like"
+        options={["Low", "Medium", "High", "Ultra", "Ray Tracing"]}
+        defaultOption="High"
+      />
+      <Separator />
+      <div className="flex items-center space-x-2">
+        <Switch id="optional-settings" />
+        <Label
+          htmlFor="optional-settings"
+          className="text-base text-secondaryColor font-normal"
+        >
+          Optional Settings
+        </Label>
+      </div>
+      <Separator />
+      <SliderInput
+        name="Minimum FPS"
+        description="Choose the minimum amount of FPS you can bare"
+        lowerBound={30}
+        upperBound={500}
+        unit="FPS"
+        defaultValue={30}
+        step={5}
+      />
+      <Separator />
+      <SliderInput
+        name="Maximum FPS"
+        description="Choose the maximum amount of FPS you want"
+        lowerBound={30}
+        upperBound={500}
+        unit="FPS"
+        defaultValue={145}
+        step={5}
+      />
+      <Separator />
+      <ComponentInput />
+      <Separator />
+      <Button fullWidth>
+        <Zap />
+        Get Build
+        <Zap />
+      </Button>
     </div>
   );
 }

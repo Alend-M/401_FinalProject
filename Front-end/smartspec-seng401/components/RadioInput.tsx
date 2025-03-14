@@ -18,15 +18,23 @@ function RadioInput({
   defaultOption,
 }: RadioInputProps) {
   return (
-    <div>
+    <div className="flex flex-col space-y-tiny">
       <BaseText>{name}</BaseText>
       <SmallText className="text-subheadingGray">{description}</SmallText>
-      <RadioGroup defaultValue={defaultOption}>
+      <RadioGroup
+        defaultValue={defaultOption}
+        className="flex flex-row justify-between"
+      >
         {options.map((option) => {
           return (
             <div key={option} className="flex items-center space-x-2">
               <RadioGroupItem value={option} id={option} />
-              <Label htmlFor={option} className="text-sm text-secondaryColor font-normal">{option}</Label>
+              <Label
+                htmlFor={option}
+                className="text-base text-secondaryColor font-normal"
+              >
+                {option}
+              </Label>
             </div>
           );
         })}
