@@ -24,7 +24,7 @@ function SliderInput({
   defaultValue,
   step,
   unit,
-  prefix,
+  prefix = false,
 }: SliderInputProps) {
   const [sliderValue, setSliderValue] = useState(defaultValue || lowerBound);
 
