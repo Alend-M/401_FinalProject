@@ -7,5 +7,9 @@ interface TitleProps {
 
 // Defining custom Title Component
 export function SmallText({ children, className }: TitleProps) {
-  return <p className={cn("text-sm", className)}>{children}</p>;
+  return (
+    <p className={cn("text-sm text-secondaryColor font-normal", className)}>
+      {children}
+    </p>
+  );
 }

@@ -13,7 +13,7 @@ interface SliderInputProps {
   defaultValue?: number;
   step?: number;
   unit: string;
-  prefix: boolean;
+  prefix?: boolean;
 }
 
 function SliderInput({
@@ -38,7 +38,7 @@ function SliderInput({
       <div className="flex flex-row justify-between">
         <SmallText className="text-subheadingGray">{description}</SmallText>
         <SmallText>
-          {prefix ? unit + sliderValue : sliderValue + unit}
+          {prefix ? unit + sliderValue : sliderValue + " " + unit}
         </SmallText>
       </div>
       <Slider
@@ -52,7 +52,14 @@ function SliderInput({
       <SmallText className="text-subheadingGray">
         {prefix
           ? "Range: " + unit + lowerBound + " - " + unit + upperBound
-          : "Range: " + lowerBound + unit + " - " + upperBound + unit}
+          : "Range: " +
+            lowerBound +
+            " " +
+            unit +
+            " - " +
+            upperBound +
+            " " +
+            unit}
       </SmallText>
     </div>
   );

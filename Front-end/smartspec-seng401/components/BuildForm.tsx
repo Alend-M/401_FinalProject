@@ -2,6 +2,7 @@ import React from "react";
 import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
+import RadioInput from "@/components/RadioInput";
 
 function BuildForm() {
   return (
@@ -18,6 +19,23 @@ function BuildForm() {
       />
       <Separator />
       <GamesInput />
+      <Separator />
+      <RadioInput
+        name="Display Resolution"
+        description="Choose the resolution that you'd like to play at"
+        options={["1080p", "1440p", "4K", "Ultra-wide"]}
+        defaultOption="1080p"
+      />
+      <Separator />
+      <SliderInput
+        name="Average FPS"
+        description="Choose how much FPS you want in your games"
+        lowerBound={30}
+        upperBound={500}
+        defaultValue={60}
+        step={5}
+        unit="FPS"
+      />
     </div>
   );
 }

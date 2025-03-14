@@ -5,7 +5,7 @@ import { BaseText } from "./ui/baseText";
 import { SmallText } from "./ui/smallText";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { ChevronRight, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 function GamesInput() {
   const defaultGames = ["Marvel Rivals", "Fortnite"];
