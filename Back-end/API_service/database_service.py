@@ -8,6 +8,126 @@ load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
+DummyLLMResponse = """
+    {
+    "CPUs": 
+        {
+          "name": "Intel Core i9-14900K",
+          "price_CAD": "$433",
+          "buy_links": [
+            {
+              "retailer": "Best Buy",
+              "url": "https://www.bestbuy.com/site/computer-cards-components/computer-pc-processors/abcat0507010.c?id=abcat0507010"
+            },
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=intel+core+i9-14900k"
+            }
+            ]
+        },
+    "GPUs": 
+        {
+          "name": "NVIDIA GeForce RTX 4090",
+          "price_CAD": "$1,500",
+          "buy_links": [
+            {
+              "retailer": "Newegg",
+              "url": "https://www.newegg.com/p/pl?d=nvidia+geforce+rtx+4090"
+            },
+            {
+              "retailer": "Best Buy",
+              "url": "https://www.bestbuy.com/site/computer-cards-components/computer-graphics-cards/abcat0507002.c?id=abcat0507002"
+            },
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=nvidia+geforce+rtx+4090"
+            }
+            ]
+        },
+    "RAM": 
+        {
+          "name": "Corsair Vengeance RGB Pro 32GB",
+          "price_CAD": "$180",
+          "buy_links": [
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=corsair+vengeance+rgb+pro+32gb"
+            }
+            ]
+        },
+    "Motherboards": 
+        {
+          "name": "ASUS ROG Strix Z690-E",
+          "price_CAD": "$400",
+          "buy_links": [
+            {
+              "retailer": "Newegg",
+              "url": "https://www.newegg.com/p/pl?d=asus+rog+strix+z690-e"
+            },
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=asus+rog+strix+z690-e"
+            }
+            ]
+        },
+    "Storage": 
+        {
+          "name": "Samsung 980 Pro 1TB",
+          "price_CAD": "$200",
+          "buy_links": [
+            {
+              "retailer": "Best Buy",
+              "url": "https://www.bestbuy.com/site/computer-cards-components/computer-hard-drives/abcat0504000.c?id=abcat0504000"
+            },
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=samsung+980+pro+1tb"
+            }
+            ]
+        },
+    "Power_Supply": 
+        {
+          "name": "Corsair RM850x",
+          "price_CAD": "$150",
+          "buy_links": [
+            {
+              "retailer": "Amazon",
+              "url": "https://www.amazon.com/s?k=corsair+rm850x"
+            },
+            {
+              "retailer": "Best Buy",
+              "url": "https://www.bestbuy.com/site/computer-cards-components/computer-power-supplies/abcat0507001.c?id=abcat0507001"
+            },
+            {
+              "retailer": "Newegg",
+              "url": "https://www.newegg.com/p/pl?d=corsair+rm850x"
+            }
+            ]
+        },
+    "Case": 
+        {
+          "name": "NZXT H510",
+          "price_CAD": "$70",
+          "buy_links": [    
+            {
+              "retailer": "Newegg",
+              "url": "https://www.newegg.com/p/pl?d=nzxt+h510"
+            }
+            ]
+        },
+    "Cooling": 
+        {
+          "name": "NZXT Kraken X63",
+          "price_CAD": "$150",
+          "buy_links": [
+            {
+              "retailer": "Best Buy",
+              "url": "https://www.bestbuy.com/site/computer-cards-components/computer-fans-cooling/abcat0507000.c?id=abcat0507000"
+            }
+            ]
+        },
+    }
+    """
 
 supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
 def getAllUserPastBuilds(user_id: int) -> list:
@@ -43,8 +163,6 @@ def getAllUserPastBuilds(user_id: int) -> list:
         }
     ]
     """
-    # TODO: Implement the actual database query to fetch builds
-    # This is a placeholder that should be replaced with actual implementation
     try:
         response = supabaseClient.table("BuildHistory").select("buildjson").eq("userid", user_id).execute()
         data = response.data
@@ -59,17 +177,40 @@ def getAllUserPastBuilds(user_id: int) -> list:
         print(f"Error fetching builds: {e}")
         return []
     
+    
+def saveLLMResponse(user_id: int, LLMResponse: dict) -> int:
+    
+    try:
+        #Remember to change DummyLLMResponse to LLMResponse when the LLMResponse is ready
+        response = supabaseClient.table("BuildHistory").insert({"userid": user_id, "buildjson": LLMResponse}).execute() 
+        data = response.data
+        
+        if data:
+            print("Succesfully saved build for user: ", user_id)
+            return data[0]['build_id']
+        else:
+            print(f"Failed to save LLM response for user: {user_id}")
+            return -1
+    except Exception as e:
+        print(f"Error saving build: {e}")
+        return [] 
+        
+    
 
 # makes it so you need to import it to run the code
 if __name__ == "__main__":
-    user_id = 32
+    user_id = 12
+    saveLLMResponse(user_id, DummyLLMResponse)
+    
+    
+    
     builds = getAllUserPastBuilds(user_id)
     print(f"Type of builds: {type(builds)}")
     print(f"Length: {len(builds)}")
     
     # If builds is a list, you can also check the type of the first item
-    if builds and len(builds) > 0:
-        print(f"Type of first build: {type(builds[0])}")
+    #if builds and len(builds) > 0:
+        #print(f"Type of first build: {type(builds[0])}")
         
         # If you want to check the type of the buildjson field specifically
         #if 'buildjson' in builds[0]:
