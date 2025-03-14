@@ -24,6 +24,7 @@ import { GitHub, Google } from "@mui/icons-material";
 
 import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
+import toast, { Toaster } from "react-hot-toast";
 
 const DEBUG = 1; // Debug flag
 
@@ -73,10 +74,18 @@ const LoginForm: React.FC = () => {
 
 		if (error) {
 			// #TODO: Add a shadcn alert for failure
-			alert(error.message);
+			toast.error(error.message, {
+				style: {
+					padding: "16px",
+				},
+			});
 		} else {
 			// #TODO: Add shadcn alert for success
-			alert("Sign in successful");
+			toast.success("Signin Succesful!", {
+				style: {
+					padding: "16px",
+				},
+			});
 		}
 	}
 
@@ -156,6 +165,7 @@ const LoginForm: React.FC = () => {
 					</form>
 				</Form>
 			</div>
+			<Toaster position="bottom-right" reverseOrder={false} />
 		</div>
 	);
 };
