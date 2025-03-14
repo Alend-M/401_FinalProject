@@ -16,6 +16,7 @@ export default {
         tertiaryColor: "#E0B6F2",
         offWhite: "#F5F5F5",
         veryNiceGray: "#D9D9D9",
+        subheadingGray: "#757575",
 
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -74,10 +75,10 @@ export default {
         massive: "64px", // 64px
         supermassive: "103px", // 103px
         smallCard: "500px",
+        bigCard: "900px",
       },
 
-      cardSizes: {
-      }
+      cardSizes: {},
     },
   },
   plugins: [require("tailwindcss-animate")],

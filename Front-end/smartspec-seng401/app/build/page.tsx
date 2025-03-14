@@ -3,7 +3,7 @@ import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import React from "react";
 
-function ContactUsPage() {
+function BuildPage() {
     return (
         <div className="m-14 mb-20">
             <div className="flex flex-col items-center">
@@ -17,4 +17,4 @@ function ContactUsPage() {
     );
 }
 
-export default ContactUsPage;
+export default BuildPage;
