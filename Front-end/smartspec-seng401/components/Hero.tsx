@@ -9,7 +9,7 @@ function Hero({ onButtonClick }: { onButtonClick: () => void }) {
 	const Router = useRouter();
 	return (
 		<div
-			className="absolute inset-0 bg-cover bg-center h-screen w-screen flex justify-center items-center text-white"
+			className="absolute inset-0 bg-cover bg-center h-screen flex justify-center items-center text-white"
 			style={{ backgroundImage: "url('/landingpage.jpg')" }}
 		>
 			<div className="absolute inset-0 h-screen bg-black/50 flex flex-col justify-center items-center gap-y-2 mb-20 ">

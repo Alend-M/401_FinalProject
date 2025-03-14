@@ -27,11 +27,11 @@ export default function RootLayout({
 			<body
 				className={cn(
 					inter.className,
-					"flex flex-col justify-start bg-red-700 min-h-screen"
+					"flex flex-col justify-start bg-primaryColor min-h-screen"
 				)}
 			>
 				<NavigationBar />
-				<div className="flex flex-col flex-grow justify-start items-center px-supermassive bg-offWhite">
+				<div className="flex flex-col flex-grow justify-start items-center bg-offWhite">
 					{children}
 				</div>
 				<Footer />
