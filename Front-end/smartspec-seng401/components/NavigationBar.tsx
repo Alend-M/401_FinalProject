@@ -28,14 +28,34 @@ function NavigationBar() {
 	const router = useRouter();
 
 	useEffect(() => {
+		// Function to check the current session
 		const checkSession = async () => {
-			const {
-				data: { session },
-			} = await supabase.auth.getSession();
-			setUser(session?.user || null);
+			try {
+				const {
+					data: { session },
+					error,
+				} = await supabase.auth.getSession();
+				if (error) throw error;
+				setUser(session?.user || null);
+			} catch (error) {
+				console.error("Error checking session:", error);
+			}
 		};
 
+		// Subscribe to authentication state changes
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(_event, session) => {
+				setUser(session?.user || null); // Update the state on auth change
+			}
+		);
+
+		// Check session initially
 		checkSession();
+
+		// Clean up the listener when the component is unmounted
+		return () => {
+			authListener?.subscription.unsubscribe();
+		};
 	}, []);
 
 	const handleLogout = async () => {

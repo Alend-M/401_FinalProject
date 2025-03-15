@@ -106,7 +106,7 @@ const SignUpForm: React.FC = () => {
 						<GitHub />
 						Sign up with GitHub
 					</Button>
-					<Button variant={"outline"} onClick={signInWithGoogle}>
+					<Button variant={"outlineBlack"} onClick={signInWithGoogle}>
 						<Google />
 						Sign up with Google
 					</Button>

@@ -11,6 +11,9 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@heroui/spinner": "^2.2.13",
+    "@heroui/system": "^2.4.12",
+    "@heroui/theme": "^2.4.12",
     "@hookform/resolvers": "^4.1.0",
     "@mui/icons-material": "^6.4.5",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
