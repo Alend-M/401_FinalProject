@@ -36,11 +36,8 @@ async def buildAndSavePC(user_id: str, query: Request):
             print("[X] Bad response from LLM service")
             continue
         else:
+            save_response = await saveBuild(user_id, response)
+            print(save_response)
             break
-    
-    # TODO: Save to the database the query based on the user_id
-    save_response = await saveBuild(user_id, response)
-    print(save_response)
-
 
     return response
