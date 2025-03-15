@@ -17,7 +17,7 @@ async def forwardPastBuilds(user_id: int):
 @app.post("/build/{user_id}")
 async def buildPC(user_id: int, query: Request):
     
-    for attempt in range(2):
+    for attempt in range(3):
         response = await getLLMResponse(query)
         if response == {"error": "bad response"}:
             print("[X] Bad response from LLM service")

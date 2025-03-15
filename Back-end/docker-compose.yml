@@ -12,8 +12,6 @@ services:
     build: ./API_container
     env_file:
       - ./.env
-    ports:
-      - "8001:8001"
     networks:
       - backend
 
@@ -21,8 +19,6 @@ services:
     build: ./LLM_container
     env_file:
       - ./.env
-    ports:
-      - "8002:8002"
     networks:
       - backend
 
