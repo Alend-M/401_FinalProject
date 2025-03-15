@@ -148,7 +148,8 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
 
     prompt = f"""Respond in the following JSON format:{template}. Your response must only contain the given format no other text.
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following.
-All prices provided must be in Canadian Dollars. If the requirements parts names are given, you MUST use them in your provided build.
+All prices provided must be in Canadian Dollars. If the requirements parts names are given, you MUST use them in your provided build. 
+If the budget is not enough to meet the requirements, please provide the best build possible with the given budget.
 """
     response = model.generate_content(prompt).text # Sends the request to AI and extracts the response
 
