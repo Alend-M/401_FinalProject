@@ -2,6 +2,7 @@
 import supabase 
 from dotenv import load_dotenv
 import os 
+import json
 
 # Load the environment variables for supabase instance to be used correctly
 load_dotenv()
@@ -172,41 +173,52 @@ def getAllUserPastBuilds(user_id: int) -> list:
             return []
         
         return data
+    #     return [
+    #     {
+    #         "build_id": 1,
+    #         "cpu": "Intel Core i7-9700K",
+    #         "gpu": "Nvidia RTX 3070"
+    #     },
+    #     {
+    #         "build_id": 2,
+    #         "cpu": "AMD Ryzen 5 5600X",
+    #         "gpu": "Nvidia RTX 3060"
+    #     }
+    # ]
         
     except Exception as e:
         print(f"Error fetching builds: {e}")
         return []
     
     
-def saveLLMResponse(user_id: int, LLMResponse: dict) -> int:
+async def saveLLMResponse(user_id: int, LLMResponse: dict) -> int:
     
     try:
         #Remember to change DummyLLMResponse to LLMResponse when the LLMResponse is ready
         response = supabaseClient.table("BuildHistory").insert({"userid": user_id, "buildjson": LLMResponse}).execute() 
         data = response.data
-        
+
         if data:
             print("Succesfully saved build for user: ", user_id)
-            return data[0]['build_id']
+            return data[0]['buildid']
         else:
             print(f"Failed to save LLM response for user: {user_id}")
             return -1
     except Exception as e:
         print(f"Error saving build: {e}")
         return [] 
-        
-    
 
 # makes it so you need to import it to run the code
 if __name__ == "__main__":
     user_id = 12
-    saveLLMResponse(user_id, DummyLLMResponse)
+    # saveLLMResponse(user_id, DummyLLMResponse)
     
     
     
     builds = getAllUserPastBuilds(user_id)
     print(f"Type of builds: {type(builds)}")
     print(f"Length: {len(builds)}")
+    print(f"Builds: {parse_buildjson(builds)}")
     
     # If builds is a list, you can also check the type of the first item
     #if builds and len(builds) > 0:
