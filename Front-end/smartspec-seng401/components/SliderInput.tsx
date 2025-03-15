@@ -1,12 +1,14 @@
 "use client";
 
 import { Slider } from "@/components/ui/slider";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { BaseText } from "./ui/baseText";
 import { SmallText } from "./ui/smallText";
 
 interface SliderInputProps {
   name: string;
+  formComponent: number;
+  setFormComponent: (value: number) => void;
   description: string;
   lowerBound: number;
   upperBound: number;
@@ -18,6 +20,8 @@ interface SliderInputProps {
 
 function SliderInput({
   name,
+  formComponent,
+  setFormComponent,
   description,
   lowerBound,
   upperBound,
@@ -26,10 +30,15 @@ function SliderInput({
   unit,
   prefix = false,
 }: SliderInputProps) {
-  const [sliderValue, setSliderValue] = useState(defaultValue || lowerBound);
+  // const [sliderValue, setSliderValue] = useState(defaultValue || lowerBound);
+
+  useEffect(() => {
+    // On component mount, set numerical formComponent to default Value (if available) else lower bound
+    setFormComponent(defaultValue || lowerBound);
+  }, []);
 
   const handleSliderChange = (value: number[]) => {
-    setSliderValue(value[0]);
+    setFormComponent(value[0]);
   };
 
   return (
@@ -38,11 +47,11 @@ function SliderInput({
       <div className="flex flex-row justify-between items-end">
         <SmallText className="text-subheadingGray">{description}</SmallText>
         <BaseText>
-          {prefix ? unit + sliderValue : sliderValue + " " + unit}
+          {prefix ? unit + formComponent : formComponent + " " + unit}
         </BaseText>
       </div>
       <Slider
-        value={[sliderValue]}
+        value={[formComponent]}
         defaultValue={[defaultValue || lowerBound]}
         min={lowerBound}
         max={upperBound}

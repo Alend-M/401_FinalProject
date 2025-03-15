@@ -1,29 +1,39 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { BaseText } from "./ui/baseText";
 import { SmallText } from "./ui/smallText";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Plus, X } from "lucide-react";
+import { useFormBuilderContext } from "@/context/formBuilderContext";
 
 function GamesInput() {
-  const defaultGames = ["Marvel Rivals", "Fortnite"];
-  const [gamesList, setGamesList] = useState(defaultGames);
+  // const [gamesList, setGamesList] = useState(defaultGames);
+  const {
+    gamesList,
+    addToGamesList,
+    removeFromGamesList,
+    updateGameFromList,
+  } = useFormBuilderContext();
+
+  useEffect(() => {
+    // On component mount, set the games list to this default (will remove in future);
+    addToGamesList("Marvel Rivals");
+    addToGamesList("Fortnite");
+  }, []);
 
   function handleAddGame() {
-    setGamesList((prev) => {
-      return prev.concat([""]);
-    });
+    addToGamesList("");
   }
 
   function handleDeleteGame(index: number) {
-    // DEBUG
-    // console.log(index);
+    removeFromGamesList(index);
+  }
 
-    setGamesList((prev) => {
-      return prev.filter((_, i) => i !== index);
-    });
+  function handleInputChange(index: number, newGame: string) {
+    // We want to change the string at the certain index to the typed value
+    updateGameFromList(index, newGame);
   }
 
   return (
@@ -38,12 +48,14 @@ function GamesInput() {
             key={i}
             className="flex flex-row justify-between items-center space-x-minor"
           >
-            <Input defaultValue={game} />
+            <Input
+              defaultValue={game}
+              onChange={(e) => {
+                handleInputChange(i, e.target.value);
+              }}
+            />
             <div className="w-fit">
-              <X
-                size={16}
-                onClick={() => handleDeleteGame(i)}
-              />
+              <X size={16} onClick={() => handleDeleteGame(i)} />
             </div>
           </div>
         );
