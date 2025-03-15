@@ -14,9 +14,15 @@ This means that <b>ALL</b> communication between containers will be done via API
 
 from backend directory:
 
-    uvicorn LLM_service.app:app --port 8002 <br>
-    uvicorn API_service.app:app --port 8001 <br>
-    uvicorn Gateway_service.app:app --port 8000 <br>
+    uvicorn ./LLM_container/LLM_service.app:app --port 8002 <br>
+    uvicorn ./API_container/API_service.app:app --port 8001 <br>
+    uvicorn ./Gateway_container/Gateway_service.app:app --port 8000 <br>
 
 * This runs two micro-services separately with their own ports.
+
+## TO RUN AS CONTAINER STACK ##
+
+From backend directory:
+
+    docker compose up
 

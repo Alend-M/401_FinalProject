@@ -263,7 +263,10 @@ All prices provided must be in Canadian Dollars. If the requirements parts names
     response = response.replace("```", "")
 
     # Loads turns the text based reponse into a python dictionary for return (does this because apparently really similar to json for python)
-    response = json.loads(response)
+    try:
+      response = json.loads(response)
+    except:
+      response = {"error": "bad response"}
     return response
 
 if __name__ == "__main__":

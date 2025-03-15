@@ -1,6 +1,5 @@
 from fastapi import Request, FastAPI
 from Gateway_service.forward_service import *
-from LLM_service.llm_formats import LLM_Query
 import json
 
 # Creates a instance for FastAPI
@@ -17,8 +16,14 @@ async def forwardPastBuilds(user_id: int):
 
 @app.post("/build/{user_id}")
 async def buildPC(user_id: int, query: Request):
-    queryJSON = await query.json()
-    response = await getLLMResponse(query)
+    
+    for attempt in range(3):
+        response = await getLLMResponse(query)
+        if response == {"error": "bad response"}:
+            print("[X] Bad response from LLM service")
+            continue
+        else:
+            break
     
     # TODO: Save to the database the query based on the user_id
     return response
