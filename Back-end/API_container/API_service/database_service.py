@@ -216,9 +216,6 @@ if __name__ == "__main__":
     
     
     builds = getAllUserPastBuilds(user_id)
-    print(f"Type of builds: {type(builds)}")
-    print(f"Length: {len(builds)}")
-    print(f"Builds: {parse_buildjson(builds)}")
     
     # If builds is a list, you can also check the type of the first item
     #if builds and len(builds) > 0:

@@ -1,11 +1,11 @@
 import httpx
-from LLM_service.llm_formats import LLM_Query
+
 import json
 from fastapi import HTTPException, Request
 
 # addresses for micro-services
-DATABASE_SERVICE_URL = "http://localhost:8001"
-LLM_SERVICE_URL = "http://localhost:8002"
+DATABASE_SERVICE_URL = "http://api:8001"
+LLM_SERVICE_URL = "http://llm:8002"
 
 async def getPastBuilds(user_id: int):
     """
