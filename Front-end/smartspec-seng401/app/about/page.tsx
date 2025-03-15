@@ -1,5 +1,4 @@
 import AboutCard from "@/components/AboutCard";
-import NavigationBar from "@/components/NavigationBar";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import React from "react";

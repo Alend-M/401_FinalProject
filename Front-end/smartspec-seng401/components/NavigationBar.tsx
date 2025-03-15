@@ -2,66 +2,145 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { supabase } from "@/utils/supabaseClient";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { User } from "@supabase/supabase-js";
+import {
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+} from "@/components/ui/popover";
+import { Button } from "./ui/button";
 
 // Navigation Components:
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-  NavigationMenuViewport,
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
-import Link from "next/link";
-import { Button } from "./ui/button";
-
 function NavigationBar() {
-  const [activeTab, setActiveTab] = useState('');
-  const router = useRouter();
+	const [user, setUser] = useState<User | null>(null);
+	const router = useRouter();
 
-  function handleClickNavMenu() {
-    // If the user clicks on a nav menu, menu should stay highlighted
-  }
+	useEffect(() => {
+		// Function to check the current session
+		const checkSession = async () => {
+			try {
+				const {
+					data: { session },
+					error,
+				} = await supabase.auth.getSession();
+				if (error) throw error;
+				setUser(session?.user || null);
+			} catch (error) {
+				console.error("Error checking session:", error);
+			}
+		};
 
-  return (
-    <NavigationMenu className="space-x-medium">
-      <NavigationMenuList>
-        <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink active className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/about" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              About Us
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/contact" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Contact Us
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-      </NavigationMenuList>
-      <div className="flex flex-row justify-center align-center space-x-minor">
-        <Button variant={"secondary"} onClick={() => router.push("/login")}>
-          Login
-        </Button>
-        <Button variant={"default"} onClick={() => router.push("/signup")}>
-          Sign up
-        </Button>
-      </div>
-    </NavigationMenu>
-  );
+		// Subscribe to authentication state changes
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(_event, session) => {
+				setUser(session?.user || null); // Update the state on auth change
+			}
+		);
+
+		// Check session initially
+		checkSession();
+
+		// Clean up the listener when the component is unmounted
+		return () => {
+			authListener?.subscription.unsubscribe();
+		};
+	}, []);
+
+	const handleLogout = async () => {
+		await supabase.auth.signOut();
+		setUser(null);
+		router.push("/");
+	};
+
+	return (
+		<NavigationMenu className="space-x-medium">
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<Link href="/" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							Home
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<Link href="/about" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							About Us
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<Link href="/contact" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							Contact Us
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<Link href="/history" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							Build History
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+			<div className="flex flex-row justify-center align-center space-x-minor">
+				{user ? (
+					<Popover>
+						<PopoverTrigger asChild>
+							<div className="cursor-pointer">
+								{user.user_metadata?.avatar_url ? (
+									<Image
+										src={user.user_metadata.avatar_url}
+										alt="User Avatar"
+										width={32}
+										height={32}
+										className="rounded-full object-cover"
+									/>
+								) : (
+									<AccountCircleIcon
+										className="text-white"
+										style={{ fontSize: 40 }}
+									/>
+								)}
+							</div>
+						</PopoverTrigger>
+						<PopoverContent className="w-40 p-2">
+							<p className="truncate text-sm mb-2 w-36">{user.email}</p>
+							<Button
+								variant="outline"
+								onClick={handleLogout}
+								className="w-full"
+							>
+								Logout
+							</Button>
+						</PopoverContent>
+					</Popover>
+				) : (
+					<>
+						<Button variant="secondary" onClick={() => router.push("/login")}>
+							Login
+						</Button>
+						<Button variant="default" onClick={() => router.push("/signup")}>
+							Sign up
+						</Button>
+					</>
+				)}
+			</div>
+		</NavigationMenu>
+	);
 }
 
 export default NavigationBar;

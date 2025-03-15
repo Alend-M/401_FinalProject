@@ -24,6 +24,10 @@ import { GitHub, Google } from "@mui/icons-material";
 
 import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Spinner } from "@heroui/spinner";
+import { useState } from "react";
 
 const DEBUG = 1; // Debug flag
 
@@ -49,6 +53,8 @@ const formSchema = z.object({
 
 const LoginForm: React.FC = () => {
 	// Defining the Login Form
+	const router = useRouter();
+	const [loading, setLoading] = useState(false);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -60,24 +66,34 @@ const LoginForm: React.FC = () => {
 	// Defining Login Handler
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// ✅ This will be type-safe and validated.
-
 		if (DEBUG) console.log("Values: ", values);
 
+		setLoading(true);
 		const { email, password } = values;
-		const response = await supabase.auth.signInWithPassword({
+		const { data, error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
 		});
 
-		const { error } = response;
-
 		if (error) {
 			// #TODO: Add a shadcn alert for failure
-			alert(error.message);
-		} else {
-			// #TODO: Add shadcn alert for success
-			alert("Sign in successful");
+			toast.error(error.message, {
+				style: {
+					padding: "16px",
+					width: "100%",
+				},
+			});
+			setLoading(false);
+			return;
 		}
+		setLoading(false);
+		toast.success("Signin Succesful!", {
+			style: {
+				padding: "16px",
+			},
+		});
+
+		router.push("/");
 	}
 
 	return (
@@ -90,7 +106,7 @@ const LoginForm: React.FC = () => {
 						<GitHub />
 						Log in with GitHub
 					</Button>
-					<Button variant={"outline"} onClick={signInWithGoogle}>
+					<Button variant={"outlineBlack"} onClick={signInWithGoogle}>
 						<Google />
 						Log in with Google
 					</Button>
@@ -150,12 +166,19 @@ const LoginForm: React.FC = () => {
 								Sign Up
 							</Link>
 						</p>
-						<Button fullWidth type="submit">
-							Log in
-						</Button>
+						<div className="flex justify-center">
+							{loading ? (
+								<Spinner color="primary" />
+							) : (
+								<Button fullWidth type="submit">
+									Log in
+								</Button>
+							)}
+						</div>
 					</form>
 				</Form>
 			</div>
+			<Toaster position="top-center" reverseOrder={false} />
 		</div>
 	);
 };
