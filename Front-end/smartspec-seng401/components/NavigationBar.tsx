@@ -2,37 +2,54 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { supabase } from "@/utils/supabaseClient";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { User } from "@supabase/supabase-js";
+import {
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
+} from "@/components/ui/popover";
+import { Button } from "./ui/button";
 
 // Navigation Components:
 import {
 	NavigationMenu,
-	NavigationMenuContent,
-	NavigationMenuIndicator,
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-	NavigationMenuTrigger,
 	navigationMenuTriggerStyle,
-	NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
-import Link from "next/link";
-import { Button } from "./ui/button";
-
 function NavigationBar() {
-	const [activeTab, setActiveTab] = useState("");
+	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter();
 
-	function handleClickNavMenu() {
-		// If the user clicks on a nav menu, menu should stay highlighted
-	}
+	useEffect(() => {
+		const checkSession = async () => {
+			const {
+				data: { session },
+			} = await supabase.auth.getSession();
+			setUser(session?.user || null);
+		};
+
+		checkSession();
+	}, []);
+
+	const handleLogout = async () => {
+		await supabase.auth.signOut();
+		setUser(null);
+		router.push("/");
+	};
 
 	return (
 		<NavigationMenu className="space-x-medium">
 			<NavigationMenuList>
 				<NavigationMenuItem>
 					<Link href="/" legacyBehavior passHref>
-						<NavigationMenuLink active className={navigationMenuTriggerStyle()}>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
 							Home
 						</NavigationMenuLink>
 					</Link>
@@ -51,14 +68,56 @@ function NavigationBar() {
 						</NavigationMenuLink>
 					</Link>
 				</NavigationMenuItem>
+				<NavigationMenuItem>
+					<Link href="/history" legacyBehavior passHref>
+						<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+							Build History
+						</NavigationMenuLink>
+					</Link>
+				</NavigationMenuItem>
 			</NavigationMenuList>
 			<div className="flex flex-row justify-center align-center space-x-minor">
-				<Button variant={"secondary"} onClick={() => router.push("/login")}>
-					Login
-				</Button>
-				<Button variant={"default"} onClick={() => router.push("/signup")}>
-					Sign up
-				</Button>
+				{user ? (
+					<Popover>
+						<PopoverTrigger asChild>
+							<div className="cursor-pointer">
+								{user.user_metadata?.avatar_url ? (
+									<Image
+										src={user.user_metadata.avatar_url}
+										alt="User Avatar"
+										width={32}
+										height={32}
+										className="rounded-full object-cover"
+									/>
+								) : (
+									<AccountCircleIcon
+										className="text-white"
+										style={{ fontSize: 40 }}
+									/>
+								)}
+							</div>
+						</PopoverTrigger>
+						<PopoverContent className="w-40 p-2">
+							<p className="truncate text-sm mb-2 w-36">{user.email}</p>
+							<Button
+								variant="outline"
+								onClick={handleLogout}
+								className="w-full"
+							>
+								Logout
+							</Button>
+						</PopoverContent>
+					</Popover>
+				) : (
+					<>
+						<Button variant="secondary" onClick={() => router.push("/login")}>
+							Login
+						</Button>
+						<Button variant="default" onClick={() => router.push("/signup")}>
+							Sign up
+						</Button>
+					</>
+				)}
 			</div>
 		</NavigationMenu>
 	);

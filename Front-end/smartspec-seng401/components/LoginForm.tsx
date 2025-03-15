@@ -25,6 +25,7 @@ import { GitHub, Google } from "@mui/icons-material";
 import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const DEBUG = 1; // Debug flag
 
@@ -50,6 +51,7 @@ const formSchema = z.object({
 
 const LoginForm: React.FC = () => {
 	// Defining the Login Form
+	const router = useRouter();
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -61,16 +63,13 @@ const LoginForm: React.FC = () => {
 	// Defining Login Handler
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// ✅ This will be type-safe and validated.
-
 		if (DEBUG) console.log("Values: ", values);
 
 		const { email, password } = values;
-		const response = await supabase.auth.signInWithPassword({
+		const { data, error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
 		});
-
-		const { error } = response;
 
 		if (error) {
 			// #TODO: Add a shadcn alert for failure
@@ -79,14 +78,15 @@ const LoginForm: React.FC = () => {
 					padding: "16px",
 				},
 			});
-		} else {
-			// #TODO: Add shadcn alert for success
-			toast.success("Signin Succesful!", {
-				style: {
-					padding: "16px",
-				},
-			});
+			return;
 		}
+		toast.success("Signin Succesful!", {
+			style: {
+				padding: "16px",
+			},
+		});
+
+		router.push("/history");
 	}
 
 	return (
