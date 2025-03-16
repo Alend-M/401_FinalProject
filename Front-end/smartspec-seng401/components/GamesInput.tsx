@@ -10,12 +10,8 @@ import { useFormBuilderContext } from "@/context/formBuilderContext";
 
 function GamesInput() {
   // const [gamesList, setGamesList] = useState(defaultGames);
-  const {
-    gamesList,
-    addToGamesList,
-    removeFromGamesList,
-    updateGameFromList,
-  } = useFormBuilderContext();
+  const { gamesList, addToGamesList, removeFromGamesList, updateGameFromList } =
+    useFormBuilderContext();
 
   useEffect(() => {
     // On component mount, set the games list to this default (will remove in future);

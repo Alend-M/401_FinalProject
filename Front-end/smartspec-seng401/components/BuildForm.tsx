@@ -9,8 +9,16 @@ import { Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
 
 function BuildForm() {
-  const { budget, minFps, changeBudget, changeMinFps } =
-    useFormBuilderContext();
+  const {
+    budget,
+    minFps,
+    displayResolution,
+    graphicalQuality,
+    changeBudget,
+    changeMinFps,
+    changeDisplayResolution,
+    changeGraphicalQuality,
+  } = useFormBuilderContext();
   return (
     <div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
       <SliderInput
@@ -30,6 +38,8 @@ function BuildForm() {
       <Separator />
       <RadioInput
         name="Display Resolution"
+        formComponent={displayResolution}
+        setFormComponent={changeDisplayResolution}
         description="Choose the resolution that you'd like to play at"
         options={["1080p", "1440p", "4K", "Ultra-wide"]}
         defaultOption="1080p"
@@ -49,6 +59,8 @@ function BuildForm() {
       <Separator />
       <RadioInput
         name="Graphical Quality"
+        formComponent={graphicalQuality}
+        setFormComponent={changeGraphicalQuality}
         description="Choose graphical fidelity you like"
         options={["Low", "Medium", "High", "Ultra", "Ray Tracing"]}
         defaultOption="High"

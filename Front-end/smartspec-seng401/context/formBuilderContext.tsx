@@ -1,5 +1,6 @@
 "use client";
 
+import { Component } from "@/types";
 import {
   createContext,
   ReactNode,
@@ -22,14 +23,26 @@ interface FormBuilderContextInterface {
     - Submit form: () => {},
     */
 
+  /*ATTRIBUTES*/
   budget: number;
   minFps: number;
   gamesList: string[];
+  displayResolution: string;
+  graphicalQuality: string;
+  preOwnedHardware: Component[];
+
+  /*METHODS*/
   changeBudget: (value: number) => void;
   changeMinFps: (value: number) => void;
   addToGamesList: (game: string) => void;
   removeFromGamesList: (index: number) => void;
   updateGameFromList: (index: number, newGame: string) => void;
+  changeDisplayResolution: (resolution: string) => void;
+  changeGraphicalQuality: (quality: string) => void;
+  addToPreOwnedHardware: (component: Component) => void;
+  removeFromPreOwnedHardware: (index: number) => void;
+  updatePreOwnedHardware: (index: number, newComponent: Component) => void;
+
   // For Debugging Purposes
   debugPrint: () => void;
 }
@@ -38,11 +51,19 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   budget: 0,
   minFps: 0,
   gamesList: [],
+  displayResolution: "",
+  graphicalQuality: "",
+  preOwnedHardware: [],
   changeBudget: () => {},
   changeMinFps: () => {},
   addToGamesList: () => {},
   removeFromGamesList: () => {},
   updateGameFromList: () => {},
+  changeDisplayResolution: () => {},
+  changeGraphicalQuality: () => {},
+  addToPreOwnedHardware: () => {},
+  removeFromPreOwnedHardware: () => {},
+  updatePreOwnedHardware: () => {},
   // For Debugging Purposes
   debugPrint: () => {},
 };
@@ -63,6 +84,9 @@ export function FormBuilderProvider({ children }: Props) {
   const [budget, setBudget] = useState<number>(0);
   const [minFps, setMinFps] = useState<number>(0);
   const [gamesList, setGamesList] = useState<string[]>([]);
+  const [displayResolution, setDisplayResolution] = useState<string>("");
+  const [graphicalQuality, setGraphicalQuality] = useState<string>("");
+  const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
 
   function changeBudget(value: number) {
     setBudget(value);
@@ -92,6 +116,34 @@ export function FormBuilderProvider({ children }: Props) {
     });
   }
 
+  function changeDisplayResolution(resolution: string) {
+    setDisplayResolution(resolution);
+  }
+
+  function changeGraphicalQuality(quality: string) {
+    setGraphicalQuality(quality);
+  }
+
+  function addToPreOwnedHardware(component: Component) {
+    setPreOwnedHardware([...preOwnedHardware, component]);
+  }
+
+  function removeFromPreOwnedHardware(index: number) {
+    setPreOwnedHardware((prev) => {
+      return prev.filter((_, i) => {
+        return i != index;
+      });
+    });
+  }
+
+  function updatePreOwnedHardware(index: number, newComponent: Component) {
+    setPreOwnedHardware((prev) => {
+      const newArray = [...prev];
+      newArray[index] = newComponent;
+      return newArray;
+    });
+  }
+
   function debugPrint() {
     console.log(
       "Budget: ",
@@ -99,23 +151,44 @@ export function FormBuilderProvider({ children }: Props) {
       "\nMinFps: ",
       minFps,
       "\nGames: ",
-      gamesList
+      gamesList,
+      "\nDisplay Resolution: ",
+      displayResolution,
+      "\nGraphical Quality: ",
+      graphicalQuality,
+      "\nPre-owned Hardware: ",
+      preOwnedHardware
     );
   }
 
   useEffect(() => {
     debugPrint();
-  }, [budget, minFps, gamesList]);
+  }, [
+    budget,
+    minFps,
+    gamesList,
+    displayResolution,
+    graphicalQuality,
+    preOwnedHardware,
+  ]);
 
   const value = {
     budget,
     minFps,
     gamesList,
+    displayResolution,
+    graphicalQuality,
+    preOwnedHardware,
     changeBudget,
     changeMinFps,
     addToGamesList,
     removeFromGamesList,
     updateGameFromList,
+    changeDisplayResolution,
+    changeGraphicalQuality,
+    addToPreOwnedHardware,
+    removeFromPreOwnedHardware,
+    updatePreOwnedHardware,
     debugPrint,
   };
 
