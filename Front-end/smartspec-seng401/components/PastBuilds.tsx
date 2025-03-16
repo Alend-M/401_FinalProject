@@ -2,10 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/utils/supabaseClient";
+import { checkSession } from "@/utils/supabaseClient";
 import axios from "axios";
 import BuildCard from "@/components/PastBuildCard";
 import { Subtitle } from "@/components/ui/subtitle";
+import { Spinner } from "@heroui/spinner";
 
 interface Build {
 	build_id: number;
@@ -20,85 +21,55 @@ interface Build {
 const PastBuilds = () => {
 	const router = useRouter();
 	const [builds, setBuilds] = useState<Build[]>([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [userId, setUserId] = useState<string | null>(null);
 
 	useEffect(() => {
 		async function checkSessionAndFetchBuilds() {
-			// Check if user is logged in
-			const { data } = await supabase.auth.getSession();
+			setLoading(true);
+			const session = await checkSession();
 
-			if (!data.session) {
-				// Redirect to login if no session
+			if (session) {
+				setUserId(session.user.id);
+				try {
+					const response = await axios.get(
+						`https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/b51f0f76-e1ec-4a76-ba48-22cf8734739f`
+					);
 
-				return;
+					const formattedBuilds = response.data.map(
+						(item: any, index: number) => {
+							const build = item.buildjson;
+
+							return {
+								build_id: index + 1,
+								name: `Build ${index + 1}`,
+								cpu: build.CPUs?.name || "Unknown CPU",
+								gpu: build.GPUs?.name || "Unknown GPU",
+								ram: build.RAM?.name || "Unknown RAM",
+								date: new Date().toISOString().split("T")[0],
+								games: [],
+							};
+						}
+					);
+
+					setBuilds(formattedBuilds);
+				} catch (error) {
+					console.error("Error fetching builds:", error);
+					setBuilds([
+						{
+							build_id: 1,
+							name: "Competitive Build",
+							cpu: "Intel Core i7-9700K",
+							gpu: "GeForce RTX 3060",
+							ram: "Corsair Vengeance 16GB DDR5 RAM",
+							date: "2025-03-08",
+							games: ["valorant", "fortnite", "apex", "cod"],
+						},
+					]);
+				}
 			}
 
-			// Set user ID from session
-			setUserId(data.session.user.id);
-
-			try {
-				// Fetch builds for the authenticated user
-				// NOTE: You should use your actual API endpoint here
-				setLoading(true);
-				const response = await axios.get("http://localhost:3001/builds", {
-					params: { userId: data.session.user.id },
-				});
-
-				setBuilds(response.data);
-			} catch (error) {
-				console.error("Error fetching builds:", error);
-				// If API isn't ready, use sample data
-				setBuilds([
-					{
-						build_id: 1,
-						name: "Competitive Build",
-						cpu: "Intel Core i7-9700K",
-						gpu: "GeForce RTX 3060",
-						ram: "Corsair Vengence 16GB DDR5 RAM",
-						date: "2025-03-08",
-						games: ["valorant", "fortnite", "apex", "cod"],
-					},
-					{
-						build_id: 2,
-						name: "Casual Build",
-						cpu: "Intel Core i7-9700K",
-						gpu: "GeForce RTX 3060",
-						ram: "Corsair Vengence 16GB DDR5 RAM",
-						date: "2025-03-08",
-						games: ["valorant", "fortnite", "apex", "cod"],
-					},
-					{
-						build_id: 3,
-						name: "Competitive Build",
-						cpu: "Intel Core i7-9700K",
-						gpu: "GeForce RTX 3060",
-						ram: "Corsair Vengence 16GB DDR5 RAM",
-						date: "2025-03-08",
-						games: ["valorant", "fortnite", "apex", "cod"],
-					},
-					{
-						build_id: 1,
-						name: "Competitive Build",
-						cpu: "Intel Core i7-9700K",
-						gpu: "GeForce RTX 3060",
-						ram: "Corsair Vengence 16GB DDR5 RAM",
-						date: "2025-03-08",
-						games: ["valorant", "fortnite", "apex", "cod"],
-					},
-					{
-						build_id: 4,
-						name: "Competitive Build",
-						cpu: "Intel Core i7-9700K",
-						gpu: "GeForce RTX 3060",
-						ram: "Corsair Vengence 16GB DDR5 RAM",
-						date: "2025-03-08",
-						games: ["valorant", "fortnite", "apex", "cod"],
-					},
-				]);
-			} finally {
-				setLoading(false);
-			}
+			setLoading(false);
 		}
 
 		checkSessionAndFetchBuilds();
@@ -106,9 +77,7 @@ const PastBuilds = () => {
 
 	if (loading) {
 		return (
-			<div className="flex justify-center items-center mt-10">
-				Loading your builds...
-			</div>
+			<Spinner className="flex justify-center items-center mt-10" size="lg" />
 		);
 	}
 
