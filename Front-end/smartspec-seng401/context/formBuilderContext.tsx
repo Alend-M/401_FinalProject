@@ -10,10 +10,10 @@ import {
   useState,
 } from "react";
 
-const API_URL = "http://localhost:8000";
+// const API_URL = "http://localhost:8000";
 
-// const API_URL =
-//   "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
+const API_URL =
+  "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
 
 interface FormBuilderContextInterface {
   /* We need the following attributes:
@@ -171,7 +171,7 @@ export function FormBuilderProvider({ children }: Props) {
     const requestDataJSON = requestData;
 
     // Logging the data being sent
-    console.log("Submitting form data: ", requestDataJSON);
+    console.log("Submitting form data: ", requestDataJSON, "\n\nTo: ", API_URL);
 
     // Send the POST requestion
     return axios
