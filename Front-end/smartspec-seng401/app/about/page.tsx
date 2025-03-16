@@ -14,7 +14,7 @@ function AboutPage() {
 	];
 
 	return (
-		<div className="m-14 mb-20">
+		<div className="mb-20">
 			<div className="flex flex-col items-center">
 				<Title className="text-secondaryColor">Meet the Team</Title>
 				<Subtitle>Subheading</Subtitle>

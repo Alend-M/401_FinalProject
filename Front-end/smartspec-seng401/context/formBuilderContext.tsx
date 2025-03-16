@@ -1,22 +1,24 @@
 "use client";
 
-import { Component, FormData } from "@/types";
+import { Component } from "@/types";
+import { checkSession, supabase } from "@/utils/supabaseClient";
 import axios from "axios";
 import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
+	createContext,
+	ReactNode,
+	useContext,
+	useEffect,
+	useState,
 } from "react";
 import { useBuildResultContext } from "./buildResultContext";
 
 // const API_URL = "http://localhost:8000";
 
-const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+const API_URL =
+	"https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
 
 interface FormBuilderContextInterface {
-  /* We need the following attributes:
+	/* We need the following attributes:
     - User's Budget: number
     - List of Users Games: string[]
     - Display resolution: string
@@ -29,243 +31,241 @@ interface FormBuilderContextInterface {
     - Submit form: () => {},
     */
 
-  /*ATTRIBUTES*/
-  budget: number;
-  minFps: number;
-  gamesList: string[];
-  displayResolution: string;
-  graphicalQuality: string;
-  preOwnedHardware: Component[];
+	/*ATTRIBUTES*/
+	budget: number;
+	minFps: number;
+	gamesList: string[];
+	displayResolution: string;
+	graphicalQuality: string;
+	preOwnedHardware: Component[];
+	// Debugging
 
-  /*METHODS*/
-  changeBudget: (value: number) => void;
-  changeMinFps: (value: number) => void;
-  addToGamesList: (game: string) => void;
-  removeFromGamesList: (index: number) => void;
-  updateGameFromList: (index: number, newGame: string) => void;
-  changeDisplayResolution: (resolution: string) => void;
-  changeGraphicalQuality: (quality: string) => void;
-  addToPreOwnedHardware: (component: Component) => void;
-  removeFromPreOwnedHardware: (index: number) => void;
-  updatePreOwnedHardware: (index: number, newComponent: Component) => void;
-  submitForm: () => Promise<void>;
+	/*METHODS*/
+	changeBudget: (value: number) => void;
+	changeMinFps: (value: number) => void;
+	addToGamesList: (game: string) => void;
+	removeFromGamesList: (index: number) => void;
+	updateGameFromList: (index: number, newGame: string) => void;
+	changeDisplayResolution: (resolution: string) => void;
+	changeGraphicalQuality: (quality: string) => void;
+	addToPreOwnedHardware: (component: Component) => void;
+	removeFromPreOwnedHardware: (index: number) => void;
+	updatePreOwnedHardware: (index: number, newComponent: Component) => void;
+	submitForm: () => Promise<any>;
 
-  // For Debugging Purposes
-  debugPrint: () => void;
+	// For Debugging Purposes
+	debugPrint: () => void;
 }
 
 const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
-  budget: 0,
-  minFps: 0,
-  gamesList: [],
-  displayResolution: "",
-  graphicalQuality: "",
-  preOwnedHardware: [],
-  changeBudget: () => {},
-  changeMinFps: () => {},
-  addToGamesList: () => {},
-  removeFromGamesList: () => {},
-  updateGameFromList: () => {},
-  changeDisplayResolution: () => {},
-  changeGraphicalQuality: () => {},
-  addToPreOwnedHardware: () => {},
-  removeFromPreOwnedHardware: () => {},
-  updatePreOwnedHardware: () => {},
-  submitForm: () => Promise.resolve(),
-
-  // For Debugging Purposes
-  debugPrint: () => {},
+	budget: 0,
+	minFps: 0,
+	gamesList: [],
+	displayResolution: "",
+	graphicalQuality: "",
+	preOwnedHardware: [],
+	changeBudget: () => {},
+	changeMinFps: () => {},
+	addToGamesList: () => {},
+	removeFromGamesList: () => {},
+	updateGameFromList: () => {},
+	changeDisplayResolution: () => {},
+	changeGraphicalQuality: () => {},
+	addToPreOwnedHardware: () => {},
+	removeFromPreOwnedHardware: () => {},
+	updatePreOwnedHardware: () => {},
+	submitForm: () => Promise.resolve({}),
+	// For Debugging Purposes
+	debugPrint: () => {},
 };
 
 const FormBuilderContext = createContext<FormBuilderContextInterface>(
-  FormBuilderContextDefaultValues
+	FormBuilderContextDefaultValues
 );
 
 export function useFormBuilderContext() {
-  return useContext(FormBuilderContext);
+	return useContext(FormBuilderContext);
 }
 
 interface Props {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 export function FormBuilderProvider({ children }: Props) {
-  const [budget, setBudget] = useState<number>(0);
-  const [minFps, setMinFps] = useState<number>(0);
-  const [gamesList, setGamesList] = useState<string[]>([]);
-  const [displayResolution, setDisplayResolution] = useState<string>("");
-  const [graphicalQuality, setGraphicalQuality] = useState<string>("");
-  const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
+	const [budget, setBudget] = useState<number>(0);
+	const [minFps, setMinFps] = useState<number>(0);
+	const [gamesList, setGamesList] = useState<string[]>([]);
+	const [displayResolution, setDisplayResolution] = useState<string>("");
+	const [graphicalQuality, setGraphicalQuality] = useState<string>("");
+	const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
+	const [userID, setUserID] = useState<string | Number>(1);
 
-  const { loadBuildResult, loadSummary } = useBuildResultContext(); // Inter-context communication
+	useEffect(() => {
+		//check the users id and set it
+		const verifyAuth = async () => {
+			const session = await checkSession();
 
-  function changeBudget(value: number) {
-    setBudget(value);
-  }
+			if (session) {
+				setUserID(session.user.id);
+			}
+		};
 
-  function changeMinFps(value: number) {
-    setMinFps(value);
-  }
+		verifyAuth();
 
-  function addToGamesList(game: string) {
-    setGamesList([...gamesList, game]);
-  }
+		// Subscribe to authentication state changes
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(_event, session) => {
+				setUserID(session?.user.id || 1); // Update the state on auth change
+			}
+		);
 
-  function removeFromGamesList(index: number) {
-    setGamesList((prev) => {
-      return prev.filter((_, i) => {
-        return i != index;
-      });
-    });
-  }
+		// Clean up the listener when the component is unmounted
+		return () => {
+			authListener?.subscription.unsubscribe();
+		};
+	}, []);
 
-  function updateGameFromList(index: number, newGame: string) {
-    setGamesList((prev) => {
-      const newArray = [...prev];
-      newArray[index] = newGame;
-      return newArray;
-    });
-  }
+	function changeBudget(value: number) {
+		setBudget(value);
+	}
 
-  function changeDisplayResolution(resolution: string) {
-    setDisplayResolution(resolution);
-  }
+	function changeMinFps(value: number) {
+		setMinFps(value);
+	}
 
-  function changeGraphicalQuality(quality: string) {
-    setGraphicalQuality(quality);
-  }
+	function addToGamesList(game: string) {
+		setGamesList([...gamesList, game]);
+	}
 
-  function addToPreOwnedHardware(component: Component) {
-    setPreOwnedHardware([...preOwnedHardware, component]);
-  }
+	function removeFromGamesList(index: number) {
+		setGamesList((prev) => {
+			return prev.filter((_, i) => {
+				return i != index;
+			});
+		});
+	}
 
-  function removeFromPreOwnedHardware(index: number) {
-    setPreOwnedHardware((prev) => {
-      return prev.filter((_, i) => {
-        return i != index;
-      });
-    });
-  }
+	function updateGameFromList(index: number, newGame: string) {
+		setGamesList((prev) => {
+			const newArray = [...prev];
+			newArray[index] = newGame;
+			return newArray;
+		});
+	}
 
-  function updatePreOwnedHardware(index: number, newComponent: Component) {
-    setPreOwnedHardware((prev) => {
-      const newArray = [...prev];
-      newArray[index] = newComponent;
-      return newArray;
-    });
-  }
+	function changeDisplayResolution(resolution: string) {
+		setDisplayResolution(resolution);
+	}
 
-  function submitForm() {
-    // Build the JSON from all the state files
-    // Goal: send POST requestion to ${API_URL}/build/1
+	function changeGraphicalQuality(quality: string) {
+		setGraphicalQuality(quality);
+	}
 
-    const requestData: FormData = {
-      budget,
-      minFps,
-      gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
-      displayResolution,
-      graphicalQuality,
-      preOwnedHardware: preOwnedHardware.filter(
-        (component) => component.name.trim() !== ""
-      ),
-    };
+	function addToPreOwnedHardware(component: Component) {
+		setPreOwnedHardware([...preOwnedHardware, component]);
+	}
 
-    const requestDataJSON = requestData;
+	function removeFromPreOwnedHardware(index: number) {
+		setPreOwnedHardware((prev) => {
+			return prev.filter((_, i) => {
+				return i != index;
+			});
+		});
+	}
 
-    // Logging the data being sent
-    console.log("Submitting form data: ", requestDataJSON, "\n\nTo: ", API_URL);
+	function updatePreOwnedHardware(index: number, newComponent: Component) {
+		setPreOwnedHardware((prev) => {
+			const newArray = [...prev];
+			newArray[index] = newComponent;
+			return newArray;
+		});
+	}
 
-    // Send the POST requestion
-    return axios
-      .post(`${API_URL}/build/1`, requestDataJSON, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        // DEBUG
-        console.log(response);
+	function submitForm() {
+		// Build the JSON from all the state files
+		// Goal: send POST requestion to ${API_URL}/build/1
 
-        const {
-          CPUs,
-          GPUs,
-          RAM,
-          Motherboards,
-          Storage,
-          Power_Supply,
-          Case,
-          Cooling,
-        } = response.data;
+		const requestData = {
+			budget,
+			minFps,
+			gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
+			displayResolution,
+			graphicalQuality,
+			preOwnedHardware: preOwnedHardware.filter(
+				(component) => component.name.trim() !== ""
+			),
+		};
 
-        loadBuildResult({
-          CPUs,
-          GPUs,
-          RAM,
-          Motherboards,
-          Storage,
-          Power_Supply,
-          Case,
-          Cooling,
-        });
+		const requestDataJSON = requestData;
 
-        loadSummary(response.data.input);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
-  function debugPrint() {
-    console.log(
-      "Budget: ",
-      budget,
-      "\nMinFps: ",
-      minFps,
-      "\nGames: ",
-      gamesList,
-      "\nDisplay Resolution: ",
-      displayResolution,
-      "\nGraphical Quality: ",
-      graphicalQuality,
-      "\nPre-owned Hardware: ",
-      preOwnedHardware
-    );
-  }
+		// Logging the data being sent
+		console.log("Submitting form data: ", requestDataJSON, "\n\nTo: ", API_URL);
 
-  useEffect(() => {
-    debugPrint();
-  }, [
-    budget,
-    minFps,
-    gamesList,
-    displayResolution,
-    graphicalQuality,
-    preOwnedHardware,
-  ]);
+		// Send the POST requestion
+		return axios
+			.post(`${API_URL}/build/${userID}`, requestDataJSON, {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			})
+			.then((response) => {
+				console.log(response);
+				return response;
+			});
+	}
 
-  const value = {
-    budget,
-    minFps,
-    gamesList,
-    displayResolution,
-    graphicalQuality,
-    preOwnedHardware,
-    changeBudget,
-    changeMinFps,
-    addToGamesList,
-    removeFromGamesList,
-    updateGameFromList,
-    changeDisplayResolution,
-    changeGraphicalQuality,
-    addToPreOwnedHardware,
-    removeFromPreOwnedHardware,
-    updatePreOwnedHardware,
-    submitForm,
-    debugPrint,
-  };
+	function debugPrint() {
+		console.log(
+			"Budget: ",
+			budget,
+			"\nMinFps: ",
+			minFps,
+			"\nGames: ",
+			gamesList,
+			"\nDisplay Resolution: ",
+			displayResolution,
+			"\nGraphical Quality: ",
+			graphicalQuality,
+			"\nPre-owned Hardware: ",
+			preOwnedHardware
+		);
+	}
 
-  return (
-    <FormBuilderContext.Provider value={value}>
-      {children}
-    </FormBuilderContext.Provider>
-  );
+	useEffect(() => {
+		debugPrint();
+	}, [
+		budget,
+		minFps,
+		gamesList,
+		displayResolution,
+		graphicalQuality,
+		preOwnedHardware,
+	]);
+
+	const value = {
+		budget,
+		minFps,
+		gamesList,
+		displayResolution,
+		graphicalQuality,
+		preOwnedHardware,
+		changeBudget,
+		changeMinFps,
+		addToGamesList,
+		removeFromGamesList,
+		updateGameFromList,
+		changeDisplayResolution,
+		changeGraphicalQuality,
+		addToPreOwnedHardware,
+		removeFromPreOwnedHardware,
+		updatePreOwnedHardware,
+		submitForm,
+		debugPrint,
+	};
+
+	return (
+		<FormBuilderContext.Provider value={value}>
+			{children}
+		</FormBuilderContext.Provider>
+	);
 }

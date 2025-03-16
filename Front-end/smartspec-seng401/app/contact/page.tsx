@@ -5,7 +5,7 @@ import React from "react";
 
 function ContactUsPage() {
 	return (
-		<div className="m-14 mb-20">
+		<div className="mb-20">
 			<div className="flex flex-col items-center">
 				<Title className="text-secondaryColor">Contact Us</Title>
 				<Subtitle className="mb-1">
