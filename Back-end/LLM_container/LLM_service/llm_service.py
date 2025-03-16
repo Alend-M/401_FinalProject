@@ -152,18 +152,4 @@ for each part in the build refrencing the price inputed requirement, graphical q
     return response
 
 if __name__ == "__main__":
-    # This file is meant to be imported only    
-    pc_requirements ="""
-    {
-        "budget": 2000,
-        "minFps": 120,
-        "gamesList": ["GTAV", "Fortnite"],
-        "displayResolution": "1080p",
-        "graphicalQuality": "Ray-tracing",
-        "preOwnedHardware": [
-            { "type": "CPU", "name": "Intel Core-i7" },
-            { "type": "GPU", "name": "RTX 3070" }
-        ]
-    }
-    """
-    print(getPcRecommendation(pc_requirements))
+    pass
