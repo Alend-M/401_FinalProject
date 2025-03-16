@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
@@ -7,8 +9,10 @@ import ComponentInput from "./ComponentInput";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
+import { Subtitle } from "./ui/subtitle";
 
 function BuildForm() {
+  const [responseData, setResponseData] = useState<string>("");
   const {
     budget,
     minFps,
@@ -18,7 +22,15 @@ function BuildForm() {
     changeMinFps,
     changeDisplayResolution,
     changeGraphicalQuality,
+    submitForm,
   } = useFormBuilderContext();
+
+  function handleSubmitForm() {
+    submitForm().then((response) => {
+      setResponseData(response);
+    });
+  }
+
   return (
     <div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
       <SliderInput
@@ -68,11 +80,12 @@ function BuildForm() {
       <Separator />
       <ComponentInput />
       <Separator />
-      <Button fullWidth>
+      <Button onClick={handleSubmitForm} fullWidth>
         <Zap />
         Get Build
         <Zap />
       </Button>
+      <Subtitle>{responseData}</Subtitle>
     </div>
   );
 }

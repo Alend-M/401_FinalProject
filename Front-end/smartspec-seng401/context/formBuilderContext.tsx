@@ -1,6 +1,7 @@
 "use client";
 
 import { Component } from "@/types";
+import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -8,6 +9,9 @@ import {
   useEffect,
   useState,
 } from "react";
+
+const API_URL =
+  "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/";
 
 interface FormBuilderContextInterface {
   /* We need the following attributes:
@@ -30,6 +34,7 @@ interface FormBuilderContextInterface {
   displayResolution: string;
   graphicalQuality: string;
   preOwnedHardware: Component[];
+  // Debugging
 
   /*METHODS*/
   changeBudget: (value: number) => void;
@@ -42,6 +47,7 @@ interface FormBuilderContextInterface {
   addToPreOwnedHardware: (component: Component) => void;
   removeFromPreOwnedHardware: (index: number) => void;
   updatePreOwnedHardware: (index: number, newComponent: Component) => void;
+  submitForm: () => Promise<any>;
 
   // For Debugging Purposes
   debugPrint: () => void;
@@ -64,6 +70,7 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   addToPreOwnedHardware: () => {},
   removeFromPreOwnedHardware: () => {},
   updatePreOwnedHardware: () => {},
+  submitForm: () => Promise.resolve({}),
   // For Debugging Purposes
   debugPrint: () => {},
 };
@@ -144,6 +151,33 @@ export function FormBuilderProvider({ children }: Props) {
     });
   }
 
+  function submitForm() {
+    // Build the JSON from all the state files
+    // Goal: send POST requestion to ${API_URL}/build/1
+
+    const requestData = {
+      budget,
+      minFps,
+      games: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
+      displayResolution,
+      graphicalQuality,
+      preOwnedHardware: preOwnedHardware.filter(
+        (component) => component.name.trim() !== ""
+      ),
+    };
+
+    // Logging the data being sent
+    console.log("Submitting form data: ", requestData);
+
+    // Send the POST requestion
+    return axios
+      .post(`${API_URL}/build`, JSON.stringify(requestData))
+      .then((response) => {
+        console.log(response);
+        return response;
+      });
+  }
+
   function debugPrint() {
     console.log(
       "Budget: ",
@@ -189,6 +223,7 @@ export function FormBuilderProvider({ children }: Props) {
     addToPreOwnedHardware,
     removeFromPreOwnedHardware,
     updatePreOwnedHardware,
+    submitForm,
     debugPrint,
   };
 
