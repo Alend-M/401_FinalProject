@@ -131,13 +131,13 @@ DummyLLMResponse = """
     """
 
 supabaseClient = supabase.create_client(SUPABASE_URL, SUPABASE_KEY)
-def getAllUserPastBuilds(user_id: int) -> list:
+def getAllUserPastBuilds(user_id: str) -> list:
     """
     Retrieves all past PC builds based on the user ID
 
     Parameters
     ----------
-    user_id : int
+    user_id : str
         The user ID whose past builds are being fetched.
 
     Returns
@@ -191,7 +191,7 @@ def getAllUserPastBuilds(user_id: int) -> list:
         return []
     
     
-async def saveLLMResponse(user_id: int, LLMResponse: dict) -> int:
+async def saveLLMResponse(user_id: str, LLMResponse: dict) -> int:
     
     try:
         #Remember to change DummyLLMResponse to LLMResponse when the LLMResponse is ready
@@ -216,9 +216,6 @@ if __name__ == "__main__":
     
     
     builds = getAllUserPastBuilds(user_id)
-    print(f"Type of builds: {type(builds)}")
-    print(f"Length: {len(builds)}")
-    print(f"Builds: {parse_buildjson(builds)}")
     
     # If builds is a list, you can also check the type of the first item
     #if builds and len(builds) > 0:
