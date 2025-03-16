@@ -85,15 +85,18 @@ const LoginForm: React.FC = () => {
 			});
 			setLoading(false);
 			return;
+		} else {
+			toast.success("Signin Successful!", {
+				style: {
+					padding: "16px",
+				},
+			});
 		}
-		setLoading(false);
-		toast.success("Signin Succesful!", {
-			style: {
-				padding: "16px",
-			},
-		});
 
-		router.push("/");
+		setTimeout(() => {
+			router.push("/");
+			setLoading(false);
+		}, 1000);
 	}
 
 	return (
