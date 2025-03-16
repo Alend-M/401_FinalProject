@@ -81,14 +81,14 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
         A JSON object containing the user's PC requirements
     >>> pc_requirements:
         {
-            budget: 1000,
-            minFps: 56,
-            gamesList: ["Marvel Rivals", "Fortnite"],
-            displayResolution: "1080p",
-            graphicalQuality: "Ray-tracing",
-            preOwnedHardware: [
-                { type: CPU, name: "Intel Core-i7" },
-                { type: GPU, name: "RTX 3070" }
+            "budget": 1000,
+            "minFps": 56,
+            "gamesList": ["Marvel Rivals", "Fortnite"],
+            "displayResolution": "1080p",
+            "graphicalQuality": "Ray-tracing",
+            "preOwnedHardware": [
+                { "type": "CPU", "name": "Intel Core-i7" },
+                { "type": "GPU", "name": "RTX 3070" }
             ]
         }
 
