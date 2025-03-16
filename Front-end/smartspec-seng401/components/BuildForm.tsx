@@ -85,7 +85,7 @@ function BuildForm() {
         Get Build
         <Zap />
       </Button>
-      <Subtitle>{responseData}</Subtitle>
+      <Subtitle>{JSON.stringify(responseData)}</Subtitle>
     </div>
   );
 }

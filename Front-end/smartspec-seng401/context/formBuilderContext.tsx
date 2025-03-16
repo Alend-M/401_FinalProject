@@ -10,10 +10,10 @@ import {
   useState,
 } from "react";
 
-// const API_URL = "http://localhost:8000";
+const API_URL = "http://localhost:8000";
 
-const API_URL =
-  "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
+// const API_URL =
+//   "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
 
 interface FormBuilderContextInterface {
   /* We need the following attributes:
@@ -160,7 +160,7 @@ export function FormBuilderProvider({ children }: Props) {
     const requestData = {
       budget,
       minFps,
-      games: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
+      gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
       displayResolution,
       graphicalQuality,
       preOwnedHardware: preOwnedHardware.filter(
@@ -168,12 +168,14 @@ export function FormBuilderProvider({ children }: Props) {
       ),
     };
 
+    const requestDataJSON = requestData;
+
     // Logging the data being sent
-    console.log("Submitting form data: ", requestData);
+    console.log("Submitting form data: ", requestDataJSON);
 
     // Send the POST requestion
     return axios
-      .post(`${API_URL}/build/1`, requestData, {
+      .post(`${API_URL}/build/1`, requestDataJSON, {
         headers: {
           "Content-Type": "application/json",
         },
