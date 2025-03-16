@@ -3,6 +3,7 @@ from fastapi import Request, FastAPI
 from LLM_service.llm_service import *
 import json
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -16,8 +17,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+headers = {
+            "Cache-Control": "no-store",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        }
+
 @app.post("/generate-text")
 async def generate_text(prompt: Request):
     promptJSON = await prompt.json()
     response = await getPcRecommendation(promptJSON)
-    return response
+    return JSONResponse(content=response, headers=headers)

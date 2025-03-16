@@ -2,6 +2,7 @@ from fastapi import Request, FastAPI
 from Gateway_service.forward_service import *
 import json
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 # Creates a instance for FastAPI
 app = FastAPI()
@@ -16,14 +17,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+headers = {
+            "Cache-Control": "no-store",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        }
+
 @app.get("/")
 async def root():
     return {"message": "Hello from the gateway"}
 
 @app.get("/past_builds/{user_id}")
 async def forwardPastBuilds(user_id: str):
-    response = await getPastBuilds(user_id)
-    return response
+    response = await getPastBuilds(user_id)  
+    return JSONResponse(content=response, headers=headers)
 
 @app.post("/build")
 async def buildPC(query: Request):
@@ -36,7 +44,7 @@ async def buildPC(query: Request):
         else:
             break
     
-    return response
+    return JSONResponse(content=response, headers=headers)
 
 @app.post("/build/{user_id}")
 async def buildAndSavePC(user_id: str, query: Request):
@@ -51,4 +59,9 @@ async def buildAndSavePC(user_id: str, query: Request):
             print(save_response)
             break
 
-    return response
+    return JSONResponse(content=response, headers=headers)
+
+# Handle OPTIONS preflight requests to prevent CORS errors
+@app.options("/{full_path:path}")
+async def preflight_request(full_path: str):
+    return JSONResponse(headers=headers)
