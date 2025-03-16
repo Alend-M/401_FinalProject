@@ -81,50 +81,21 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
         A JSON object containing the user's PC requirements
     >>> pc_requirements:
         {
-            "Games": 
-                {
-                    "name": "Cyberpunk 2077",
-                    "fps": "60",
-                    "quality": "High"
-                },
-            "CPU":
-                {
-                    "name": "Intel Core i9-14900K",
-                },
-            "GPU":
-                {
-                    "name": "N/A",
-                },
-            "RAM":
-                {
-                    "size": "N/A",
-                },
-            "Motherboard":
-                {
-                    "name": "N/A",
-                },
-            "Storage":
-                {
-                    "size": "1TB",
-                },
-            "Power_Supply":
-                {
-                    "name": "N/A",
-                },
-            "Case":
-                {
-                    "name": "N/A",
-                },
-            "Cooling":
-                {
-                    "name": "N/A",
-                }
+            "budget": 1000,
+            "minFps": 56,
+            "gamesList": ["Marvel Rivals", "Fortnite"],
+            "displayResolution": "1080p",
+            "graphicalQuality": "Ray-tracing",
+            "preOwnedHardware": [
+                { "type": "CPU", "name": "Intel Core-i7" },
+                { "type": "GPU", "name": "RTX 3070" }
+            ]
         }
 
     Returns
     -------
     JSON : dict
-        Returns a JSON using the python dictionary format containing the recommended PC build
+        Returns a JSON using the python dictionary format containing the recommended PC build and the games used in the prompt.
         >>> getPCRecommednation(jsonExp):
     {
     "CPUs": 
@@ -145,6 +116,8 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
     """
 
     initAI()
+    
+    game_inputs = pc_requirements["gamesList"]
 
     prompt = f"""Respond in the following JSON format:{template}. Your response must only contain the given format no other text.
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following.
@@ -160,60 +133,25 @@ If the budget is not enough to meet the requirements, please provide the best bu
     # Loads turns the text based reponse into a python dictionary for return (does this because apparently really similar to json for python)
     try:
       response = json.loads(response)
+      response["games"] = game_inputs
     except Exception as e:
       print(e)
       response = {"error": "bad response"}
     return response
 
 if __name__ == "__main__":
-    # This file is meant to be imported only
+    # This file is meant to be imported only    
     pc_requirements ="""
     {
-        "Games": 
-          [
-            {
-                "name": "Cyberpunk 2077",
-                "fps": "60",
-                "quality": "High"
-            },
-            { 
-                "name": "Valorant",
-                "fps": "144",
-                "quality": "High"
-            }
-          ],
-        "CPU":
-            {
-                "name": "Intel Core i9-14900K",
-            },
-        "GPU":
-            {
-                "name": "N/A",
-            },
-        "RAM":
-            {
-                "size": "N/A",
-            },
-        "Motherboard":
-            {
-                "name": "N/A",
-            },
-        "Storage":
-            {
-                "size": "1TB",
-            },
-        "Power_Supply":
-            {
-                "name": "N/A",
-            },
-        "Case":
-            {
-                "name": "N/A",
-            },
-        "Cooling":
-            {
-                "name": "N/A",
-            }
+        "budget": 2000,
+        "minFps": 120,
+        "gamesList": ["GTAV", "Fortnite"],
+        "displayResolution": "1080p",
+        "graphicalQuality": "Ray-tracing",
+        "preOwnedHardware": [
+            { "type": "CPU", "name": "Intel Core-i7" },
+            { "type": "GPU", "name": "RTX 3070" }
+        ]
     }
     """
     print(getPcRecommendation(pc_requirements))
