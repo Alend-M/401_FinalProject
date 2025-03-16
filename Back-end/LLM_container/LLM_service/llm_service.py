@@ -136,7 +136,7 @@ All prices provided must be in Canadian Dollars. If the requirements parts names
 If the budget is not enough to meet the requirements, please provide the best build possible with the given budget. You must provide a justification 
 for each part in the build refrencing the price inputed requirement, graphical quality, and games provided while also explaining why pre-owned parts would still work.
 """
-    response = await model.generate_content(prompt).text # Sends the request to AI and extracts the response
+    response = model.generate_content(prompt).text # Sends the request to AI and extracts the response
 
     # Post Processing of the response from the ai to remove MarkDown structure that the AI loves responding with
     response = response.replace("```json", "")

@@ -28,7 +28,7 @@ def init_supabase():
     return globalSupabaseClient
 
 
-async def getAllUserPastBuilds(user_id: str) -> list:
+def getAllUserPastBuilds(user_id: str) -> list:
     """
     Retrieves all past PC builds based on the user ID
 
@@ -63,7 +63,7 @@ async def getAllUserPastBuilds(user_id: str) -> list:
     """
     supabaseClient = init_supabase()
     try:
-        response = await supabaseClient.table("BuildHistory").select("buildjson").eq("userid", user_id).execute()
+        response = supabaseClient.table("BuildHistory").select("buildjson").eq("userid", user_id).execute()
         data = response.data
         
         if not data:
@@ -98,7 +98,7 @@ async def saveLLMResponse(user_id: str, LLMResponse: dict) -> int:
     supabaseClient = init_supabase()
     try:
         #Remember to change DummyLLMResponse to LLMResponse when the LLMResponse is ready
-        response = await supabaseClient.table("BuildHistory").insert({"userid": user_id, "buildjson": LLMResponse}).execute() 
+        response = supabaseClient.table("BuildHistory").insert({"userid": user_id, "buildjson": LLMResponse}).execute() 
         data = response.data
 
         if data:
