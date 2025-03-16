@@ -27,14 +27,15 @@ const PastBuilds = () => {
 	useEffect(() => {
 		async function checkSessionAndFetchBuilds() {
 			setLoading(true);
-			const session = await checkSession();
+			const session: { user: { id: string } } | null = await checkSession();
 
 			if (session) {
-				setUserId(session.user.id);
+				const userId = session.user.id; // Use local variable instead of state since state updates are async
+				setUserId(userId); // Still update state for other parts of component to use to update UI
+
 				try {
-					const response = await axios.get(
-						`https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/b51f0f76-e1ec-4a76-ba48-22cf8734739f`
-					);
+					const postURL = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${userId}`;
+					const response = await axios.get(postURL);
 
 					const formattedBuilds = response.data.map(
 						(item: any, index: number) => {
@@ -47,7 +48,7 @@ const PastBuilds = () => {
 								gpu: build.GPUs?.name || "Unknown GPU",
 								ram: build.RAM?.name || "Unknown RAM",
 								date: new Date().toISOString().split("T")[0],
-								games: [],
+								games: build.games || [],
 							};
 						}
 					);
@@ -55,20 +56,9 @@ const PastBuilds = () => {
 					setBuilds(formattedBuilds);
 				} catch (error) {
 					console.error("Error fetching builds:", error);
-					setBuilds([
-						{
-							build_id: 1,
-							name: "Competitive Build",
-							cpu: "Intel Core i7-9700K",
-							gpu: "GeForce RTX 3060",
-							ram: "Corsair Vengeance 16GB DDR5 RAM",
-							date: "2025-03-08",
-							games: ["valorant", "fortnite", "apex", "cod"],
-						},
-					]);
+					setBuilds([]);
 				}
 			}
-
 			setLoading(false);
 		}
 
