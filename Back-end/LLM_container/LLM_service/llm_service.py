@@ -13,42 +13,50 @@ template = """
     "CPUs": 
         {
           "name": "Intel Core i9-14900K",
-          "price_CAD": "$433"
+          "price_CAD": "$433",
+          "Justification": "Based on the budget of 10,000 CAD, the Intel Core i9-14900K is the best CPU for gaming and multitasking. It will allow you to hit your 1440p 144Hz target in your desired games of marvel rivals and fortnite."
         },
     "GPUs": 
         {
           "name": "NVIDIA GeForce RTX 4090",
-          "price_CAD": "$1,500"
+          "price_CAD": "$1,500",
+          "Justification": "*add justification here*"
         },
     "RAM": 
         {
           "name": "Corsair Vengeance RGB Pro 32GB",
-          "price_CAD": "$180"
+          "price_CAD": "$180",
+          "Justification": "*add justification here*"
         },
     "Motherboards": 
         {
           "name": "ASUS ROG Strix Z690-E",
-          "price_CAD": "$400"
+          "price_CAD": "$400",
+          "Justification": ""*add justification here*"
         },
     "Storage": 
         {
           "name": "Samsung 980 Pro 1TB",
-          "price_CAD": "$200"
+          "price_CAD": "$200",
+          "Justification": "*add justification here*"
         },
     "Power_Supply": 
         {
           "name": "Corsair RM850x",
-          "price_CAD": "$150"
+          "price_CAD": "$150",
+          "Justification": "*add justification here*"
         },
     "Case": 
         {
           "name": "NZXT H510",
-          "price_CAD": "$70"
+          "price_CAD": "$70",
+          "Justification": "*add justification here*"
         },
     "Cooling": 
         {
           "name": "NZXT Kraken X63",
-          "price_CAD": "$150"
+          "price_CAD": "$150",
+          "Justification": "*add justification here*"
         },
     }
     """
@@ -102,16 +110,19 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
         {
           "name": "Intel Core i9-14900K",
           "price_CAD": "$433",
+          "Justification": "Based on the budget of 10,000 CAD, the Intel Core i9-14900K is the best CPU for gaming and multitasking. It will allow you to hit your 1440p 144Hz target in your desired games of marvel rivals and fortnite."
         },
     "GPUs": 
         {
           "name": "NVIDIA GeForce RTX 4090",
           "price_CAD": "$1,500",
+          "Justification": "..."
         },
     "RAM": 
         {
           "name": "Corsair Vengeance RGB Pro 32GB",
           "price_CAD": "$180",
+          "Justification": "..."
         },
     """
 
@@ -122,7 +133,8 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
     prompt = f"""Respond in the following JSON format:{template}. Your response must only contain the given format no other text.
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following.
 All prices provided must be in Canadian Dollars. If the requirements parts names are given, you MUST use them in your provided build. 
-If the budget is not enough to meet the requirements, please provide the best build possible with the given budget.
+If the budget is not enough to meet the requirements, please provide the best build possible with the given budget. You must provide a justification 
+for each part in the build refrencing the price inputed requirement, graphical quality, and games provided while also explaining why pre-owned parts would still work.
 """
     response = model.generate_content(prompt).text # Sends the request to AI and extracts the response
 
@@ -140,18 +152,4 @@ If the budget is not enough to meet the requirements, please provide the best bu
     return response
 
 if __name__ == "__main__":
-    # This file is meant to be imported only    
-    pc_requirements ="""
-    {
-        "budget": 2000,
-        "minFps": 120,
-        "gamesList": ["GTAV", "Fortnite"],
-        "displayResolution": "1080p",
-        "graphicalQuality": "Ray-tracing",
-        "preOwnedHardware": [
-            { "type": "CPU", "name": "Intel Core-i7" },
-            { "type": "GPU", "name": "RTX 3070" }
-        ]
-    }
-    """
-    print(getPcRecommendation(pc_requirements))
+    pass
