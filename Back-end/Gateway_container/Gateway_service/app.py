@@ -1,9 +1,20 @@
 from fastapi import Request, FastAPI
 from Gateway_service.forward_service import *
 import json
+from fastapi.middleware.cors import CORSMiddleware
 
 # Creates a instance for FastAPI
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def root():
