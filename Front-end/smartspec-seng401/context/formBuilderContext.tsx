@@ -11,6 +11,7 @@ import {
 } from "react";
 import { useBuildResultContext } from "./buildResultContext";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
+import { checkSession } from "@/utils/supabaseClient";
 
 // const API_URL = "http://localhost:8000";
 
@@ -157,7 +158,7 @@ export function FormBuilderProvider({ children }: Props) {
 		});
 	}
 
-	function submitForm() {
+	async function submitForm() {
 		// Build the JSON from all the state files
 		// Goal: send POST requestion to ${API_URL}/build/1
 
@@ -177,9 +178,18 @@ export function FormBuilderProvider({ children }: Props) {
 		// Logging the data being sent
 		console.log("Submitting form data: ", requestDataJSON, "\n\nTo: ", API_URL);
 
-		// Send the POST requestion
+		const session: { user: { id: string } } | null = await checkSession();
+
+		const requestUserId = session?.user.id; // Use local variable instead of state since state updates are async
+
+		// If the user is logged in, we want to send the request to the user's build history
+		// Otherwise, we want to send the request to the build endpoint
+		const url = session
+			? `${API_URL}/build/${requestUserId}`
+			: `${API_URL}/build`;
+
 		return axios
-			.post(`${API_URL}/build/1`, requestDataJSON, {
+			.post(url, requestDataJSON, {
 				headers: {
 					"Content-Type": "application/json",
 				},
