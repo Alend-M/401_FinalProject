@@ -35,13 +35,17 @@ function Specifications({
 				})}
 			</div>
 			<BaseText className="mt-3">Pre-owned Hardware</BaseText>
-			{preOwnedHardware.map((hardware, index) => {
-				return (
-					<p key={index} className="text-gray-500">
-						{hardware.type}: {hardware.name}
-					</p>
-				);
-			})}
+			{preOwnedHardware && preOwnedHardware.length > 0 ? (
+				preOwnedHardware.map((hardware, index) => {
+					return (
+						<p key={index} className="text-gray-500">
+							{hardware.type}: {hardware.name}
+						</p>
+					);
+				})
+			) : (
+				<p>No pre-owned hardware</p>
+			)}
 		</div>
 	);
 }
@@ -54,13 +58,17 @@ function Games({ gamesList }: GamesProps) {
 	return (
 		<div>
 			<BaseText>Games</BaseText>
-			{gamesList.map((game) => {
-				return (
-					<Card key={game} className="p-minor w-full">
-						{game}
-					</Card>
-				);
-			})}
+			{gamesList && gamesList.length > 0 ? (
+				gamesList.map((game) => {
+					return (
+						<Card key={game} className="p-minor w-full">
+							{game}
+						</Card>
+					);
+				})
+			) : (
+				<p>No games available</p>
+			)}
 		</div>
 	);
 }

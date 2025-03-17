@@ -33,7 +33,11 @@ const PastBuilds = () => {
 				try {
 					const apiUrl = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${requestUserId}`;
 					const response = await axios.get(apiUrl);
-					setBuilds(response.data);
+					if (response.data.length > 0) {
+						setBuilds(response.data);
+					} else {
+						setBuilds([]);
+					}
 				} catch (error) {
 					console.error("Error fetching builds:", error);
 					setBuilds([]);
@@ -61,11 +65,14 @@ const PastBuilds = () => {
 		};
 	};
 
-	const handleViewBuild = (buildId: number) => {
-		localStorage.setItem("selectedBuild", JSON.stringify(builds[buildId]));
+	const handleViewBuild = (buildId: string) => {
+		localStorage.setItem(
+			"selectedBuild",
+			JSON.stringify(builds.find((build) => build.id === buildId))
+		);
 
-		// Navigate to the detail page with the build ID
-		router.push(`/history/${buildId + 1}`);
+		// Navigate to the detail page with the actual build ID
+		router.push(`/history/${buildId}`);
 	};
 
 	if (loading) {
@@ -87,11 +94,11 @@ const PastBuilds = () => {
 			{builds.length === 0 ? (
 				<Subtitle>❌ No build history found.</Subtitle>
 			) : (
-				builds.map((build, index) => (
+				builds.map((build) => (
 					<BuildCard
-						build={getFormattedBuild(build, index)}
-						key={index + 1}
-						onViewBuild={() => handleViewBuild(index)}
+						build={getFormattedBuild(build, builds.indexOf(build))}
+						key={build.id}
+						onViewBuild={() => handleViewBuild(build.id)}
 					/>
 				))
 			)}
