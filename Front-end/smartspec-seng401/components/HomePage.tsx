@@ -6,6 +6,7 @@ import BuildForm from "./BuildForm";
 import { Subtitle } from "./ui/subtitle";
 import { Title } from "./ui/title";
 import { ArrowUp } from "lucide-react";
+import NavigationBar from "./NavigationBar";
 
 function HomePage() {
 	const buildFormRef = React.useRef<HTMLDivElement>(null);
@@ -44,6 +45,7 @@ function HomePage() {
 		<div>
 			{/* Hero Section */}
 			<div className="w-screen h-screen">
+				<NavigationBar override />
 				<Hero onButtonClick={scrollToBuildForm} />
 			</div>
 

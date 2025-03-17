@@ -7,6 +7,7 @@ import axios from "axios";
 import BuildCard from "@/components/PastBuildCard";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Spinner } from "@heroui/spinner";
+import { BuildData } from "@/types";
 
 interface Build {
 	build_id: number;
@@ -18,25 +19,9 @@ interface Build {
 	games: string[];
 }
 
-interface buildAPIResponse {
-	buildjson: {
-		CPUs: { name: string };
-		GPUs: { name: string };
-		RAM: { name: string };
-		input: {
-			budget: number;
-			minFps: number;
-			gamesList: string[];
-			displayResolution: string;
-			graphicalQuality: string;
-			preOwnedHardware: string[];
-		};
-	};
-}
-
 const PastBuilds = () => {
 	const router = useRouter();
-	const [builds, setBuilds] = useState<Build[]>([]);
+	const [builds, setBuilds] = useState<fetchedBuild[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [userId, setUserId] = useState<string | null>(null);
 
@@ -46,34 +31,13 @@ const PastBuilds = () => {
 			const session: { user: { id: string } } | null = await checkSession();
 
 			if (session) {
-				const requestUserId = session.user.id; // Use local variable instead of state since state updates are async
-				setUserId(requestUserId); // Still update state for other parts of component to use to update UI
+				const requestUserId = session.user.id;
+				setUserId(requestUserId);
 
 				try {
-					const postURL = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${requestUserId}`;
-					const response = await axios.get(postURL);
-
-					if (response.data.length > 0) {
-						const formattedBuilds = response.data.map(
-							(item: buildAPIResponse, index: number) => {
-								const build = item.buildjson;
-
-								return {
-									build_id: index + 1,
-									name: `Build ${index + 1}`,
-									cpu: build.CPUs?.name || "Unknown CPU",
-									gpu: build.GPUs?.name || "Unknown GPU",
-									ram: build.RAM?.name || "Unknown RAM",
-									date: new Date().toISOString().split("T")[0],
-									games: build.input.gamesList || [],
-								};
-							}
-						);
-
-						setBuilds(formattedBuilds);
-					} else {
-						setBuilds([]);
-					}
+					const apiUrl = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${requestUserId}`;
+					const response = await axios.get(apiUrl);
+					setBuilds(response.data);
 				} catch (error) {
 					console.error("Error fetching builds:", error);
 					setBuilds([]);
@@ -84,6 +48,29 @@ const PastBuilds = () => {
 
 		checkSessionAndFetchBuilds();
 	}, []);
+
+	// Format build data for display - computed on demand
+	const getFormattedBuild = (build: fetchedBuild, index: number) => {
+		const buildData = build.buildjson;
+		return {
+			build_id: index + 1,
+			name: `Build ${index + 1}`,
+			cpu: buildData.CPUs?.name || "Unknown CPU",
+			gpu: buildData.GPUs?.name || "Unknown GPU",
+			ram: buildData.RAM?.name || "Unknown RAM",
+			date:
+				build.created_at?.split("T")[0] ||
+				new Date().toISOString().split("T")[0],
+			games: buildData.input.gamesList || [],
+		};
+	};
+
+	const handleViewBuild = (buildId: number) => {
+		localStorage.setItem("selectedBuild", JSON.stringify(builds[buildId]));
+
+		// Navigate to the detail page with the build ID
+		router.push(`/history/${buildId + 1}`);
+	};
 
 	if (loading) {
 		return (
@@ -104,11 +91,11 @@ const PastBuilds = () => {
 			{builds.length === 0 ? (
 				<Subtitle>❌ No build history found.</Subtitle>
 			) : (
-				builds.map((build: Build) => (
+				builds.map((build, index) => (
 					<BuildCard
-						build={build}
-						key={build.build_id}
-						onViewBuild={(id) => router.push(`/history/${id}`)}
+						build={getFormattedBuild(build, index)}
+						key={index + 1}
+						onViewBuild={() => handleViewBuild(index)}
 					/>
 				))
 			)}

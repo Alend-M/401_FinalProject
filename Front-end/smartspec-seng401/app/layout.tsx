@@ -22,21 +22,23 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			{/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
+		<BuildResultsProvider>
+			<html lang="en">
+				{/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
 
-			<body
-				className={cn(
-					inter.className,
-					"flex flex-col justify-start bg-primaryColor min-h-screen"
-				)}
-			>
-				<NavigationBar />
-				<div className="flex flex-col flex-grow justify-start items-center bg-offWhite">
-					{children}
-				</div>
-				<Footer />
-			</body>
-		</html>
+				<body
+					className={cn(
+						inter.className,
+						"flex flex-col justify-start bg-primaryColor min-h-screen"
+					)}
+				>
+					<NavigationBar />
+					<div className="flex flex-col flex-grow justify-start items-center bg-offWhite">
+						{children}
+					</div>
+					<Footer />
+				</body>
+			</html>
+		</BuildResultsProvider>
 	);
 }
