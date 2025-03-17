@@ -10,7 +10,7 @@ const Card = React.forwardRef<
     ref={ref}
     className={cn(
       // Custom Styling to match the Figma design
-      "rounded-xl border bg-card text-card-foreground border-veryNiceGray ",
+      "rounded-md border bg-card text-card-foreground border-veryNiceGray ",
       className
     )}
     {...props}

@@ -4,6 +4,7 @@ import "./globals.css";
 import NavigationBar from "@/components/NavigationBar";
 import Footer from "@/components/ui/footer";
 import { cn } from "@/lib/utils";
+import { BuildResultsProvider } from "@/context/buildResultContext";
 
 // Using Font from Figma Design
 const inter = Inter({
@@ -21,21 +22,23 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			{/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
+		<BuildResultsProvider>
+			<html lang="en">
+				{/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
 
-			<body
-				className={cn(
-					inter.className,
-					"flex flex-col justify-start bg-primaryColor min-h-screen"
-				)}
-			>
-				<NavigationBar />
-				<div className="flex flex-col flex-grow justify-start items-center bg-offWhite">
-					{children}
-				</div>
-				<Footer />
-			</body>
-		</html>
+				<body
+					className={cn(
+						inter.className,
+						"flex flex-col justify-start bg-primaryColor min-h-screen"
+					)}
+				>
+					<NavigationBar />
+					<div className="flex flex-col flex-grow justify-start items-center bg-offWhite">
+						{children}
+					</div>
+					<Footer />
+				</body>
+			</html>
+		</BuildResultsProvider>
 	);
 }
