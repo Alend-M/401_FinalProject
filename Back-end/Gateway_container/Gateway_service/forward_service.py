@@ -104,6 +104,35 @@ async def getLLMResponse(query: Request):
 
         # return {"[X] error": f"Request failed: {e}"}
 
+async def deletePastBuild(build_id: int):
+    """
+    Forwards request to retreive all past PC builds based on the user ID.
+
+    Parameters
+    ----------
+    build_id : str
+        The build id to be deleted.
+        Included in forward request.
+
+    Returns
+    -------
+    None
+
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.delete(
+                DATABASE_SERVICE_URL + "/delete_build/" + build_id,
+                timeout=20.0
+            )
+            response.raise_for_status()
+            print("[O] Successfully forwarded request to database service")
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except httpx.RequestError as e:
+        raise HTTPException(status_code=500, detail="Request failed: " + str(e))
+
 
 if __name__ == "__main__":
     pass

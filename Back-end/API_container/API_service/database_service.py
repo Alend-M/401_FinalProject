@@ -111,6 +111,31 @@ async def saveLLMResponse(user_id: str, LLMResponse: dict) -> int:
         print(f"Error saving build: {e}")
         return None
 
+async def deleteBuild(build_id: int):
+    """
+    Removes the build specified in by build_id from the database
+    
+    Parameters
+    ----------
+    build_id: int
+        build id for build to be deleted
+    
+    Returns
+    -------
+    int
+        The build ID of the deleted build or -1 if the build was not deleted.
+        >>> 1
+    """
+    supabaseClient = init_supabase()
+
+    try:
+        response = supabaseClient.table("BuildHistory").delete().eq("buildid", build_id).execute()
+        return response
+
+    except Exception as e:
+        print(f"Error deleting build: {e}")
+        return None
+
 # makes it so you need to import it to run the code
 if __name__ == "__main__":
   pass
