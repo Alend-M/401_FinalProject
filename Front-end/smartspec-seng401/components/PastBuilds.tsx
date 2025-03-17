@@ -9,14 +9,10 @@ import { Subtitle } from "@/components/ui/subtitle";
 import { Spinner } from "@heroui/spinner";
 import { BuildData } from "@/types";
 
-interface Build {
-	build_id: number;
-	name: string;
-	cpu: string;
-	gpu: string;
-	ram: string;
-	date: string;
-	games: string[];
+interface fetchedBuild {
+	id: string;
+	buildjson: BuildData;
+	created_at?: string;
 }
 
 const PastBuilds = () => {

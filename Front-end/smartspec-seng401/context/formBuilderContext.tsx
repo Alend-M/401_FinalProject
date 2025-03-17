@@ -1,7 +1,6 @@
 "use client";
 
-import { Component } from "@/types";
-import { checkSession, supabase } from "@/utils/supabaseClient";
+import { Component, FormData } from "@/types";
 import axios from "axios";
 import {
 	createContext,
