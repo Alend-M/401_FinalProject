@@ -1,24 +1,22 @@
-import BuildAccordion from "@/components/BuildAccordion";
-import BuildSummary from "@/components/BuildSummary";
 import { Title } from "@/components/ui/title";
 import React from "react";
+import BuildDetailsComponent from "@/components/BuildDetailsComponent";
 
 interface ViewBuildPageProps {
-	params: { id: number };
+	params: { id: string };
 }
 
-const viewBuildPage: React.FC<ViewBuildPageProps> = async ({ params }) => {
+const ViewBuildPage: React.FC<ViewBuildPageProps> = async ({ params }) => {
 	const { id } = await params;
+
 	return (
 		<div className="flex flex-col items-center space-y-major">
 			<div className="flex flex-col items-center">
 				<Title className="text-secondaryColor">{`Build ${id}`}</Title>
 			</div>
-
-			<BuildAccordion />
-			<BuildSummary />
+			<BuildDetailsComponent buildId={id} />
 		</div>
 	);
 };
 
-export default viewBuildPage;
+export default ViewBuildPage;
