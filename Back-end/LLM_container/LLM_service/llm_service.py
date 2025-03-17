@@ -103,7 +103,7 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
     Returns
     -------
     JSON : dict
-        Returns a JSON using the python dictionary format containing the recommended PC build and the games used in the prompt.
+        Returns a JSON using the python dictionary format containing the recommended PC build and the input used in the prompt.
         >>> getPCRecommednation(jsonExp):
     {
     "CPUs": 
@@ -127,8 +127,6 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
     """
 
     initAI()
-    
-    game_inputs = pc_requirements["gamesList"]
 
     prompt = f"""Respond in the following JSON format:{template}. Your response must only contain the given format no other text.
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following.
@@ -145,7 +143,7 @@ for each part in the build refrencing the price inputed requirement, graphical q
     # Loads turns the text based reponse into a python dictionary for return (does this because apparently really similar to json for python)
     try:
       response = json.loads(response)
-      response["games"] = game_inputs
+      response["input"] = pc_requirements
     except Exception as e:
       print(e)
       response = {"error": "bad response"}
