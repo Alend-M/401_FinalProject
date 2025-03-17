@@ -28,7 +28,7 @@ function BuildRow({ type, name, price }: BuildRowProps) {
 
   return (
     <div className="flex flex-row justify-between w-full space-x-massive cursor-default">
-      <BaseText className="font-bold w-[100px] text-nowrap">{type}</BaseText>
+      <BaseText className="font-semibold w-[100px] text-nowrap">{type}</BaseText>
       <BaseText className="w-[250px] text-nowrap truncate">{name}</BaseText>
       {freePart ? (
         <BaseText className="w-[50px] text-nowrap text-primaryColor">

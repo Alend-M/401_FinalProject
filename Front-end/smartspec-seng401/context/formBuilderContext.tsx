@@ -1,6 +1,6 @@
 "use client";
 
-import { Component } from "@/types";
+import { Component, FormData } from "@/types";
 import axios from "axios";
 import {
   createContext,
@@ -97,7 +97,7 @@ export function FormBuilderProvider({ children }: Props) {
   const [graphicalQuality, setGraphicalQuality] = useState<string>("");
   const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
 
-  const { loadBuildResult } = useBuildResultContext(); // Inter-context communication
+  const { loadBuildResult, loadSummary } = useBuildResultContext(); // Inter-context communication
 
   function changeBudget(value: number) {
     setBudget(value);
@@ -159,7 +159,7 @@ export function FormBuilderProvider({ children }: Props) {
     // Build the JSON from all the state files
     // Goal: send POST requestion to ${API_URL}/build/1
 
-    const requestData = {
+    const requestData: FormData = {
       budget,
       minFps,
       gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
@@ -185,7 +185,30 @@ export function FormBuilderProvider({ children }: Props) {
       .then((response) => {
         // DEBUG
         console.log(response);
-        loadBuildResult(response.data);
+
+        const {
+          CPUs,
+          GPUs,
+          RAM,
+          Motherboards,
+          Storage,
+          Power_Supply,
+          Case,
+          Cooling,
+        } = response.data;
+
+        loadBuildResult({
+          CPUs,
+          GPUs,
+          RAM,
+          Motherboards,
+          Storage,
+          Power_Supply,
+          Case,
+          Cooling,
+        });
+
+        loadSummary(response.data.input);
       })
       .catch((error) => {
         console.error(error);

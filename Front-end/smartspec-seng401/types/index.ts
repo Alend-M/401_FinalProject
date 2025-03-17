@@ -1,3 +1,13 @@
+export interface FormData {
+  budget: number;
+  minFps: number;
+  gamesList: string[];
+  displayResolution: string;
+  graphicalQuality: string;
+  preOwnedHardware: Component[];
+}
+
+
 export interface Component {
   type: string;
   name: string;
@@ -18,5 +28,4 @@ export interface BuildResult {
   Power_Supply: ComponentResponse;
   Case: ComponentResponse;
   Cooling: ComponentResponse;
-  games: string[];
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { BuildResult } from "@/types";
+import { BuildResult, FormData } from "@/types";
+import { useRouter } from "next/navigation";
 import {
   useContext,
   createContext,
@@ -19,9 +20,7 @@ interface BuildResultContextInterface {
   loadBuildResult: (buildResult: BuildResult) => void;
   saveBuildResult: () => void;
   discardBuildResult: () => void;
-  loadGamesList: (gameList: string[]) => void;
-  loadSpecifications: () => void;
-  loadTotalPrice: () => void;
+  loadSummary: (summary: FormData) => void;
 }
 
 const BuildResultContextDefaultValues: BuildResultContextInterface = {
@@ -67,17 +66,15 @@ const BuildResultContextDefaultValues: BuildResultContextInterface = {
       price_CAD: "",
       Justification: "",
     },
-    games: [],
   },
+
   gamesList: [],
   specifications: [],
   totalPrice: 0,
   loadBuildResult: () => {},
   saveBuildResult: () => {},
   discardBuildResult: () => {},
-  loadGamesList: () => {},
-  loadSpecifications: () => {},
-  loadTotalPrice: () => {},
+  loadSummary: () => {},
 };
 
 const BuildResultContext = createContext<BuildResultContextInterface>(
@@ -100,28 +97,70 @@ export function BuildResultsProvider({ children }: Props) {
   const [specifications, setSpecifications] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
 
+  const router = useRouter();
+
+  function parsePrice(priceString: string): number {
+    // Remove the '$' character and any commas, then convert to number
+    return parseFloat(priceString.replace(/[$,]/g, ""));
+  }
+
   function loadBuildResult(buildResult: BuildResult) {
     setBuildResult(buildResult);
+
+    // Calculate price
+    let totalPrice = 0;
+    for (const component in buildResult) {
+      totalPrice += parsePrice(
+        buildResult[component as keyof BuildResult].price_CAD
+      );
+    }
+
+    setTotalPrice(totalPrice);
   }
 
   function saveBuildResult() {
-    // TODO:
+    // TODO: Saves build
   }
 
   function discardBuildResult() {
-    // TODO:
+    // TODO:Should reset everything in this context
+
+    setBuildResult(BuildResultContextDefaultValues.buildResult);
+    setGamesList([]);
+    setSpecifications([]);
+    setTotalPrice(0);
+
+    // Push user to home page with router
+    router.push("/");
   }
 
-  function loadGamesList(gamesList: string[]) {
-    // TODO:
-  }
+  function loadSummary(summary: FormData) {
+    // Assigning the necessary values
+    // gamesList, specifications
+    const {
+      budget,
+      minFps,
+      gamesList,
+      displayResolution,
+      graphicalQuality,
+    } = summary;
+    setGamesList(gamesList);
 
-  function loadSpecifications() {
-    // TODO:
-  }
+    // For specifications, we'd like small texts/phrases that'll represent the
+    // stuff the user chose
+    // e.g. 1080p, Low quality, $1500 budget, 90 FPS Min, etc.
 
-  function loadTotalPrice() {
-    // TODO:
+    const budgetString = `${budget} Budget`;
+    const qualityString = `${graphicalQuality} Quality`;
+    const resolutionString = `${displayResolution}`;
+    const minFpsString = `${minFps} FPS Min`;
+
+    setSpecifications([
+      budgetString,
+      qualityString,
+      resolutionString,
+      minFpsString,
+    ]);
   }
 
   const value = {
@@ -132,9 +171,7 @@ export function BuildResultsProvider({ children }: Props) {
     loadBuildResult,
     saveBuildResult,
     discardBuildResult,
-    loadGamesList,
-    loadSpecifications,
-    loadTotalPrice,
+    loadSummary,
   };
 
   function debugPrint() {
