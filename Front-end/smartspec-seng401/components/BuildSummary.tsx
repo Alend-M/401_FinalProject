@@ -2,11 +2,12 @@
 
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "./ui/card";
+import { Card } from "./ui/card";
 import { BaseText } from "./ui/baseText";
 import { useBuildResultContext } from "@/context/buildResultContext";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 interface SpecificationsProps {
   specifications: string[];
@@ -47,15 +48,26 @@ function Games({ gamesList }: GamesProps) {
 }
 
 function BuildSummary() {
-  const { gamesList, specifications, totalPrice, discardBuildResult } =
-    useBuildResultContext();
+  const {
+    gamesList,
+    specifications,
+    totalPrice,
+    discardBuildResult,
+    saveBuildResult,
+  } = useBuildResultContext();
+
+  const router = useRouter();
 
   function handleDiscardBuild() {
     discardBuildResult();
+    // Push user to home page with router
+    router.push("/");
   }
 
   function handleSaveBuild() {
-    return
+    saveBuildResult().then(() => {
+      router.push("/history");
+    });
   }
 
   return (
@@ -75,7 +87,9 @@ function BuildSummary() {
         >
           Discard Build
         </Button>
-        <Button variant={"default"} onClick={handleSaveBuild}>Save Build</Button>
+        <Button variant={"default"} onClick={handleSaveBuild}>
+          Save Build
+        </Button>
       </div>
     </div>
   );

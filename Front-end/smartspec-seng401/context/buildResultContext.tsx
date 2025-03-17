@@ -1,7 +1,7 @@
 "use client";
 
 import { BuildResult, FormData } from "@/types";
-import { useRouter } from "next/navigation";
+import axios from "axios";
 import {
   useContext,
   createContext,
@@ -17,8 +17,9 @@ interface BuildResultContextInterface {
   gamesList: string[];
   specifications: string[];
   totalPrice: number;
+  summary: FormData;
   loadBuildResult: (buildResult: BuildResult) => void;
-  saveBuildResult: () => void;
+  saveBuildResult: () => Promise<void>;
   discardBuildResult: () => void;
   loadSummary: (summary: FormData) => void;
 }
@@ -71,8 +72,16 @@ const BuildResultContextDefaultValues: BuildResultContextInterface = {
   gamesList: [],
   specifications: [],
   totalPrice: 0,
+  summary: {
+    budget: 0,
+    minFps: 0,
+    gamesList: [],
+    displayResolution: "",
+    graphicalQuality: "",
+    preOwnedHardware: [],
+  },
   loadBuildResult: () => {},
-  saveBuildResult: () => {},
+  saveBuildResult: () => Promise.resolve(),
   discardBuildResult: () => {},
   loadSummary: () => {},
 };
@@ -96,8 +105,9 @@ export function BuildResultsProvider({ children }: Props) {
   const [gamesList, setGamesList] = useState<string[]>([]);
   const [specifications, setSpecifications] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-
-  const router = useRouter();
+  const [summary, setSummary] = useState<FormData>(
+    BuildResultContextDefaultValues.summary
+  );
 
   function parsePrice(priceString: string): number {
     // Remove the '$' character and any commas, then convert to number
@@ -120,6 +130,30 @@ export function BuildResultsProvider({ children }: Props) {
 
   function saveBuildResult() {
     // TODO: Saves build
+    /*
+    @app.post("/save_build/{user_id}")
+async def saveBuildEndpoint(user_id: str, build: Request):
+    buildJson = await build.json()
+    save_response = await saveBuild(user_id, buildJson)
+    print(save_response)
+    return JSONResponse(content=save_response, headers=headers)
+    */
+
+    // TODO: Hardcoded user_id for now
+    const user_id = "1";
+    const payload = {
+      ...buildResult,
+      input: summary,
+    };
+
+    return axios
+      .post(`${API_URL}/save_build/${user_id}`, payload)
+      .then((response) => {
+        console.log("Save Response: ", response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function discardBuildResult() {
@@ -129,21 +163,14 @@ export function BuildResultsProvider({ children }: Props) {
     setGamesList([]);
     setSpecifications([]);
     setTotalPrice(0);
-
-    // Push user to home page with router
-    router.push("/");
   }
 
   function loadSummary(summary: FormData) {
+    setSummary(summary);
     // Assigning the necessary values
     // gamesList, specifications
-    const {
-      budget,
-      minFps,
-      gamesList,
-      displayResolution,
-      graphicalQuality,
-    } = summary;
+    const { budget, minFps, gamesList, displayResolution, graphicalQuality } =
+      summary;
     setGamesList(gamesList);
 
     // For specifications, we'd like small texts/phrases that'll represent the
@@ -168,6 +195,7 @@ export function BuildResultsProvider({ children }: Props) {
     gamesList,
     specifications,
     totalPrice,
+    summary,
     loadBuildResult,
     saveBuildResult,
     discardBuildResult,
