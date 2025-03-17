@@ -13,9 +13,15 @@ const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 interface BuildResultContextInterface {
   buildResult: BuildResult;
+  gamesList: string[];
+  specifications: string[];
+  totalPrice: number;
   loadBuildResult: (buildResult: BuildResult) => void;
   saveBuildResult: () => void;
   discardBuildResult: () => void;
+  loadGamesList: (gameList: string[]) => void;
+  loadSpecifications: () => void;
+  loadTotalPrice: () => void;
 }
 
 const BuildResultContextDefaultValues: BuildResultContextInterface = {
@@ -63,9 +69,15 @@ const BuildResultContextDefaultValues: BuildResultContextInterface = {
     },
     games: [],
   },
+  gamesList: [],
+  specifications: [],
+  totalPrice: 0,
   loadBuildResult: () => {},
   saveBuildResult: () => {},
   discardBuildResult: () => {},
+  loadGamesList: () => {},
+  loadSpecifications: () => {},
+  loadTotalPrice: () => {},
 };
 
 const BuildResultContext = createContext<BuildResultContextInterface>(
@@ -84,10 +96,11 @@ export function BuildResultsProvider({ children }: Props) {
   const [buildResult, setBuildResult] = useState<BuildResult>(
     BuildResultContextDefaultValues.buildResult
   );
+  const [gamesList, setGamesList] = useState<string[]>([]);
+  const [specifications, setSpecifications] = useState<string[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
 
   function loadBuildResult(buildResult: BuildResult) {
-    console.log(" The build result to set is....: ", buildResult);
-
     setBuildResult(buildResult);
   }
 
@@ -99,11 +112,29 @@ export function BuildResultsProvider({ children }: Props) {
     // TODO:
   }
 
+  function loadGamesList(gamesList: string[]) {
+    // TODO:
+  }
+
+  function loadSpecifications() {
+    // TODO:
+  }
+
+  function loadTotalPrice() {
+    // TODO:
+  }
+
   const value = {
     buildResult,
+    gamesList,
+    specifications,
+    totalPrice,
     loadBuildResult,
     saveBuildResult,
     discardBuildResult,
+    loadGamesList,
+    loadSpecifications,
+    loadTotalPrice,
   };
 
   function debugPrint() {

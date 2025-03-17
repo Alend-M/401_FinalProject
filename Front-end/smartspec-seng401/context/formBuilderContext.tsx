@@ -48,7 +48,7 @@ interface FormBuilderContextInterface {
   addToPreOwnedHardware: (component: Component) => void;
   removeFromPreOwnedHardware: (index: number) => void;
   updatePreOwnedHardware: (index: number, newComponent: Component) => void;
-  submitForm: () => Promise<any>;
+  submitForm: () => Promise<void>;
 
   // For Debugging Purposes
   debugPrint: () => void;
@@ -71,7 +71,7 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   addToPreOwnedHardware: () => {},
   removeFromPreOwnedHardware: () => {},
   updatePreOwnedHardware: () => {},
-  submitForm: () => Promise.resolve({}),
+  submitForm: () => Promise.resolve(),
 
   // For Debugging Purposes
   debugPrint: () => {},
