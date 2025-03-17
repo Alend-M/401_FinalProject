@@ -14,7 +14,7 @@ import {
 // Define TypeScript interface for the build object
 interface Build {
 	build_id: number;
-	name: string; // Added name property
+	name: string;
 	cpu: string;
 	gpu: string;
 	ram: string;
@@ -144,7 +144,7 @@ const BuildCard: React.FC<BuildCardProps> = ({ build, onViewBuild }) => {
 			<div className="flex justify-between items-center mt-8">
 				{getGameIcons(build.games)}
 				<Button
-					variant="secondary"
+					variant="default"
 					className="flex items-center gap-x-3 px-6 py-5 rounded-full text-white"
 					onClick={handleViewBuild}
 				>
