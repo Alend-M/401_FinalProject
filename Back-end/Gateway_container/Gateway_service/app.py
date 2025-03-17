@@ -61,6 +61,13 @@ async def buildAndSavePC(user_id: str, query: Request):
 
     return JSONResponse(content=response, headers=headers)
 
+@app.post("/save_build/{user_id}")
+async def saveBuildEndpoint(user_id: str, build: Request):
+    buildJson = await build.json()
+    save_response = await saveBuild(user_id, buildJson)
+    print(save_response)
+    return JSONResponse(content=save_response, headers=headers)
+
 @app.delete("/delete/{build_id}")
 async def deleteBuildEndpoint(build_id: int):
     response = await deletePastBuild(build_id)
