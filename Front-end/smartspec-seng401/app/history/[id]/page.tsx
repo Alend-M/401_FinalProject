@@ -1,22 +1,22 @@
 import { Title } from "@/components/ui/title";
-import React from "react";
 import BuildDetailsComponent from "@/components/BuildDetailsComponent";
+import { JSX } from "react";
 
-interface ViewBuildPageProps {
-	params: { id: string };
-}
-
-const ViewBuildPage: React.FC<ViewBuildPageProps> = async ({ params }) => {
+export default async function ViewBuildPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}): Promise<JSX.Element> {
 	const { id } = await params;
+
+	if (!id) {
+		return <div>Error: Missing build ID</div>;
+	}
 
 	return (
 		<div className="flex flex-col items-center space-y-major">
-			<div className="flex flex-col items-center">
-				<Title className="text-secondaryColor">{`Build ${id}`}</Title>
-			</div>
+			<Title className="text-secondaryColor">{`Build ${id}`}</Title>
 			<BuildDetailsComponent buildId={id} />
 		</div>
 	);
-};
-
-export default ViewBuildPage;
+}
