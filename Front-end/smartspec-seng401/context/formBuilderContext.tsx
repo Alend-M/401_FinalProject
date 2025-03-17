@@ -10,10 +10,13 @@ import {
   useState,
 } from "react";
 import { useBuildResultContext } from "./buildResultContext";
+import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 
 // const API_URL = "http://localhost:8000";
 
-const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+const API_URL = NEXT_PUBLIC_API_GATEWAY_URL;
+
 
 interface FormBuilderContextInterface {
   /* We need the following attributes:

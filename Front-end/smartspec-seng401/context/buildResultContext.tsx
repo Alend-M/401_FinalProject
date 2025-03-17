@@ -1,5 +1,6 @@
 "use client";
 
+import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 import { BuildResult, FormData } from "@/types";
 import axios from "axios";
 import {
@@ -10,7 +11,8 @@ import {
   useEffect,
 } from "react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
+const API_URL = NEXT_PUBLIC_API_GATEWAY_URL;
 
 interface BuildResultContextInterface {
   buildResult: BuildResult;
