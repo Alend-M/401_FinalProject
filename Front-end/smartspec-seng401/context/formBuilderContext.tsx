@@ -177,7 +177,7 @@ export function FormBuilderProvider({ children }: Props) {
 
     // Send the POST requestion
     return axios
-      .post(`${API_URL}/build`, requestDataJSON, {
+      .post(`${API_URL}/build/1`, requestDataJSON, {
         headers: {
           "Content-Type": "application/json",
         },
