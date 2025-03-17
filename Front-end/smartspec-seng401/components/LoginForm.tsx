@@ -76,7 +76,6 @@ const LoginForm: React.FC = () => {
 		});
 
 		if (error) {
-			// #TODO: Add a shadcn alert for failure
 			toast.error(error.message, {
 				style: {
 					padding: "16px",
@@ -85,15 +84,18 @@ const LoginForm: React.FC = () => {
 			});
 			setLoading(false);
 			return;
+		} else {
+			toast.success("Login Successful!", {
+				style: {
+					padding: "16px",
+				},
+			});
 		}
-		setLoading(false);
-		toast.success("Signin Succesful!", {
-			style: {
-				padding: "16px",
-			},
-		});
 
-		router.push("/");
+		setTimeout(() => {
+			router.push("/");
+			setLoading(false);
+		}, 1000);
 	}
 
 	return (

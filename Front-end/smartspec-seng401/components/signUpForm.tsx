@@ -80,7 +80,6 @@ const SignUpForm: React.FC = () => {
 		const { error } = response;
 
 		if (error) {
-			// #TODO: Add a shadcn alert for failure
 			toast.error(error.message, {
 				style: {
 					padding: "16px",
