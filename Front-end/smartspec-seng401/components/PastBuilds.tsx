@@ -62,10 +62,10 @@ const PastBuilds = () => {
 	};
 
 	const handleViewBuild = (buildId: number) => {
-		localStorage.setItem("selectedBuild", JSON.stringify(builds[buildId - 1]));
+		localStorage.setItem("selectedBuild", JSON.stringify(builds[buildId]));
 
 		// Navigate to the detail page with the build ID
-		router.push(`/history/${buildId}`);
+		router.push(`/history/${buildId + 1}`);
 	};
 
 	if (loading) {
@@ -91,7 +91,7 @@ const PastBuilds = () => {
 					<BuildCard
 						build={getFormattedBuild(build, index)}
 						key={index + 1}
-						onViewBuild={handleViewBuild}
+						onViewBuild={() => handleViewBuild(index)}
 					/>
 				))
 			)}

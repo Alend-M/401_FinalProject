@@ -17,7 +17,7 @@ interface Build {
 	buildjson: BuildData;
 }
 
-const BuildDetailClient: React.FC<BuildDetailsComponentProps> = ({
+const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 	buildId,
 }) => {
 	const router = useRouter();
@@ -29,7 +29,7 @@ const BuildDetailClient: React.FC<BuildDetailsComponentProps> = ({
 			setLoading(true);
 
 			// Try to get the build from localStorage
-			const storedBuild = localStorage.getItem("currentBuild");
+			const storedBuild = localStorage.getItem("selectedBuild");
 
 			if (storedBuild) {
 				try {
@@ -136,4 +136,4 @@ const BuildDetailClient: React.FC<BuildDetailsComponentProps> = ({
 	);
 };
 
-export default BuildDetailClient;
+export default BuildDetailsComponent;
