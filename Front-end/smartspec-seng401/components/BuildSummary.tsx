@@ -7,7 +7,7 @@ import { BaseText } from "./ui/baseText";
 import { useBuildResultContext } from "@/context/buildResultContext";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "./ui/button";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { checkSession } from "@/utils/supabaseClient";
 
 interface SpecificationsProps {

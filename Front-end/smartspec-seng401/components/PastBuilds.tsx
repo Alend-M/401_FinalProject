@@ -7,6 +7,7 @@ import axios from "axios";
 import BuildCard from "@/components/PastBuildCard";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Spinner } from "@heroui/spinner";
+import { useBuildResultContext } from "@/context/buildResultContext";
 
 interface Build {
 	build_id: number;
@@ -20,9 +21,46 @@ interface Build {
 
 interface buildAPIResponse {
 	buildjson: {
-		CPUs: { name: string };
-		GPUs: { name: string };
-		RAM: { name: string };
+		CPUs: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		GPUs: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		RAM: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		Motherboards: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		Storage: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		Power_Supply: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		Case: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
+		Cooling: {
+			name: string;
+			price_CAD: string;
+			Justification: string;
+		};
 		input: {
 			budget: number;
 			minFps: number;
@@ -37,8 +75,10 @@ interface buildAPIResponse {
 const PastBuilds = () => {
 	const router = useRouter();
 	const [builds, setBuilds] = useState<Build[]>([]);
+	const [rawBuilds, setRawBuilds] = useState<buildAPIResponse[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [userId, setUserId] = useState<string | null>(null);
+	const { loadBuildResult, loadSummary } = useBuildResultContext();
 
 	useEffect(() => {
 		async function checkSessionAndFetchBuilds() {
@@ -71,6 +111,7 @@ const PastBuilds = () => {
 						);
 
 						setBuilds(formattedBuilds);
+						setRawBuilds(response.data);
 					} else {
 						setBuilds([]);
 					}
@@ -108,7 +149,41 @@ const PastBuilds = () => {
 					<BuildCard
 						build={build}
 						key={build.build_id}
-						onViewBuild={(id) => router.push(`/history/${id}`)}
+						onViewBuild={(id) => {
+							const selectedBuild: buildAPIResponse = rawBuilds[id - 1];
+							const {
+								CPUs,
+								GPUs,
+								RAM,
+								Motherboards,
+								Storage,
+								Power_Supply,
+								Case,
+								Cooling,
+								input,
+							} = selectedBuild.buildjson;
+
+							loadBuildResult({
+								CPUs,
+								GPUs,
+								RAM,
+								Motherboards,
+								Storage,
+								Power_Supply,
+								Case,
+								Cooling,
+							});
+
+							loadSummary({
+								...input,
+								preOwnedHardware: input.preOwnedHardware.map((hardware) => ({
+									name: hardware,
+									type: "Unknown", // FIGURE THIS OUT!!!
+								})),
+							});
+
+							router.push(`/history/${id}`);
+						}}
 					/>
 				))
 			)}
