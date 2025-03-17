@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
@@ -9,10 +7,10 @@ import ComponentInput from "./ComponentInput";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
-import { Subtitle } from "./ui/subtitle";
+import { useRouter } from "next/navigation";
 
 function BuildForm() {
-  const [responseData, setResponseData] = useState<string>("");
+  const router = useRouter();
   const {
     budget,
     minFps,
@@ -26,8 +24,8 @@ function BuildForm() {
   } = useFormBuilderContext();
 
   function handleSubmitForm() {
-    submitForm().then((response) => {
-      setResponseData(response);
+    submitForm().finally(() => {
+      router.push("/results");
     });
   }
 
@@ -85,7 +83,6 @@ function BuildForm() {
         Get Build
         <Zap />
       </Button>
-      <Subtitle>{JSON.stringify(responseData)}</Subtitle>
     </div>
   );
 }
