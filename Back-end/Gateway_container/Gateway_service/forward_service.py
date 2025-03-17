@@ -122,7 +122,7 @@ async def deletePastBuild(build_id: int):
     try:
         async with httpx.AsyncClient() as client:
             response = await client.delete(
-                DATABASE_SERVICE_URL + "/delete_build/" + build_id,
+                DATABASE_SERVICE_URL + "/delete_build/" + str(build_id),
                 timeout=20.0
             )
             response.raise_for_status()

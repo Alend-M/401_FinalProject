@@ -130,7 +130,8 @@ async def deleteBuild(build_id: int):
 
     try:
         response = supabaseClient.table("BuildHistory").delete().eq("buildid", build_id).execute()
-        return response
+        print(response)
+        return response.data
 
     except Exception as e:
         print(f"Error deleting build: {e}")
