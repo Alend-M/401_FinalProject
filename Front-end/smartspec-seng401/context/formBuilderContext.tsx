@@ -9,11 +9,11 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useBuildResultContext } from "./buildResultContext";
 
 // const API_URL = "http://localhost:8000";
 
-const API_URL =
-  "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com";
+const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 
 interface FormBuilderContextInterface {
   /* We need the following attributes:
@@ -36,7 +36,6 @@ interface FormBuilderContextInterface {
   displayResolution: string;
   graphicalQuality: string;
   preOwnedHardware: Component[];
-  // Debugging
 
   /*METHODS*/
   changeBudget: (value: number) => void;
@@ -73,6 +72,7 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   removeFromPreOwnedHardware: () => {},
   updatePreOwnedHardware: () => {},
   submitForm: () => Promise.resolve({}),
+
   // For Debugging Purposes
   debugPrint: () => {},
 };
@@ -96,6 +96,8 @@ export function FormBuilderProvider({ children }: Props) {
   const [displayResolution, setDisplayResolution] = useState<string>("");
   const [graphicalQuality, setGraphicalQuality] = useState<string>("");
   const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
+
+  const { loadBuildResult } = useBuildResultContext(); // Inter-context communication
 
   function changeBudget(value: number) {
     setBudget(value);
@@ -175,17 +177,20 @@ export function FormBuilderProvider({ children }: Props) {
 
     // Send the POST requestion
     return axios
-      .post(`${API_URL}/build/1`, requestDataJSON, {
+      .post(`${API_URL}/build`, requestDataJSON, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
+        // DEBUG
         console.log(response);
-        return response;
+        loadBuildResult(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
-
   function debugPrint() {
     console.log(
       "Budget: ",
