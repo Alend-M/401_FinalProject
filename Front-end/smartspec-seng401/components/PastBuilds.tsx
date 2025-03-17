@@ -18,6 +18,15 @@ interface Build {
 	games: string[];
 }
 
+interface buildAPIResponse {
+	buildjson: {
+		CPUs: { name: string };
+		GPUs: { name: string };
+		RAM: { name: string };
+		games: string[];
+	};
+}
+
 const PastBuilds = () => {
 	const router = useRouter();
 	const [builds, setBuilds] = useState<Build[]>([]);
@@ -30,30 +39,34 @@ const PastBuilds = () => {
 			const session: { user: { id: string } } | null = await checkSession();
 
 			if (session) {
-				const userId = session.user.id; // Use local variable instead of state since state updates are async
-				setUserId(userId); // Still update state for other parts of component to use to update UI
+				const requestUserId = session.user.id; // Use local variable instead of state since state updates are async
+				setUserId(requestUserId); // Still update state for other parts of component to use to update UI
 
 				try {
-					const postURL = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${userId}`;
+					const postURL = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${requestUserId}`;
 					const response = await axios.get(postURL);
 
-					const formattedBuilds = response.data.map(
-						(item: any, index: number) => {
-							const build = item.buildjson;
+					if (response.data.length > 0) {
+						const formattedBuilds = response.data.map(
+							(item: buildAPIResponse, index: number) => {
+								const build = item.buildjson;
 
-							return {
-								build_id: index + 1,
-								name: `Build ${index + 1}`,
-								cpu: build.CPUs?.name || "Unknown CPU",
-								gpu: build.GPUs?.name || "Unknown GPU",
-								ram: build.RAM?.name || "Unknown RAM",
-								date: new Date().toISOString().split("T")[0],
-								games: build.games || [],
-							};
-						}
-					);
+								return {
+									build_id: index + 1,
+									name: `Build ${index + 1}`,
+									cpu: build.CPUs?.name || "Unknown CPU",
+									gpu: build.GPUs?.name || "Unknown GPU",
+									ram: build.RAM?.name || "Unknown RAM",
+									date: new Date().toISOString().split("T")[0],
+									games: build.games || [],
+								};
+							}
+						);
 
-					setBuilds(formattedBuilds);
+						setBuilds(formattedBuilds);
+					} else {
+						setBuilds([]);
+					}
 				} catch (error) {
 					console.error("Error fetching builds:", error);
 					setBuilds([]);
@@ -80,15 +93,15 @@ const PastBuilds = () => {
 	}
 
 	return (
-		<div className="flex flex-col gap-y-5 mt-10 mb-10">
+		<div className="flex flex-col gap-y-5 mt-5 mb-10 items-center">
 			{builds.length === 0 ? (
-				<Subtitle>No build history found.</Subtitle>
+				<Subtitle>❌ No build history found.</Subtitle>
 			) : (
 				builds.map((build: Build) => (
 					<BuildCard
 						build={build}
 						key={build.build_id}
-						onViewBuild={(id) => router.push(`/builds/${id}`)}
+						onViewBuild={(id) => router.push(`/history/${id}`)}
 					/>
 				))
 			)}
