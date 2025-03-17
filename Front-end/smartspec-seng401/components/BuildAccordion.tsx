@@ -24,18 +24,27 @@ interface BuildRowProps {
 }
 
 function BuildRow({ type, name, price }: BuildRowProps) {
+  const freePart = price === "$0";
+
   return (
     <div className="flex flex-row justify-between w-full space-x-massive cursor-default">
       <BaseText className="font-bold w-[100px] text-nowrap">{type}</BaseText>
       <BaseText className="w-[250px] text-nowrap truncate">{name}</BaseText>
-      <BaseText className="w-[50px] text-nowrap">{price}</BaseText>
+      {freePart ? (
+        <BaseText className="w-[50px] text-nowrap text-primaryColor">
+          FREE
+        </BaseText>
+      ) : (
+        <BaseText className="w-[50px] text-nowrap">{price}</BaseText>
+      )}
+
       <Link
         href={`https://www.amazon.ca/s?k=${parseComponentName(name)}`}
         target="_blank"
-        className="flex-2 text-nowrap"
+        className="flex-2 text-nowrap w-[150px] text-end"
       >
-        <BaseText className=" text-primaryColor underline">
-          View Buying Options
+        <BaseText className="text-primaryColor underline">
+          {freePart ? "" : "View Buying Options"}
         </BaseText>
       </Link>
     </div>
