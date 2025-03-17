@@ -23,7 +23,14 @@ interface buildAPIResponse {
 		CPUs: { name: string };
 		GPUs: { name: string };
 		RAM: { name: string };
-		games: string[];
+		input: {
+			budget: number;
+			minFps: number;
+			gamesList: string[];
+			displayResolution: string;
+			graphicalQuality: string;
+			preOwnedHardware: string[];
+		};
 	};
 }
 
@@ -58,7 +65,7 @@ const PastBuilds = () => {
 									gpu: build.GPUs?.name || "Unknown GPU",
 									ram: build.RAM?.name || "Unknown RAM",
 									date: new Date().toISOString().split("T")[0],
-									games: build.games || [],
+									games: build.input.gamesList || [],
 								};
 							}
 						);
