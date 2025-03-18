@@ -15,6 +15,7 @@ import {
 import { Input } from "./ui/input";
 
 import { Textarea } from "./ui/textarea";
+import toast, { Toaster } from "react-hot-toast";
 
 const DEBUG = 1; // Debug flag
 
@@ -58,12 +59,21 @@ const ContactUsForm: React.FC = () => {
 
 	// Defining Form Submit Handler
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		// ✅ This will be type-safe and validated.
-
 		if (DEBUG) console.log("Values: ", values);
 
-		// const { name, surname, email, message } = values;
-		// TODO: Send details to gmail account.
+		try {
+			const response = await fetch("/api/contact", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(values),
+			});
+
+			const result = await response.json();
+			toast.success(result.success || result.error);
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			toast.error("Failed to submit form");
+		}
 	}
 
 	return (
@@ -141,6 +151,7 @@ const ContactUsForm: React.FC = () => {
 					</form>
 				</Form>
 			</div>
+			<Toaster />
 		</div>
 	);
 };
