@@ -65,14 +65,11 @@ const PastBuilds = () => {
 		};
 	};
 
-	const handleViewBuild = (buildId: string) => {
-		localStorage.setItem(
-			"selectedBuild",
-			JSON.stringify(builds.find((build) => build.id === buildId))
-		);
+	const handleViewBuild = (buildIndex: number) => {
+		localStorage.setItem("selectedBuild", JSON.stringify(builds[buildIndex]));
 
 		// Navigate to the detail page with the actual build ID
-		router.push(`/history/${buildId}`);
+		router.push(`/history/${buildIndex + 1}`);
 	};
 
 	if (loading) {
@@ -94,11 +91,11 @@ const PastBuilds = () => {
 			{builds.length === 0 ? (
 				<Subtitle>❌ No build history found.</Subtitle>
 			) : (
-				builds.map((build) => (
+				builds.map((build, index) => (
 					<BuildCard
-						build={getFormattedBuild(build, builds.indexOf(build))}
-						key={build.id}
-						onViewBuild={() => handleViewBuild(build.id)}
+						build={getFormattedBuild(build, index)}
+						key={index + 1}
+						onViewBuild={() => handleViewBuild(index)}
 					/>
 				))
 			)}
