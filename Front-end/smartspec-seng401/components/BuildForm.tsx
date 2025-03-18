@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@heroui/spinner";
 
 function BuildForm() {
 	const router = useRouter();
@@ -23,9 +24,13 @@ function BuildForm() {
 		submitForm,
 	} = useFormBuilderContext();
 
+	const [loading, setLoading] = useState(false);
+
 	function handleSubmitForm() {
+		setLoading(true);
 		submitForm().finally(() => {
 			router.push("/results");
+			setLoading(false);
 		});
 	}
 
@@ -78,11 +83,15 @@ function BuildForm() {
 			<Separator />
 			<ComponentInput />
 			<Separator />
-			<Button onClick={handleSubmitForm} fullWidth>
-				<Zap />
-				Get Build
-				<Zap />
-			</Button>
+			{loading ? (
+				<Spinner />
+			) : (
+				<Button onClick={handleSubmitForm} fullWidth>
+					<Zap />
+					Get Build
+					<Zap />
+				</Button>
+			)}
 		</div>
 	);
 }

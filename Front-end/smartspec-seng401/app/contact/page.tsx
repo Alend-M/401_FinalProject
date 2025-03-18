@@ -9,7 +9,7 @@ function ContactUsPage() {
 			<div className="flex flex-col items-center">
 				<Title className="text-secondaryColor">Contact Us</Title>
 				<Subtitle className="mb-1">
-					Do you have a suggestion? Feel free to write us
+					Do you have a suggestion? Feel free to write to us
 				</Subtitle>
 			</div>
 			<ContactUsForm />

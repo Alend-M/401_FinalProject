@@ -67,7 +67,7 @@ const ContactUsForm: React.FC = () => {
 	}
 
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex flex-col items-center mt-2">
 			<div className="flex flex-col bg-white rounded-md p-major space-y-medium w-smallCard">
 				{/* Contact Us Form */}
 				<Form {...form}>

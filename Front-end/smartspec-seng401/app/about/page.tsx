@@ -5,24 +5,45 @@ import React from "react";
 
 function AboutPage() {
 	const devs = [
-		{ name: "Alex", about: "I am a developer" },
-		{ name: "Robert", about: "I am a developer" },
-		{ name: "Caleb", about: "I am a developer" },
-		{ name: "Lami", about: "I am a developer" },
-		{ name: "Alend", about: "I am a developer" },
-		{ name: "Agustin", about: "I am a developer" },
+		{ name: "Alex", about: "Frontend Developer", picture: "/Alex.jpeg" },
+		{
+			name: "Robert",
+			about: "Backend Developer",
+			picture: "/Robert.jpeg",
+		},
+		{
+			name: "Caleb",
+			about: "Backend Developer",
+			picture: "/Caleb.jpeg",
+		},
+		{ name: "Lami", about: "Frontend Developer", picture: "/Lami.jpeg" },
+		{
+			name: "Alend",
+			about: "Backend Developer",
+			picture: "/Alend.jpeg",
+		},
+		{
+			name: "Agustin",
+			about: "Backend Developer",
+			picture: "/Agustin.jpeg",
+		},
 	];
 
 	return (
 		<div className="mb-20">
-			<div className="flex flex-col items-center">
-				<Title className="text-secondaryColor">Meet the Team</Title>
-				<Subtitle>Subheading</Subtitle>
+			<div className="flex flex-col items-center text-center">
+				<Title className="text-secondaryColor">Meet the Team 👋</Title>
+				<Subtitle>The Team That Brought You SmartSpec</Subtitle>
 			</div>
-			<div className="grid grid-cols-3 grid-rows-2 auto-cols-min gap-major ">
+			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center mt-3">
 				{devs.map((dev) => {
 					return (
-						<AboutCard key={dev.name} devName={dev.name} devAbout={dev.about} />
+						<AboutCard
+							key={dev.name}
+							devName={dev.name}
+							devAbout={dev.about}
+							devPicture={dev.picture}
+						/>
 					);
 				})}
 			</div>
