@@ -36,7 +36,7 @@ function ResultsContent() {
     if (restore?.includes("true")) {
       console.log("Yes Block Entered:");
 
-      const buildResultsString = localStorage.getItem("buildResults");
+      const buildResultsString = localStorage.getItem("buildResult");
       const summaryString = localStorage.getItem("summary");
 
       console.log("BuildResultString, ", buildResultsString);
