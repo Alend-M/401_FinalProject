@@ -41,3 +41,10 @@ async def saveBuild(user_id: str, prompt: Request):
 async def deleteBuildFromAPI(build_id:int):
     response = await deleteBuild(build_id)
     return JSONResponse(content=response, headers=headers)
+
+# Handles sending email to developers
+@app.post("/send-email")
+async def sendEmail(prompt: Request):
+    promptJSON = await prompt.json()
+    response = sendEmailToDevelopers(promptJSON)
+    return JSONResponse(content=response, headers=headers)
