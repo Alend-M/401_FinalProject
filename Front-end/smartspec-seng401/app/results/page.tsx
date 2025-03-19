@@ -36,7 +36,7 @@ function ResultsPage() {
 			loadSummary(JSON.parse(summaryString));
 		  }
 		}
-	  },[searchParams]);
+	  },[loadBuildResult, loadSummary, searchParams]);
 
 	return (
 		<div className="flex flex-col items-center space-y-major">
