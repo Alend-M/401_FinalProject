@@ -39,7 +39,7 @@ function ResultsPage() {
   }, [loadBuildResult, loadSummary, searchParams]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="flex flex-col items-center space-y-major">
         <div className="flex flex-col items-center">
           <Title className="text-secondaryColor">Build Results</Title>
