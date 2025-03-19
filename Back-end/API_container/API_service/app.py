@@ -1,6 +1,7 @@
 
 from fastapi import Request, FastAPI
 from API_service.database_service import *
+from API_service.email_service import *
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
