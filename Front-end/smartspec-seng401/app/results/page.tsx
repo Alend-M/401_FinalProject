@@ -39,6 +39,9 @@ function ResultsContent() {
       const buildResultsString = localStorage.getItem("buildResults");
       const summaryString = localStorage.getItem("summary");
 
+      console.log("BuildResultString, ", buildResultsString);
+      console.log("SummaryString, ", summaryString);
+
       if (buildResultsString && summaryString) {
         loadBuildResult(JSON.parse(buildResultsString));
         loadSummary(JSON.parse(summaryString));
