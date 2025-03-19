@@ -2,16 +2,17 @@
 import supabase 
 from dotenv import load_dotenv
 import os 
-import json
 
 # Load the environment variables for supabase instance to be used correctly
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+EMAILADDRESS = os.getenv("EMAILADDRESS")
+EMAILPASSWORD = os.getenv("EMAILPASSWORD")
 
 globalSupabaseClient = None 
 
-def init_supabase():
+def init_supabase() -> supabase.Client:
     """
     Initializes the Supabase client with the environment variables using singleton pattern
     
@@ -111,7 +112,7 @@ async def saveLLMResponse(user_id: str, LLMResponse: dict) -> int:
         print(f"Error saving build: {e}")
         return None
 
-async def deleteBuild(build_id: int):
+async def deleteBuild(build_id: int) -> int:
     """
     Removes the build specified in by build_id from the database
     
@@ -137,6 +138,7 @@ async def deleteBuild(build_id: int):
         print(f"Error deleting build: {e}")
         return None
 
+    
 # makes it so you need to import it to run the code
 if __name__ == "__main__":
   pass

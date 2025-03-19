@@ -61,7 +61,7 @@ template = """
     }
     """
 
-def initAI():
+def initAI() -> None:
     """
     Initializes the AI model for the service using singleton pattern
 

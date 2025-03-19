@@ -7,7 +7,7 @@ from fastapi import HTTPException, Request
 DATABASE_SERVICE_URL = "http://api:8001"
 LLM_SERVICE_URL = "http://llm:8002"
 
-async def getPastBuilds(user_id: str):
+async def getPastBuilds(user_id: str) -> json:
     """
     Forwards request to retreive all past PC builds based on the user ID.
 
@@ -37,7 +37,7 @@ async def getPastBuilds(user_id: str):
     except httpx.RequestError as e:
         return {"[X] error": f"Request failed: {str(e)}"}
     
-async def saveBuild(user_id: str, build: json):
+async def saveBuild(user_id: str, build: json) -> json:
     """
     Forwards a already built build to the database for saving.
 
@@ -70,7 +70,7 @@ async def saveBuild(user_id: str, build: json):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
-async def getLLMResponse(query: Request):
+async def getLLMResponse(query: Request) -> json:
     """
     Forwards request to build a PC to the LLM service
 
@@ -102,9 +102,7 @@ async def getLLMResponse(query: Request):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
-        # return {"[X] error": f"Request failed: {e}"}
-
-async def deletePastBuild(build_id: int):
+async def deletePastBuild(build_id: int) -> json:
     """
     Forwards request to retreive all past PC builds based on the user ID.
 
@@ -133,6 +131,38 @@ async def deletePastBuild(build_id: int):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
+async def sendEmail(query: Request) -> json:
+    """
+    Forwards request to send an email to the dev team
 
+    Parameters
+    ----------
+    query : json
+        The query in the json format dictated by the Email class in LLM_service/email.py
+        Included in forward request.
+
+    Returns
+    -------
+    response: json
+        A JSON object containing strings with the response from the email service
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            query_data = await query.json()
+
+            response = await client.post(
+                DATABASE_SERVICE_URL + "/send-email",
+                json = query_data
+            )
+            response.raise_for_status()
+            print("[O] Successfully forwarded request to email service")
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        # return {"[X] error": f"HTTP error {e.response.status_code}: {e}"}
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except httpx.RequestError as e:
+        print("HERE")
+        raise HTTPException(status_code=500, detail="Request failed: " + str(e))
+    
 if __name__ == "__main__":
     pass

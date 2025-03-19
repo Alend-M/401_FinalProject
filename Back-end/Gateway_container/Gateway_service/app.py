@@ -77,3 +77,9 @@ async def deleteBuildEndpoint(build_id: int):
 @app.options("/{full_path:path}")
 async def preflight_request(full_path: str):
     return JSONResponse(headers=headers)
+
+# Hanldes Sending Email for Dev contact
+@app.post("/contact")
+async def emailDev(query: Request):
+    response = await sendEmail(query)
+    return JSONResponse(content=response, headers=headers)
