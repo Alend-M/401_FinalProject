@@ -4,8 +4,8 @@ import json
 from fastapi import HTTPException, Request
 
 # addresses for micro-services
-DATABASE_SERVICE_URL = "http://api:8001"
-LLM_SERVICE_URL = "http://llm:8002"
+DATABASE_SERVICE_URL = "http://localhost:8001"
+LLM_SERVICE_URL = "http://localhost:8002"
 
 async def getPastBuilds(user_id: str):
     """
@@ -133,6 +133,38 @@ async def deletePastBuild(build_id: int):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
+async def sendEmail(query: Request) -> json:
+    """
+    Forwards request to send an email to the dev team
 
+    Parameters
+    ----------
+    query : json
+        The query in the json format dictated by the Email class in LLM_service/email.py
+        Included in forward request.
+
+    Returns
+    -------
+    response: json
+        A JSON object containing strings with the response from the email service
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            query_data = await query.json()
+
+            response = await client.post(
+                DATABASE_SERVICE_URL + "/send-email",
+                json = query_data
+            )
+            response.raise_for_status()
+            print("[O] Successfully forwarded request to email service")
+            return response.json()
+    except httpx.HTTPStatusError as e:
+        # return {"[X] error": f"HTTP error {e.response.status_code}: {e}"}
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except httpx.RequestError as e:
+        print("HERE")
+        raise HTTPException(status_code=500, detail="Request failed: " + str(e))
+    
 if __name__ == "__main__":
     pass
