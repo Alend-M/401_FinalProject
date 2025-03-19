@@ -7,7 +7,7 @@ from fastapi import HTTPException, Request
 DATABASE_SERVICE_URL = "http://api:8001"
 LLM_SERVICE_URL = "http://llm:8002"
 
-async def getPastBuilds(user_id: str):
+async def getPastBuilds(user_id: str) -> json:
     """
     Forwards request to retreive all past PC builds based on the user ID.
 
@@ -37,7 +37,7 @@ async def getPastBuilds(user_id: str):
     except httpx.RequestError as e:
         return {"[X] error": f"Request failed: {str(e)}"}
     
-async def saveBuild(user_id: str, build: json):
+async def saveBuild(user_id: str, build: json) -> json:
     """
     Forwards a already built build to the database for saving.
 
@@ -70,7 +70,7 @@ async def saveBuild(user_id: str, build: json):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
-async def getLLMResponse(query: Request):
+async def getLLMResponse(query: Request) -> json:
     """
     Forwards request to build a PC to the LLM service
 
@@ -102,9 +102,7 @@ async def getLLMResponse(query: Request):
     except httpx.RequestError as e:
         raise HTTPException(status_code=500, detail="Request failed: " + str(e))
 
-        # return {"[X] error": f"Request failed: {e}"}
-
-async def deletePastBuild(build_id: int):
+async def deletePastBuild(build_id: int) -> json:
     """
     Forwards request to retreive all past PC builds based on the user ID.
 

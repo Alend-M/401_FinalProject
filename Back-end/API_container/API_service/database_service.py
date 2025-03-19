@@ -14,7 +14,7 @@ EMAILPASSWORD = os.getenv("EMAILPASSWORD")
 
 globalSupabaseClient = None 
 
-def init_supabase():
+def init_supabase() -> supabase.Client:
     """
     Initializes the Supabase client with the environment variables using singleton pattern
     
@@ -114,7 +114,7 @@ async def saveLLMResponse(user_id: str, LLMResponse: dict) -> int:
         print(f"Error saving build: {e}")
         return None
 
-async def deleteBuild(build_id: int):
+async def deleteBuild(build_id: int) -> int:
     """
     Removes the build specified in by build_id from the database
     

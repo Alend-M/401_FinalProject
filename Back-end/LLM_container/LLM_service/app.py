@@ -24,6 +24,7 @@ headers = {
             "Access-Control-Allow-Headers": "Content-Type, Authorization",
         }
 
+# Handles Sending a request to the LLM service to generate a PC build based on requirements JSON
 @app.post("/generate-text")
 async def generate_text(prompt: Request):
     promptJSON = await prompt.json()
