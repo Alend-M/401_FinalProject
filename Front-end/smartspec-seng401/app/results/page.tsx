@@ -46,7 +46,7 @@ function ResultsContent() {
       loadBuildResult(JSON.parse(buildResultsString || "{}"));
       loadSummary(JSON.parse(summaryString || "{}"));
     }
-  }, [loadBuildResult, loadSummary, searchParams]);
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col items-center space-y-major">
