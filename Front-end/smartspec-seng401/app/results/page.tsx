@@ -5,10 +5,10 @@ import BuildSummary from "@/components/BuildSummary";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { useBuildResultContext } from "@/context/buildResultContext";
-import { useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense } from "react";
 
-function ResultsPage() {
+// Create a client component that uses the useSearchParams hook
+function ResultsContent() {
   const {
     buildResult,
     gamesList,
@@ -23,9 +23,11 @@ function ResultsPage() {
 
   const preOwnedHardware = summary.preOwnedHardware;
 
+  // Import useSearchParams hook inside the component that's wrapped in Suspense
+  const { useSearchParams } = require("next/navigation");
   const searchParams = useSearchParams();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const restore = searchParams.get("restore");
     if (restore === "true") {
       const buildResultsString = localStorage.getItem("buildResults");
@@ -39,25 +41,32 @@ function ResultsPage() {
   }, [loadBuildResult, loadSummary, searchParams]);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="flex flex-col items-center space-y-major">
-        <div className="flex flex-col items-center">
-          <Title className="text-secondaryColor">Build Results</Title>
-          <Subtitle className="text-subheadingGray">
-            Here are your build recommendations
-          </Subtitle>
-        </div>
-
-        <BuildAccordion components={buildResult} />
-        <BuildSummary
-          gamesList={gamesList}
-          specifications={specifications}
-          totalPrice={totalPrice}
-          saveBuildResult={saveBuildResult}
-          discardBuildResult={discardBuildResult}
-          preOwnedHardware={preOwnedHardware}
-        />
+    <div className="flex flex-col items-center space-y-major">
+      <div className="flex flex-col items-center">
+        <Title className="text-secondaryColor">Build Results</Title>
+        <Subtitle className="text-subheadingGray">
+          Here are your build recommendations
+        </Subtitle>
       </div>
+
+      <BuildAccordion components={buildResult} />
+      <BuildSummary
+        gamesList={gamesList}
+        specifications={specifications}
+        totalPrice={totalPrice}
+        saveBuildResult={saveBuildResult}
+        discardBuildResult={discardBuildResult}
+        preOwnedHardware={preOwnedHardware}
+      />
+    </div>
+  );
+}
+
+// Main component that wraps the content in Suspense
+function ResultsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResultsContent />
     </Suspense>
   );
 }
