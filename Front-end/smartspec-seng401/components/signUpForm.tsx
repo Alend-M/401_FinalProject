@@ -22,6 +22,7 @@ import { Title } from "./ui/title";
 import toast, { Toaster } from "react-hot-toast";
 import { useLoginContext } from "@/context/loginContext";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const DEBUG = 1; // Debug flag
 
@@ -95,7 +96,9 @@ const SignUpForm: React.FC = () => {
       });
     }
 
-    const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/login";
+    const destination = redirectRoute
+      ? `${redirectRoute}/?restore=true`
+      : "/login";
 
     setTimeout(() => {
       router.push(destination);
@@ -104,97 +107,99 @@ const SignUpForm: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <Title className="text-secondaryColor">Sign up</Title>
-      <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
-        {/* Alternate Signup Strategies */}
-        <div className="flex flex-row space-x-medium">
-          <Button variant={"secondary"} onClick={loginWithGithub}>
-            <GitHub />
-            Sign up with GitHub
-          </Button>
-          <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
-            <Google />
-            Sign up with Google
-          </Button>
-        </div>
-
-        {/* Separator */}
-        <div className="flex flex-row items-center space-x-tiny">
-          <div className="flex-grow">
-            <Separator />
-          </div>
-          <p className="text-sm text-gray-400">Or sign up with</p>
-          <div className="flex-grow">
-            <Separator />
-          </div>
-        </div>
-
-        {/* Email & Password Login Form */}
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-medium"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <p className="text-sm">
-              Already have an account?{" "}
-              <Link href={loginPath} className="text-primaryColor">
-                Log in
-              </Link>
-            </p>
-            <Button fullWidth type="submit">
-              Sign up
+    <Suspense>
+      <div className="flex flex-col items-center">
+        <Title className="text-secondaryColor">Sign up</Title>
+        <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
+          {/* Alternate Signup Strategies */}
+          <div className="flex flex-row space-x-medium">
+            <Button variant={"secondary"} onClick={loginWithGithub}>
+              <GitHub />
+              Sign up with GitHub
             </Button>
-          </form>
-        </Form>
+            <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
+              <Google />
+              Sign up with Google
+            </Button>
+          </div>
+
+          {/* Separator */}
+          <div className="flex flex-row items-center space-x-tiny">
+            <div className="flex-grow">
+              <Separator />
+            </div>
+            <p className="text-sm text-gray-400">Or sign up with</p>
+            <div className="flex-grow">
+              <Separator />
+            </div>
+          </div>
+
+          {/* Email & Password Login Form */}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-medium"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <p className="text-sm">
+                Already have an account?{" "}
+                <Link href={loginPath} className="text-primaryColor">
+                  Log in
+                </Link>
+              </p>
+              <Button fullWidth type="submit">
+                Sign up
+              </Button>
+            </form>
+          </Form>
+        </div>
+        <Toaster position="bottom-right" reverseOrder={false} />
       </div>
-      <Toaster position="bottom-right" reverseOrder={false} />
-    </div>
+    </Suspense>
   );
 };
 

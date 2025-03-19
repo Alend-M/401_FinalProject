@@ -22,7 +22,7 @@ import { Title } from "./ui/title";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/spinner";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useLoginContext } from "@/context/loginContext";
 
 const DEBUG = 1; // Debug flag
@@ -108,89 +108,91 @@ const LoginForm: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <Title className="text-secondaryColor">Login</Title>
-      <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
-        {/* Alternate Login Strategies */}
-        <div className="flex flex-row space-x-medium">
-          <Button variant={"secondary"} onClick={loginWithGithub}>
-            <GitHub />
-            Log in with GitHub
-          </Button>
-          <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
-            <Google />
-            Log in with Google
-          </Button>
-        </div>
-
-        {/* Separator */}
-        <div className="flex flex-row items-center space-x-tiny">
-          <div className="flex-grow">
-            <Separator />
+    <Suspense>
+      <div className="flex flex-col items-center">
+        <Title className="text-secondaryColor">Login</Title>
+        <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
+          {/* Alternate Login Strategies */}
+          <div className="flex flex-row space-x-medium">
+            <Button variant={"secondary"} onClick={loginWithGithub}>
+              <GitHub />
+              Log in with GitHub
+            </Button>
+            <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
+              <Google />
+              Log in with Google
+            </Button>
           </div>
-          <p className="text-sm text-gray-400">Or continue with</p>
-          <div className="flex-grow">
-            <Separator />
-          </div>
-        </div>
 
-        {/* Email & Password Login Form */}
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            // className={`space-y-${kMediumSpacing}`}
-            className="space-y-medium"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-            <p className="text-sm">
-              Don&apos;t have an account?{" "}
-              <Link href={signUpPath} className="text-primaryColor">
-                Sign Up
-              </Link>
-            </p>
-            <div className="flex justify-center">
-              {loading ? (
-                <Spinner color="primary" />
-              ) : (
-                <Button fullWidth type="submit">
-                  Log in
-                </Button>
-              )}
+          {/* Separator */}
+          <div className="flex flex-row items-center space-x-tiny">
+            <div className="flex-grow">
+              <Separator />
             </div>
-          </form>
-        </Form>
+            <p className="text-sm text-gray-400">Or continue with</p>
+            <div className="flex-grow">
+              <Separator />
+            </div>
+          </div>
+
+          {/* Email & Password Login Form */}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              // className={`space-y-${kMediumSpacing}`}
+              className="space-y-medium"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+              <p className="text-sm">
+                Don&apos;t have an account?{" "}
+                <Link href={signUpPath} className="text-primaryColor">
+                  Sign Up
+                </Link>
+              </p>
+              <div className="flex justify-center">
+                {loading ? (
+                  <Spinner color="primary" />
+                ) : (
+                  <Button fullWidth type="submit">
+                    Log in
+                  </Button>
+                )}
+              </div>
+            </form>
+          </Form>
+        </div>
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
-      <Toaster position="top-center" reverseOrder={false} />
-    </div>
+    </Suspense>
   );
 };
 
