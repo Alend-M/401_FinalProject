@@ -49,3 +49,4 @@ async def sendEmail(prompt: Request):
     promptJSON = await prompt.json()
     response = sendEmailToDevelopers(promptJSON)
     return JSONResponse(content=response, headers=headers)
+

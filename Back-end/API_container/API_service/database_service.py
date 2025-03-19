@@ -7,6 +7,8 @@ import os
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+EMAILADDRESS = os.getenv("EMAILADDRESS")
+EMAILPASSWORD = os.getenv("EMAILPASSWORD")
 
 globalSupabaseClient = None 
 
@@ -135,7 +137,6 @@ async def deleteBuild(build_id: int) -> int:
     except Exception as e:
         print(f"Error deleting build: {e}")
         return None
-
 
     
 # makes it so you need to import it to run the code
