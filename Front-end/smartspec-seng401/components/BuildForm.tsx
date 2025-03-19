@@ -5,9 +5,10 @@ import GamesInput from "./GamesInput";
 import RadioInput from "@/components/RadioInput";
 import ComponentInput from "./ComponentInput";
 import { Button } from "./ui/button";
-import { Zap } from "lucide-react";
+import { Save, Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
 import { useRouter } from "next/navigation";
+import { useLoginContext } from "@/context/loginContext";
 
 function BuildForm() {
   const router = useRouter();
@@ -21,12 +22,17 @@ function BuildForm() {
     changeDisplayResolution,
     changeGraphicalQuality,
     submitForm,
+    submitFormAndSave,
   } = useFormBuilderContext();
 
+  const { isAuthenticated } = useLoginContext();
+
   function handleSubmitForm() {
-    submitForm().finally(() => {
-      router.push("/results");
-    });
+    submitForm().then(() => router.push("/results"));
+  }
+
+  function handleSubmitFormAndSave() {
+    submitFormAndSave().then(() => router.push("/history"));
   }
 
   return (
@@ -83,6 +89,16 @@ function BuildForm() {
         Get Build
         <Zap />
       </Button>
+      {isAuthenticated && (
+        <Button
+          onClick={handleSubmitFormAndSave}
+          variant="outline"
+          className="flex-1"
+        >
+          <Save />
+          Build & Save
+        </Button>
+      )}
     </div>
   );
 }

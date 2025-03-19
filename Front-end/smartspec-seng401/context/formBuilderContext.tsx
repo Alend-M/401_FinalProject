@@ -2,13 +2,7 @@
 
 import { Component, FormData } from "@/types";
 import axios from "axios";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { useBuildResultContext } from "./buildResultContext";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 import { useLoginContext } from "./loginContext";
@@ -36,6 +30,7 @@ interface FormBuilderContextInterface {
   removeFromPreOwnedHardware: (index: number) => void;
   updatePreOwnedHardware: (index: number, newComponent: Component) => void;
   submitForm: () => Promise<void>;
+  submitFormAndSave: () => Promise<void>;
 }
 
 const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
@@ -56,6 +51,7 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   removeFromPreOwnedHardware: () => {},
   updatePreOwnedHardware: () => {},
   submitForm: async () => {},
+  submitFormAndSave: async () => {},
 };
 
 const FormBuilderContext = createContext<FormBuilderContextInterface>(
@@ -91,7 +87,7 @@ export function FormBuilderProvider({ children }: Props) {
   );
 
   const { loadBuildResult, loadSummary } = useBuildResultContext(); // Inter-context communication
-  const { user, isAuthenticated } = useLoginContext();
+  const { user } = useLoginContext();
 
   function changeBudget(value: number) {
     setBudget(value);
@@ -149,11 +145,10 @@ export function FormBuilderProvider({ children }: Props) {
     });
   }
 
-  async function submitForm() {
+  async function submitFormAndSave() {
     // Build the JSON from all the state files
-    // Goal: send POST requestion to ${API_URL}/build/1
 
-    const requestData: FormData = {
+    const summaryData: FormData = {
       budget,
       minFps,
       gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
@@ -164,52 +159,85 @@ export function FormBuilderProvider({ children }: Props) {
       ),
     };
 
-    const requestDataJSON = requestData;
+    return axios
+      .post(`${API_URL}/build/${user?.id}`, summaryData)
+      .then(
+        ({
+          data: {
+            CPUs,
+            GPUs,
+            RAM,
+            Motherboards,
+            Storage,
+            Power_Supply,
+            Case,
+            Cooling,
+            input,
+          },
+        }) => {
+          loadBuildResult({
+            CPUs,
+            GPUs,
+            RAM,
+            Motherboards,
+            Storage,
+            Power_Supply,
+            Case,
+            Cooling,
+          });
 
-    // Logging the data being sent
-    console.log("Submitting form data: ", requestDataJSON, "\n\nTo: ", API_URL);
+          loadSummary(input);
+        }
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+  }
 
-    // If the user is logged in, we want to send the POST request to the user's build history
-    // Otherwise, we want to send the POST request to the regular build endpoint
+  async function submitForm() {
+    // Build the JSON from all the state files
 
-    const url = isAuthenticated
-      ? `${API_URL}/build/${user?.id}`
-      : `${API_URL}/build`;
+    const summaryData: FormData = {
+      budget,
+      minFps,
+      gamesList: gamesList.filter((game) => game.trim() !== ""), // Filtering out empty games
+      displayResolution,
+      graphicalQuality,
+      preOwnedHardware: preOwnedHardware.filter(
+        (component) => component.name.trim() !== ""
+      ),
+    };
 
     return axios
-      .post(url, requestDataJSON, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        // DEBUG
-        // console.log(response);
+      .post(`${API_URL}/build`, summaryData)
+      .then(
+        ({
+          data: {
+            CPUs,
+            GPUs,
+            RAM,
+            Motherboards,
+            Storage,
+            Power_Supply,
+            Case,
+            Cooling,
+            input,
+          },
+        }) => {
+          loadBuildResult({
+            CPUs,
+            GPUs,
+            RAM,
+            Motherboards,
+            Storage,
+            Power_Supply,
+            Case,
+            Cooling,
+          });
 
-        const {
-          CPUs,
-          GPUs,
-          RAM,
-          Motherboards,
-          Storage,
-          Power_Supply,
-          Case,
-          Cooling,
-        } = response.data;
-
-        loadBuildResult({
-          CPUs,
-          GPUs,
-          RAM,
-          Motherboards,
-          Storage,
-          Power_Supply,
-          Case,
-          Cooling,
-        });
-
-        loadSummary(response.data.input);
-      })
+          loadSummary(input);
+        }
+      )
       .catch((error) => {
         console.error(error);
       });
@@ -260,6 +288,7 @@ export function FormBuilderProvider({ children }: Props) {
     removeFromPreOwnedHardware,
     updatePreOwnedHardware,
     submitForm,
+    submitFormAndSave,
   };
 
   return (

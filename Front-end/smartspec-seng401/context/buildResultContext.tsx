@@ -11,7 +11,7 @@ import {
   useEffect,
 } from "react";
 import { useLoginContext } from "./loginContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 // const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 const API_URL = NEXT_PUBLIC_API_GATEWAY_URL;

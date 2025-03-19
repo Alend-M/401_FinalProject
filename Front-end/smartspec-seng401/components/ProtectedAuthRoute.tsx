@@ -33,7 +33,7 @@ export default function ProtectedAuthRoute({
     };
 
     verifyAuth();
-  }, [router, redirectTo, isAuthenticated, authLoading]);
+  }, []);
 
   // Show loading state while checking auth
   if (authLoading || isAuthenticated) {
