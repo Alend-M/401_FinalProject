@@ -28,8 +28,14 @@ function ResultsContent() {
   const searchParams = useSearchParams();
 
   React.useEffect(() => {
+    console.log("Results Page Mounted Now!");
     const restore = searchParams.get("restore");
+
+    console.log("Restor string:", restore);
+
     if (restore?.includes("true")) {
+      console.log("Yes Block Entered:");
+
       const buildResultsString = localStorage.getItem("buildResults");
       const summaryString = localStorage.getItem("summary");
 
