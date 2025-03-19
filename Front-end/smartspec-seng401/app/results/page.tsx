@@ -42,12 +42,9 @@ function ResultsContent() {
       console.log("BuildResultString, ", buildResultsString);
       console.log("SummaryString, ", summaryString);
 
-      if (summaryString) {
-        console.log("Crucial Block ENTERED!");
-
-        loadBuildResult(JSON.parse(buildResultsString || "{}"));
-        loadSummary(JSON.parse(summaryString));
-      }
+      console.log("Crucial Step Next!");
+      loadBuildResult(JSON.parse(buildResultsString || "{}"));
+      loadSummary(JSON.parse(summaryString || "{}"));
     }
   }, [loadBuildResult, loadSummary, searchParams]);
 
