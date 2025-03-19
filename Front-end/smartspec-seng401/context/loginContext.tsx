@@ -10,6 +10,7 @@ import {
 import { supabase } from "@/utils/supabaseClient";
 import { AuthError, User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { FRONTEND_URL } from "@/constants";
 
 interface LoginContextInterface {
   user: User | null;
@@ -20,8 +21,8 @@ interface LoginContextInterface {
     email: string,
     password: string
   ) => Promise<{ success: boolean; error?: string }>;
-  loginWithGoogle: () => Promise<void>;
-  loginWithGithub: () => Promise<void>;
+  loginWithGoogle: (redirect: boolean) => Promise<void>;
+  loginWithGithub: (redirect: boolean) => Promise<void>;
   logout: () => Promise<void>;
   signup: (
     email: string,
@@ -132,10 +133,15 @@ export function LoginProvider({ children }: Props) {
     }
   }
 
-  async function loginWithGoogle() {
+  async function loginWithGoogle(redirect: boolean) {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
+        options: {
+          redirectTo: redirect
+            ? `${FRONTEND_URL}/results/?restore=true`
+            : undefined,
+        },
       });
 
       if (error) throw error;
@@ -144,10 +150,15 @@ export function LoginProvider({ children }: Props) {
     }
   }
 
-  async function loginWithGithub() {
+  async function loginWithGithub(redirect: boolean) {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "github",
+        options: {
+          redirectTo: redirect
+            ? `${FRONTEND_URL}/results/?restore=true`
+            : undefined,
+        },
       });
 
       if (error) throw error;

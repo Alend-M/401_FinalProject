@@ -74,6 +74,8 @@ const LoginForm: React.FC = () => {
     setLoading(true);
     changeLoginToastUp(true);
     const { email, password } = values;
+
+    // use strategies here
     const { success, error } = await login(email, password);
 
     if (!success && error) {
@@ -114,11 +116,21 @@ const LoginForm: React.FC = () => {
         <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
           {/* Alternate Login Strategies */}
           <div className="flex flex-row space-x-medium">
-            <Button variant={"secondary"} onClick={loginWithGithub}>
+            <Button
+              variant={"secondary"}
+              onClick={() => {
+                loginWithGithub(!!redirectRoute);
+              }}
+            >
               <GitHub />
               Log in with GitHub
             </Button>
-            <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
+            <Button
+              variant={"outlineBlack"}
+              onClick={() => {
+                loginWithGoogle(!!redirectRoute);
+              }}
+            >
               <Google />
               Log in with Google
             </Button>

@@ -5,6 +5,7 @@ import BuildSummary from "@/components/BuildSummary";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { useBuildResultContext } from "@/context/buildResultContext";
+import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 
 // Create a client component that uses the useSearchParams hook
@@ -24,12 +25,11 @@ function ResultsContent() {
   const preOwnedHardware = summary.preOwnedHardware;
 
   // Import useSearchParams hook inside the component that's wrapped in Suspense
-  const { useSearchParams } = require("next/navigation");
   const searchParams = useSearchParams();
 
   React.useEffect(() => {
     const restore = searchParams.get("restore");
-    if (restore === "true") {
+    if (restore?.includes("true")) {
       const buildResultsString = localStorage.getItem("buildResults");
       const summaryString = localStorage.getItem("summary");
 

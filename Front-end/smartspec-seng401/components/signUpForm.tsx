@@ -113,11 +113,21 @@ const SignUpForm: React.FC = () => {
         <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
           {/* Alternate Signup Strategies */}
           <div className="flex flex-row space-x-medium">
-            <Button variant={"secondary"} onClick={loginWithGithub}>
+            <Button
+              variant={"secondary"}
+              onClick={() => {
+                loginWithGithub(!!redirectRoute);
+              }}
+            >
               <GitHub />
               Sign up with GitHub
             </Button>
-            <Button variant={"outlineBlack"} onClick={loginWithGoogle}>
+            <Button
+              variant={"outlineBlack"}
+              onClick={() => {
+                loginWithGoogle(!!redirectRoute);
+              }}
+            >
               <Google />
               Sign up with Google
             </Button>
