@@ -16,6 +16,8 @@ import { Input } from "./ui/input";
 
 import { Textarea } from "./ui/textarea";
 import toast, { Toaster } from "react-hot-toast";
+import React from "react";
+import { Spinner } from "@heroui/spinner";
 
 const DEBUG = 1; // Debug flag
 
@@ -57,10 +59,11 @@ const ContactUsForm: React.FC = () => {
 		},
 	});
 
+	const [loading, setLoading] = React.useState(false);
+
 	// Defining Form Submit Handler
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		if (DEBUG) console.log("Values: ", values);
-
+		setLoading(true);
 		try {
 			const response = await fetch("/api/contact", {
 				method: "POST",
@@ -74,6 +77,7 @@ const ContactUsForm: React.FC = () => {
 			console.error("Error submitting form:", error);
 			toast.error("Failed to submit form");
 		}
+		setLoading(false);
 	}
 
 	return (
@@ -145,9 +149,15 @@ const ContactUsForm: React.FC = () => {
 								);
 							}}
 						/>
-						<Button fullWidth type="submit">
-							Submit
-						</Button>
+						{loading ? (
+							<div className="flex justify-center">
+								<Spinner />
+							</div>
+						) : (
+							<Button fullWidth type="submit">
+								Submit
+							</Button>
+						)}
 					</form>
 				</Form>
 			</div>
