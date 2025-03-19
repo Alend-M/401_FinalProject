@@ -15,6 +15,7 @@ interface LoginContextInterface {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+  loginToastUp: boolean;
   login: (
     email: string,
     password: string
@@ -26,17 +27,20 @@ interface LoginContextInterface {
     email: string,
     password: string
   ) => Promise<{ success: boolean; error?: string }>;
+  changeLoginToastUp: (state: boolean) => void;
 }
 
 const LoginContextDefaultValues: LoginContextInterface = {
   user: null,
   isLoading: true,
   isAuthenticated: false,
+  loginToastUp: false,
   login: async () => ({ success: false }),
   loginWithGoogle: async () => {},
   loginWithGithub: async () => {},
   logout: async () => {},
   signup: async () => ({ success: false }),
+  changeLoginToastUp: () => {},
 };
 
 const LoginContext = createContext<LoginContextInterface>(
@@ -54,6 +58,9 @@ interface Props {
 export function LoginProvider({ children }: Props) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loginToastUp, setLoginToastUp] = useState<boolean>(
+    LoginContextDefaultValues.loginToastUp
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -103,6 +110,8 @@ export function LoginProvider({ children }: Props) {
       authListener?.subscription.unsubscribe();
     };
   }, []);
+
+  useEffect(() => console.log(loginToastUp), [loginToastUp]);
 
   async function login(email: string, password: string) {
     try {
@@ -174,15 +183,21 @@ export function LoginProvider({ children }: Props) {
     }
   }
 
+  function changeLoginToastUp(state: boolean) {
+    setLoginToastUp(state);
+  }
+
   const value = {
     user,
     isLoading,
     isAuthenticated: !!user,
+    loginToastUp,
     login,
     loginWithGoogle,
     loginWithGithub,
     logout,
     signup,
+    changeLoginToastUp,
   };
 
   return (

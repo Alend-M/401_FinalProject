@@ -52,7 +52,8 @@ const formSchema = z
   });
 
 const SignUpForm: React.FC = () => {
-  const { signup, loginWithGithub, loginWithGoogle } = useLoginContext();
+  const { signup, loginWithGithub, loginWithGoogle, changeLoginToastUp } =
+    useLoginContext();
   const searchParams = useSearchParams();
   const redirectRoute = searchParams.get("redirect"); // returns 'bar' when ?foo=bar
   const loginPath = redirectRoute ? "/login?redirect=results" : "/login";
@@ -75,6 +76,8 @@ const SignUpForm: React.FC = () => {
 
     if (DEBUG) console.log("Values: ", values);
 
+    changeLoginToastUp(true);
+
     const { email, password } = values;
     const { success, error } = await signup(email, password);
 
@@ -92,10 +95,11 @@ const SignUpForm: React.FC = () => {
       });
     }
 
-    const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/";
+    const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/login";
 
     setTimeout(() => {
       router.push(destination);
+      changeLoginToastUp(false);
     }, 1000);
   }
 

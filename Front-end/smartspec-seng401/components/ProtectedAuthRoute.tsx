@@ -16,12 +16,16 @@ export default function ProtectedAuthRoute({
   redirectTo = "/",
 }: ProtectedAuthRouteProps) {
   const router = useRouter();
-  const { isAuthenticated, isLoading: authLoading } = useLoginContext();
+  const {
+    isAuthenticated,
+    isLoading: authLoading,
+    loginToastUp,
+  } = useLoginContext();
 
   useEffect(() => {
     const verifyAuth = () => {
       // Check if user is logged in
-      if (!authLoading && isAuthenticated) {
+      if (!authLoading && isAuthenticated && !loginToastUp) {
         // If logged in, redirect away from login/signup
         console.log("User is logged in, redirecting to", redirectTo);
         router.replace(redirectTo);
@@ -35,11 +39,9 @@ export default function ProtectedAuthRoute({
     verifyAuth();
   }, []);
 
-  // Show loading state while checking auth
-  if (authLoading || isAuthenticated) {
-    return <Spinner className="mt-10" />;
-  }
-
   // Return children (login/signup page) only if not authenticated
-  return <>{children}</>;
+  if (loginToastUp || !isAuthenticated) return <>{children}</>;
+
+  // Show loading state while checking auth
+  return <Spinner className="mt-10" />;
 }

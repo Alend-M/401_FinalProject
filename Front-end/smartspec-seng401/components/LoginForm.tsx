@@ -52,7 +52,8 @@ const LoginForm: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const { login, loginWithGithub, loginWithGoogle } = useLoginContext();
+  const { login, loginWithGithub, loginWithGoogle, changeLoginToastUp } =
+    useLoginContext();
 
   const searchParams = useSearchParams();
   const redirectRoute = searchParams.get("redirect"); // returns 'bar' when ?foo=bar
@@ -71,6 +72,7 @@ const LoginForm: React.FC = () => {
     if (DEBUG) console.log("Values: ", values);
 
     setLoading(true);
+    changeLoginToastUp(true);
     const { email, password } = values;
     const { success, error } = await login(email, password);
 
@@ -93,11 +95,14 @@ const LoginForm: React.FC = () => {
 
       // Disable immediate automatic redirects
       // by using a local navigation flag
-      const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/";
+      const destination = redirectRoute
+        ? `${redirectRoute}/?restore=true`
+        : "/";
 
       setTimeout(() => {
         router.push(destination);
         setLoading(false);
+        changeLoginToastUp(false);
       }, 1000);
     }
   }
