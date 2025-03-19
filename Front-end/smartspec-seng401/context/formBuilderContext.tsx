@@ -13,25 +13,9 @@ import { useBuildResultContext } from "./buildResultContext";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 import { useLoginContext } from "./loginContext";
 
-// const API_URL = "http://localhost:8000";
-
-// const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 const API_URL = NEXT_PUBLIC_API_GATEWAY_URL;
 
 interface FormBuilderContextInterface {
-  /* We need the following attributes:
-    - User's Budget: number
-    - List of Users Games: string[]
-    - Display resolution: string
-    - Minimum fps: number
-    - Graphical Quality: string
-    - Pre-owned Hardware: list[{ComponentType: string, name: string}]
-
-    Then of course, we'd like the following actions:
-    - Change budget: () => number
-    - Submit form: () => {},
-    */
-
   /*ATTRIBUTES*/
   budget: number;
   minFps: number;
@@ -55,11 +39,11 @@ interface FormBuilderContextInterface {
 }
 
 const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
-  budget: 0,
-  minFps: 0,
-  gamesList: [],
-  displayResolution: "",
-  graphicalQuality: "",
+  budget: 1500,
+  minFps: 60,
+  gamesList: ["Cyberpunk 2077"],
+  displayResolution: "1440p",
+  graphicalQuality: "High",
   preOwnedHardware: [],
   changeBudget: () => {},
   changeMinFps: () => {},
@@ -71,7 +55,7 @@ const FormBuilderContextDefaultValues: FormBuilderContextInterface = {
   addToPreOwnedHardware: () => {},
   removeFromPreOwnedHardware: () => {},
   updatePreOwnedHardware: () => {},
-  submitForm: () => Promise.resolve(),
+  submitForm: async () => {},
 };
 
 const FormBuilderContext = createContext<FormBuilderContextInterface>(
@@ -87,12 +71,24 @@ interface Props {
 }
 
 export function FormBuilderProvider({ children }: Props) {
-  const [budget, setBudget] = useState<number>(0);
-  const [minFps, setMinFps] = useState<number>(0);
-  const [gamesList, setGamesList] = useState<string[]>([]);
-  const [displayResolution, setDisplayResolution] = useState<string>("");
-  const [graphicalQuality, setGraphicalQuality] = useState<string>("");
-  const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>([]);
+  const [budget, setBudget] = useState<number>(
+    FormBuilderContextDefaultValues.budget
+  );
+  const [minFps, setMinFps] = useState<number>(
+    FormBuilderContextDefaultValues.minFps
+  );
+  const [gamesList, setGamesList] = useState<string[]>(
+    FormBuilderContextDefaultValues.gamesList
+  );
+  const [displayResolution, setDisplayResolution] = useState<string>(
+    FormBuilderContextDefaultValues.displayResolution
+  );
+  const [graphicalQuality, setGraphicalQuality] = useState<string>(
+    FormBuilderContextDefaultValues.graphicalQuality
+  );
+  const [preOwnedHardware, setPreOwnedHardware] = useState<Component[]>(
+    FormBuilderContextDefaultValues.preOwnedHardware
+  );
 
   const { loadBuildResult, loadSummary } = useBuildResultContext(); // Inter-context communication
   const { user, isAuthenticated } = useLoginContext();
