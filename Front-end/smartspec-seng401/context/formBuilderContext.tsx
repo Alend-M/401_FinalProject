@@ -184,7 +184,7 @@ export function FormBuilderProvider({ children }: Props) {
       })
       .then((response) => {
         // DEBUG
-        console.log(response);
+        // console.log(response);
 
         const {
           CPUs,
@@ -215,32 +215,32 @@ export function FormBuilderProvider({ children }: Props) {
       });
   }
 
-  useEffect(() => {
-    function debugPrint() {
-      console.log(
-        "Budget: ",
-        budget,
-        "\nMinFps: ",
-        minFps,
-        "\nGames: ",
-        gamesList,
-        "\nDisplay Resolution: ",
-        displayResolution,
-        "\nGraphical Quality: ",
-        graphicalQuality,
-        "\nPre-owned Hardware: ",
-        preOwnedHardware
-      );
-    }
-    debugPrint();
-  }, [
-    budget,
-    minFps,
-    gamesList,
-    displayResolution,
-    graphicalQuality,
-    preOwnedHardware,
-  ]);
+  // useEffect(() => {
+  //   function debugPrint() {
+  //     console.log(
+  //       "Budget: ",
+  //       budget,
+  //       "\nMinFps: ",
+  //       minFps,
+  //       "\nGames: ",
+  //       gamesList,
+  //       "\nDisplay Resolution: ",
+  //       displayResolution,
+  //       "\nGraphical Quality: ",
+  //       graphicalQuality,
+  //       "\nPre-owned Hardware: ",
+  //       preOwnedHardware
+  //     );
+  //   }
+  //   debugPrint();
+  // }, [
+  //   budget,
+  //   minFps,
+  //   gamesList,
+  //   displayResolution,
+  //   graphicalQuality,
+  //   preOwnedHardware,
+  // ]);
 
   const value = {
     budget,

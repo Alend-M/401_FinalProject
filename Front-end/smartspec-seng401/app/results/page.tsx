@@ -5,7 +5,8 @@ import BuildSummary from "@/components/BuildSummary";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { useBuildResultContext } from "@/context/buildResultContext";
-import React from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect } from "react";
 
 function ResultsPage() {
 	const {
@@ -15,10 +16,27 @@ function ResultsPage() {
 		totalPrice,
 		summary,
 		saveBuildResult,
+		loadBuildResult,
+		loadSummary,
 		discardBuildResult,
 	} = useBuildResultContext();
 
 	const preOwnedHardware = summary.preOwnedHardware;
+
+	  const searchParams = useSearchParams();
+	
+	  useEffect(() => {
+		const restore = searchParams.get("restore");
+		if (restore === "true") {
+		  const buildResultsString = localStorage.getItem("buildResults");
+		  const summaryString = localStorage.getItem("summary");
+	
+		  if (buildResultsString && summaryString) {
+			loadBuildResult(JSON.parse(buildResultsString));
+			loadSummary(JSON.parse(summaryString));
+		  }
+		}
+	  },[searchParams]);
 
 	return (
 		<div className="flex flex-col items-center space-y-major">

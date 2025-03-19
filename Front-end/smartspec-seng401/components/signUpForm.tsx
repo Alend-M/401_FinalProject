@@ -21,6 +21,7 @@ import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
 import toast, { Toaster } from "react-hot-toast";
 import { useLoginContext } from "@/context/loginContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const DEBUG = 1; // Debug flag
 
@@ -52,6 +53,11 @@ const formSchema = z
 
 const SignUpForm: React.FC = () => {
   const { signup, loginWithGithub, loginWithGoogle } = useLoginContext();
+  const searchParams = useSearchParams();
+  const redirectRoute = searchParams.get("redirect"); // returns 'bar' when ?foo=bar
+  const loginPath = redirectRoute ? "/login?redirect=results" : "/login";
+
+  const router = useRouter();
 
   // Defining the Sign up Form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -79,13 +85,18 @@ const SignUpForm: React.FC = () => {
         },
       });
     } else {
-      // #TODO: Add shadcn alert for success
       toast.success("Signup Succesful!", {
         style: {
           padding: "16px",
         },
       });
     }
+
+    const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/";
+
+    setTimeout(() => {
+      router.push(destination);
+    }, 1000);
   }
 
   return (
@@ -168,7 +179,7 @@ const SignUpForm: React.FC = () => {
             />
             <p className="text-sm">
               Already have an account?{" "}
-              <Link href="/login" className="text-primaryColor">
+              <Link href={loginPath} className="text-primaryColor">
                 Log in
               </Link>
             </p>

@@ -20,7 +20,7 @@ import { GitHub, Google } from "@mui/icons-material";
 import { Separator } from "./ui/separator";
 import { Title } from "./ui/title";
 import toast, { Toaster } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Spinner } from "@heroui/spinner";
 import { useState } from "react";
 import { useLoginContext } from "@/context/loginContext";
@@ -54,6 +54,10 @@ const LoginForm: React.FC = () => {
 
   const { login, loginWithGithub, loginWithGoogle } = useLoginContext();
 
+  const searchParams = useSearchParams();
+  const redirectRoute = searchParams.get("redirect"); // returns 'bar' when ?foo=bar
+  const signUpPath = redirectRoute ? "/signup?redirect=results" : "/signup";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,12 +68,10 @@ const LoginForm: React.FC = () => {
 
   // Defining Login Handler
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // ✅ This will be type-safe and validated.
     if (DEBUG) console.log("Values: ", values);
 
     setLoading(true);
     const { email, password } = values;
-
     const { success, error } = await login(email, password);
 
     if (!success && error) {
@@ -82,17 +84,22 @@ const LoginForm: React.FC = () => {
       setLoading(false);
       return;
     } else {
+      // Show success toast
       toast.success("Login Successful!", {
         style: {
           padding: "16px",
         },
       });
-    }
 
-    setTimeout(() => {
-      router.push("/");
-      setLoading(false);
-    }, 1000);
+      // Disable immediate automatic redirects
+      // by using a local navigation flag
+      const destination = redirectRoute ? `${redirectRoute}/?restore=true` : "/";
+
+      setTimeout(() => {
+        router.push(destination);
+        setLoading(false);
+      }, 1000);
+    }
   }
 
   return (
@@ -161,7 +168,7 @@ const LoginForm: React.FC = () => {
             />
             <p className="text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/signup" className="text-primaryColor">
+              <Link href={signUpPath} className="text-primaryColor">
                 Sign Up
               </Link>
             </p>

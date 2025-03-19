@@ -10,6 +10,8 @@ import {
   useState,
   useEffect,
 } from "react";
+import { useLoginContext } from "./loginContext";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // const API_URL = process.env.NEXT_PUBLIC_API_GATEWAY_URL;
 const API_URL = NEXT_PUBLIC_API_GATEWAY_URL;
@@ -83,7 +85,7 @@ const BuildResultContextDefaultValues: BuildResultContextInterface = {
     preOwnedHardware: [],
   },
   loadBuildResult: () => {},
-  saveBuildResult: () => Promise.resolve(),
+  saveBuildResult: async () => {},
   discardBuildResult: () => {},
   loadSummary: () => {},
 };
@@ -111,6 +113,10 @@ export function BuildResultsProvider({ children }: Props) {
     BuildResultContextDefaultValues.summary
   );
 
+  const { isAuthenticated, user } = useLoginContext();
+
+  const router = useRouter();
+
   function parsePrice(priceString: string): number {
     // Remove the '$' character and any commas, then convert to number
     return parseFloat(priceString.replace(/[$,]/g, ""));
@@ -130,8 +136,7 @@ export function BuildResultsProvider({ children }: Props) {
     setTotalPrice(totalPrice);
   }
 
-  function saveBuildResult() {
-    // TODO: Saves build
+  async function saveBuildResult() {
     /*
     @app.post("/save_build/{user_id}")
 async def saveBuildEndpoint(user_id: str, build: Request):
@@ -141,21 +146,36 @@ async def saveBuildEndpoint(user_id: str, build: Request):
     return JSONResponse(content=save_response, headers=headers)
     */
 
-    // TODO: Hardcoded user_id for now
-    const user_id = "1";
+    // TODO: Ignore authenticated users for now
+
     const payload = {
       ...buildResult,
       input: summary,
     };
 
-    return axios
-      .post(`${API_URL}/save_build/${user_id}`, payload)
-      .then((response) => {
-        console.log("Save Response: ", response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      if (isAuthenticated) {
+        const { data } = await axios.post(
+          `${API_URL}/save_build/${user?.id}`,
+          payload
+        );
+
+        if (data === -1) {
+          throw new Error("Could not save user's build");
+        } else {
+          router.push('/history');
+        }
+      } else {
+        // Store build in localStorage
+        localStorage.setItem("buildResult", JSON.stringify(buildResult));
+        localStorage.setItem("summary", JSON.stringify(summary));
+
+        // Redirect to Login (but redirect here)
+        router.push("/login/?redirect=results");
+      }
+    } catch (error: unknown) {
+      console.error("Error while saving Build: ", error);
+    }
   }
 
   function discardBuildResult() {

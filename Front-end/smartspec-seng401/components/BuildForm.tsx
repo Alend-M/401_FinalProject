@@ -61,7 +61,7 @@ function BuildForm() {
         setFormComponent={changeMinFps}
         description="Choose the minimum amount of FPS you can bare"
         lowerBound={30}
-        upperBound={500}
+        upperBound={240}
         unit="FPS"
         defaultValue={minFps}
         step={5}
