@@ -132,7 +132,7 @@ async def getPcRecommendation(pc_requirements: json) -> dict:
 Based on the following requirements for a PC Build:{pc_requirements}. Fill in the provided template for the best PC Build recommendation following.
 All prices provided must be in Canadian Dollars. If the requirements parts names are given, you MUST use them in your provided build. 
 If the budget is not enough to meet the requirements, please provide the best build possible with the given budget. You must provide a justification 
-for each part in the build refrencing the price inputed requirement, graphical quality, and games provided while also explaining why pre-owned parts would still work.
+for each part in the build referencing the price inputed requirement, graphical quality, and games provided while also explaining why pre-owned parts would still work.
 """
     response = model.generate_content(prompt).text # Sends the request to AI and extracts the response
 

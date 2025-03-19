@@ -10,7 +10,6 @@ import {
 import { supabase } from "@/utils/supabaseClient";
 import { AuthError, User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { error } from "console";
 
 interface LoginContextInterface {
   user: User | null;
@@ -61,34 +60,46 @@ export function LoginProvider({ children }: Props) {
     // DEBUG: Check how many times LoginProvider is mounted?
     console.log("LoginProvider Mounted");
 
-    // Check for existing session on mount
-    const checkSession = () => {
-      return supabase.auth
-        .getUser()
-        .then(({ data: { user }, error }) => {
-          if (error) throw error;
-          setUser(user);
-        })
-        .catch((error) => {
-          console.error("Error loggin user in", error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
-
-    // Set up auth state listener
+    // Set up auth state listener first to avoid missing events
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user || null);
+      (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.id);
+
+        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+          setUser(session?.user || null);
+        } else if (event === "SIGNED_OUT") {
+          setUser(null);
+        }
+
         setIsLoading(false);
       }
     );
+
+    // Then check the initial session
+    const checkSession = async () => {
+      try {
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+        if (error) throw error;
+
+        // Use session.user instead of just user
+        setUser(session?.user || null);
+        console.log("Initial session check:", session?.user?.id || "No user");
+      } catch (error) {
+        console.error("Error checking session:", error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
     checkSession();
 
     // Clean up listener
     return () => {
+      console.log("Cleaning up auth listener");
       authListener?.subscription.unsubscribe();
     };
   }, []);
@@ -131,7 +142,7 @@ export function LoginProvider({ children }: Props) {
       });
 
       if (error) throw error;
-    } catch {
+    } catch (error) {
       console.error("GitHub login error: ", error);
     }
   }
