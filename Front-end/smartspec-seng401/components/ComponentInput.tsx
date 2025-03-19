@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { BaseText } from "./ui/baseText";
 import { SmallText } from "./ui/smallText";
 import { Input } from "./ui/input";
@@ -31,20 +31,12 @@ export enum ComponentType {
 
 function ComponentInput() {
   // Use context instead of local state
-  const { 
-    preOwnedHardware, 
-    addToPreOwnedHardware, 
-    removeFromPreOwnedHardware, 
+  const {
+    preOwnedHardware,
+    addToPreOwnedHardware,
+    removeFromPreOwnedHardware,
     updatePreOwnedHardware,
   } = useFormBuilderContext();
-
-  useEffect(() => {
-    // Initialize with default components if empty
-    if (preOwnedHardware.length === 0) {
-      addToPreOwnedHardware({ type: ComponentType.RAM, name: "Corsair Vengeance RGB Pro 32GB" });
-      addToPreOwnedHardware({ type: ComponentType.CPU, name: "Intel Core-i7" });
-    }
-  }, []);
 
   function handleAddComponent() {
     addToPreOwnedHardware({ type: ComponentType.CPU, name: "" });
@@ -106,8 +98,8 @@ function ComponentInput() {
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Input 
-              defaultValue={part.name} 
+            <Input
+              defaultValue={part.name}
               onChange={(e) => handleComponentNameChange(i, e.target.value)}
             />
             <div className="w-fit cursor-pointer">
