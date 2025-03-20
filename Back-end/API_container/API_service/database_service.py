@@ -64,7 +64,7 @@ def getAllUserPastBuilds(user_id: str) -> list:
     """
     supabaseClient = init_supabase()
     try:
-        response = supabaseClient.table("BuildHistory").select("buildjson").eq("userid", user_id).execute()
+        response = supabaseClient.table("BuildHistory").select("*").eq("userid", user_id).execute()
         data = response.data
         
         if not data:
