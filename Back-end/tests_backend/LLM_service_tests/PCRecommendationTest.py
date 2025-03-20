@@ -33,7 +33,6 @@ class TestPcRecommendation(unittest.IsolatedAsyncioTestCase):
             "displayResolution": "1080p",
             "graphicalQuality": "Ray-tracing",
             "preOwnedHardware": [
-                { "type": "CPU", "name": "Intel Core-i7" },
                 { "type": "GPU", "name": "RTX 3070" }
             ]
         }
@@ -50,8 +49,19 @@ class TestPcRecommendation(unittest.IsolatedAsyncioTestCase):
     async def test_getPcRecommendation_bad_response(self, mock_model):
         """Test getPcRecommendation handles a bad AI response."""
         mock_model.generate_content.return_value.text = "Invalid JSON response"
-        
-        result = await getPcRecommendation({"budget": 1000})
+
+        pc_requirements = {
+            "budget": 1000,
+            "minFps": 56,
+            "gamesList": ["Marvel Rivals", "Fortnite"],
+            "displayResolution": "1080p",
+            "graphicalQuality": "Ray-tracing",
+            "preOwnedHardware": [
+                { "type": "GPU", "name": "RTX 3070" }
+            ]
+        }
+
+        result = await getPcRecommendation(pc_requirements)
         self.assertIn("error", result)
         self.assertEqual(result["error"], "bad response")
 
