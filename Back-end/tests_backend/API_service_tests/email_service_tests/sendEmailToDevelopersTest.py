@@ -3,7 +3,6 @@ from unittest.mock import patch, MagicMock
 import os
 from dotenv import load_dotenv
 
-# Import the function to test
 from API_container.API_service.email_service import sendEmailToDevelopers
 
 class TestSendEmailToDevelopers(unittest.TestCase):
