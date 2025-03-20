@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "838ee14b-cf43-4ef6-a029-90b73e4e7ad0",
+		"name": "401_Project Hosted",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33275004"
+	},
+	"item": [
+		{
+			"name": "Retrieving Builds by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/b51f0f76-e1ec-4a76-ba48-22cf8734739f",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						"past_builds",
+						"b51f0f76-e1ec-4a76-ba48-22cf8734739f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Root",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generating and Saving Builds",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"budget\": 500,\n    \"minFps\": 500,\n    \"gamesList\": [\"Marvel Rivals\", \"Fortnite\"],\n    \"displayResolution\": \"4k\",\n    \"graphicalQuality\": \"Ray-tracing\",\n    \"preOwnedHardware\": [\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/build/b51f0f76-e1ec-4a76-ba48-22cf8734739f",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						"build",
+						"b51f0f76-e1ec-4a76-ba48-22cf8734739f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generating Builds",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"budget\": 100,\n    \"minFps\": 20,\n    \"gamesList\": [\"Pong\"],\n    \"displayResolution\": \"1080p\",\n    \"graphicalQuality\": \"low\",\n    \"preOwnedHardware\": [\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/build/2",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						"build",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save build by User",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"CPUs\":{\"name\":\"AMD Ryzen 5 5600X\",\"price_CAD\":\"$220\",\"Justification\":\"Given the extremely limited budget of $500 CAD and the requirement for 4K ray-tracing in games like Marvel Rivals and Fortnite (which is unrealistic), the AMD Ryzen 5 5600X offers the best balance of performance and value. While it won't achieve 500 FPS at 4K with ray tracing, it's a capable CPU that leaves more budget for the GPU.\"},\"GPUs\":{\"name\":\"Used NVIDIA GeForce RTX 2060\",\"price_CAD\":\"$180\",\"Justification\":\"To even remotely attempt 4K gaming with ray tracing on such a tight budget, a used GPU is necessary. The RTX 2060 is the most viable option in this price range. Ray tracing performance will be limited, and achieving 500 FPS is impossible, but it is a good choice considering pre-owned parts can fit in the requirements.\"},\"RAM\":{\"name\":\"Corsair Vengeance LPX 16GB (2x8GB) DDR4 3200MHz\",\"price_CAD\":\"$60\",\"Justification\":\"16GB of RAM is the minimum recommended for modern games. 3200MHz provides good performance for the Ryzen 5 5600X. It's a budget-friendly option to ensure basic functionality.\"},\"Motherboards\":{\"name\":\"ASRock B450M Steel Legend\",\"price_CAD\":\"$80\",\"Justification\":\"A B450 motherboard is compatible with the Ryzen 5 5600X and is a very affordable option to keep costs down. It offers essential features for gaming and system operation.\"},\"Storage\":{\"name\":\"Kingston 500GB NVMe PCIe Gen3 SSD\",\"price_CAD\":\"$50\",\"Justification\":\"500GB NVMe SSD provides quick boot times and fast loading for your OS and games. Since the budget is so low, a smaller SSD is necessary.\"},\"Power_Supply\":{\"name\":\"EVGA 500 W1, 80+ WHITE 500W\",\"price_CAD\":\"$50\",\"Justification\":\"A 500W power supply is sufficient for this build's components. The EVGA W1 is a reliable and budget-friendly option.\"},\"Case\":{\"name\":\"Used Generic ATX Case\",\"price_CAD\":\"$10\",\"Justification\":\"To meet the budget requirements, a used generic ATX case is selected. It is suitable for the components.\"},\"Cooling\":{\"name\":\"Stock CPU Cooler\",\"price_CAD\":\"$0\",\"Justification\":\"The stock cooler that comes with the Ryzen 5 5600X is sufficient for its cooling needs. Since the CPU wont be overclocked. This saves money to stay within the very limited budget.\"},\"games\":[\"Marvel Rivals\",\"Fortnite\"]}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/save_build/4",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						"save_build",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete by buildid",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/delete/179",
+					"protocol": "https",
+					"host": [
+						"smartspec-backend",
+						"vy7t9a9crqmrp",
+						"us-west-2",
+						"cs",
+						"amazonlightsail",
+						"com"
+					],
+					"path": [
+						"delete",
+						"179"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
