@@ -10,7 +10,7 @@ import { Spinner } from "@heroui/spinner";
 import { BuildData } from "@/types";
 
 interface fetchedBuild {
-	id: string;
+	buildid: string;
 	buildjson: BuildData;
 	created_at?: string;
 }
@@ -31,7 +31,7 @@ const PastBuilds = () => {
 				setUserId(requestUserId);
 
 				try {
-					const apiUrl = `https://smartspec-backend.vy7t9a9crqmrp.us-west-2.cs.amazonlightsail.com/past_builds/${requestUserId}`;
+					const apiUrl = `${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/past_builds/${requestUserId}`;
 					const response = await axios.get(apiUrl);
 					if (response.data.length > 0) {
 						setBuilds(response.data);
@@ -52,8 +52,9 @@ const PastBuilds = () => {
 	// Format build data for display - computed on demand
 	const getFormattedBuild = (build: fetchedBuild, index: number) => {
 		const buildData = build.buildjson;
+		const buildid = build.buildid;
 		return {
-			build_id: index + 1,
+			build_id: buildid,
 			name: `Build ${index + 1}`,
 			cpu: buildData.CPUs?.name || "Unknown CPU",
 			gpu: buildData.GPUs?.name || "Unknown GPU",

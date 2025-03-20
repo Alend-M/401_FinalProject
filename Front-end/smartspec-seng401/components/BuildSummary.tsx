@@ -119,8 +119,10 @@ function BuildSummary({
 			</div>
 			<Separator />
 			<div className="flex flex-row justify-between">
-				<BaseText>Total Price: </BaseText>
-				<div>{`$${totalPrice}`}</div>
+				<div className="flex flex-row">
+					<BaseText>Total Price: </BaseText>
+					<div className="ml-3">{`$${totalPrice}`}</div>
+				</div>
 				<Button
 					variant={"outline"}
 					className="text-danger hover:border-danger"
@@ -128,9 +130,11 @@ function BuildSummary({
 				>
 					Discard Build
 				</Button>
-				<Button variant={"default"} onClick={handleSaveBuild}>
-					Save Build
-				</Button>
+				{saveBuildResult && (
+					<Button variant={"default"} onClick={handleSaveBuild}>
+						Save Build
+					</Button>
+				)}
 			</div>
 		</div>
 	);

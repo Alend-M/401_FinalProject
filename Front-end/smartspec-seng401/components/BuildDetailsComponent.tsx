@@ -15,6 +15,7 @@ interface BuildDetailsComponentProps {
 
 interface Build {
 	buildjson: BuildData;
+	buildid: string;
 }
 
 const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
@@ -22,6 +23,7 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 }) => {
 	const router = useRouter();
 	const [buildData, setBuildData] = useState<BuildData | null>(null);
+	const [buildDatabaseId, setBuildDatabaseId] = useState<string | null>(null);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -35,6 +37,7 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 				try {
 					const parsedBuild: Build = JSON.parse(storedBuild);
 					setBuildData(parsedBuild.buildjson);
+					setBuildDatabaseId(parsedBuild.buildid);
 					setLoading(false);
 					return;
 				} catch (error) {
@@ -123,6 +126,14 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 	const gamesList = buildData.input.gamesList;
 	const preOwnedHardWare = buildData.input.preOwnedHardware;
 
+	const deleteBuild = () => {
+		// PASS THE BUILD ID AS IT IS NOW IN THE RETURNED JSON as build.buildid!
+		axios.delete(
+			`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/delete/${buildDatabaseId}`
+		);
+		router.push("/history");
+	};
+
 	return (
 		<div className="w-full max-w-4xl space-y-8">
 			<BuildAccordion components={components} />
@@ -131,6 +142,7 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 				totalPrice={calculatedTotalPrice}
 				gamesList={gamesList}
 				preOwnedHardware={preOwnedHardWare}
+				discardBuildResult={deleteBuild}
 			/>
 		</div>
 	);
