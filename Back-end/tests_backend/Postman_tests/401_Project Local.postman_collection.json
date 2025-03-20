@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "17469046-93d2-4449-92b1-621c52f2d91d",
+		"name": "401_Project Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33275004"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/past_builds/b5c5e11d-37da-4ca2-b67f-d8d92f68cdd1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"past_builds",
+						"b5c5e11d-37da-4ca2-b67f-d8d92f68cdd1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/build/1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"budget\": 500,\n    \"minFps\": 500,\n    \"gamesList\": [\"Marvel Rivals\", \"Fortnite\"],\n    \"displayResolution\": \"4k\",\n    \"graphicalQuality\": \"Ray-tracing\",\n    \"preOwnedHardware\": [\n    ]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/build/3",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"build",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8002/generate-text",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Games\": \n        [\n        {\n            \"name\": \"Cyberpunk 2077\",\n            \"fps\": \"60\",\n            \"quality\": \"High\"\n        },\n        { \n            \"name\": \"Valorant\",\n            \"fps\": \"144\",\n            \"quality\": \"High\"\n        }\n        ],\n    \"CPU\":\n        {\n            \"name\": \"Intel Core i9-14900K\"\n        },\n    \"GPU\":\n        {\n            \"name\": \"N/A\"\n        },\n    \"RAM\":\n        {\n            \"size\": \"N/A\"\n        },\n    \"Motherboard\":\n        {\n            \"name\": \"N/A\"\n        },\n    \"Storage\":\n        {\n            \"size\": \"1TB\"\n        },\n    \"Power_Supply\":\n        {\n            \"name\": \"N/A\"\n        },\n    \"Case\":\n        {\n            \"name\": \"N/A\"\n        },\n    \"Cooling\":\n        {\n            \"name\": \"N/A\"\n        }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8002/generate-text",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8002",
+					"path": [
+						"generate-text"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8001/save_build/13",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"CPUs\": {\n        \"name\": \"Intel Core i9-14900K\",\n        \"price_CAD\": \"$729.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=4_64&item_id=246744\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/intel-core-i9-14900k/p/N82E16819118478\"\n            }\n        ]\n    },\n    \"GPUs\": {\n        \"name\": \"NVIDIA GeForce RTX 4070\",\n        \"price_CAD\": \"$749.00\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=43_557_558&item_id=252372\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/gigabyte-geforce-rtx-4070-gv-n4070wf3oc-12gd/p/N82E16814932637\"\n            },\n            {\n                \"retailer\": \"Amazon\",\n                \"url\": \"https://www.amazon.ca/s?k=rtx+4070&i=electronics&hvadid=667442694767&hvdev=c&hvlocphy=9001534&hvnetw=g&hvqmt=e&hvrand=1329737231899959227&hvtargid=kwd-2249907764177&hydadcr=24388_13521646&tag=googcana-20&ref=pd_sl_434021n3z0_e\"\n            }\n        ]\n    },\n    \"RAM\": {\n        \"name\": \"Corsair Vengeance DDR5 32GB (2x16GB) 5600MHz\",\n        \"price_CAD\": \"$129.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=24_311_1326&item_id=235952\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/corsair-32gb-ddr5-5600/p/N82E16820236853\"\n            }\n        ]\n    },\n    \"Motherboards\": {\n        \"name\": \"MSI PRO Z790-A WIFI DDR5\",\n        \"price_CAD\": \"$319.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=26_1832_1833&item_id=236082\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/p/N82E16813144550\"\n            }\n        ]\n    },\n    \"Storage\": {\n        \"name\": \"Samsung 980 Pro 1TB\",\n        \"price_CAD\": \"$99.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=179_4229&item_id=178798\"\n            },\n            {\n                \"retailer\": \"Amazon\",\n                \"url\": \"https://www.amazon.ca/Samsung-980-PRO-w-Heatsink/dp/B08V83JZH4?th=1\"\n            }\n        ]\n    },\n    \"Power_Supply\": {\n        \"name\": \"Corsair RM850x (2021)\",\n        \"price_CAD\": \"$159.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=33_1938&item_id=193078\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/corsair-rm850x-2021-cp-9020200-na-850-w/p/N82E16817139272\"\n            },\n            {\n                \"retailer\": \"Amazon\",\n                \"url\": \"https://www.amazon.ca/CORSAIR-RM850x-Certified-Modular-Power/dp/B08R5JPTF3\"\n            }\n        ]\n    },\n    \"Case\": {\n        \"name\": \"NZXT H510\",\n        \"price_CAD\": \"$89.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=6_112&item_id=139560\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/black-nzxt-h510-atx-mid-tower/p/N82E16811146314\"\n            }\n        ]\n    },\n    \"Cooling\": {\n        \"name\": \"NZXT Kraken Elite RGB 360\",\n        \"price_CAD\": \"$379.99\",\n        \"buy_links\": [\n            {\n                \"retailer\": \"Canada Computers\",\n                \"url\": \"https://www.canadacomputers.com/product_info.php?cPath=8_135&item_id=253408\"\n            },\n            {\n                \"retailer\": \"Newegg Canada\",\n                \"url\": \"https://www.newegg.ca/nzxt-kraken-elite-rgb-360-liquid-cooling-system/p/N82E16835146081?Item=N82E16835146081\"\n            }\n        ]\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8001/save_build/13",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8001",
+					"path": [
+						"save_build",
+						"13"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/delete/29",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/delete/29",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"delete",
+						"29"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
