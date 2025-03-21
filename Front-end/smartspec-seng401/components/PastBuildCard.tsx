@@ -104,13 +104,6 @@ const BuildCard: React.FC<BuildCardProps> = ({ build, onViewBuild }) => {
     );
   };
 
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return `${date.getDate()}th ${date.toLocaleString("default", {
-      month: "long",
-    })}, ${date.getFullYear()}`;
-  };
-
   const handleViewBuild = () => {
     if (onViewBuild) {
       onViewBuild(build.build_id);
@@ -128,7 +121,7 @@ const BuildCard: React.FC<BuildCardProps> = ({ build, onViewBuild }) => {
           </p>
         </div>
 
-        <div className="text-gray-500">{formatDate(build.date)}</div>
+        <div className="text-gray-500"></div>
       </div>
 
       <div className="flex justify-between items-center mt-8">
