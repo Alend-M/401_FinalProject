@@ -52,7 +52,7 @@ function HomePage() {
       {/* Build Form Section */}
       <div
         ref={buildFormRef}
-        className="flex flex-col items-center justify-start sm:pt-massive pt-major mb-10 space-y-major min-h-screen"
+        className="flex flex-col items-center justify-start py-massive mb-10 space-y-major min-h-screen"
       >
         <div className="flex flex-col items-center justify-center">
           <Title className="text-secondaryColor">SmartSpec Builder</Title>
