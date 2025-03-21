@@ -18,6 +18,7 @@ import { Textarea } from "./ui/textarea";
 import toast, { Toaster } from "react-hot-toast";
 import React from "react";
 import { Spinner } from "@heroui/spinner";
+import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 
 const DEBUG = 1; // Debug flag
 
@@ -65,7 +66,7 @@ const ContactUsForm: React.FC = () => {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		setLoading(true);
 		try {
-			const response = await fetch("/api/contact", {
+			const response = await fetch(`${NEXT_PUBLIC_API_GATEWAY_URL}/contact`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(values),
