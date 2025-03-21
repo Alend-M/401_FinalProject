@@ -41,101 +41,112 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 
 	if (!hideNavbar || override)
 		return (
-			<NavigationMenu className="space-x-medium">
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<Link href="/" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/" && activeStyling
-								)}
-							>
-								Home
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link href="/about" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/about" && activeStyling
-								)}
-							>
-								About Us
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link href="/contact" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/contact" && activeStyling
-								)}
-							>
-								Contact Us
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					{isAuthenticated && (
+			<NavigationMenu>
+				<div
+					className="overflow-x-auto whitespace-nowrap flex w-full space-x-6 items-end sm:justify-end"
+					style={{ scrollbarWidth: "none" }}
+				>
+					<NavigationMenuList>
 						<NavigationMenuItem>
-							<Link href="/history" legacyBehavior passHref>
+							<Link href="/" legacyBehavior passHref>
 								<NavigationMenuLink
 									className={cn(
 										navigationMenuTriggerStyle(),
-										pathname === "/history" && activeStyling
+										pathname === "/" && activeStyling
 									)}
 								>
-									Build History
+									Home
 								</NavigationMenuLink>
 							</Link>
 						</NavigationMenuItem>
-					)}
-				</NavigationMenuList>
-				<div className="flex flex-row justify-center align-center space-x-minor">
-					{isAuthenticated ? (
-						<Popover>
-							<PopoverTrigger asChild>
-								<div className="cursor-pointer flex-shrink-0 ">
-									{user?.user_metadata?.avatar_url ? (
-										<Image
-											src={user?.user_metadata.avatar_url}
-											alt="User Avatar"
-											width={35}
-											height={35}
-											className="rounded-full object-cover"
-										/>
-									) : (
-										<AccountCircleIcon
-											className="text-white"
-											style={{ fontSize: 40 }}
-										/>
+						<NavigationMenuItem>
+							<Link href="/about" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={cn(
+										navigationMenuTriggerStyle(),
+										pathname === "/about" && activeStyling
 									)}
-								</div>
-							</PopoverTrigger>
-							<PopoverContent className="w-40 p-2">
-								<p className="truncate text-sm mb-2 w-36">{user?.email}</p>
-								<Button
-									variant="outline"
-									onClick={handleLogout}
-									className="w-full"
 								>
-									Logout
+									About Us
+								</NavigationMenuLink>
+							</Link>
+						</NavigationMenuItem>
+						<NavigationMenuItem>
+							<Link href="/contact" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={cn(
+										navigationMenuTriggerStyle(),
+										pathname === "/contact" && activeStyling
+									)}
+								>
+									Contact Us
+								</NavigationMenuLink>
+							</Link>
+						</NavigationMenuItem>
+						{isAuthenticated && (
+							<NavigationMenuItem>
+								<Link href="/history" legacyBehavior passHref>
+									<NavigationMenuLink
+										className={cn(
+											navigationMenuTriggerStyle(),
+											pathname === "/history" && activeStyling
+										)}
+									>
+										Build History
+									</NavigationMenuLink>
+								</Link>
+							</NavigationMenuItem>
+						)}
+					</NavigationMenuList>
+					<div className="flex flex-row justify-center align-center space-x-minor">
+						{isAuthenticated ? (
+							<Popover>
+								<PopoverTrigger asChild>
+									<div className="cursor-pointer flex-shrink-0 ">
+										{user?.user_metadata?.avatar_url ? (
+											<Image
+												src={user?.user_metadata.avatar_url}
+												alt="User Avatar"
+												width={35}
+												height={35}
+												className="rounded-full object-cover"
+											/>
+										) : (
+											<AccountCircleIcon
+												className="text-white"
+												style={{ fontSize: 40 }}
+											/>
+										)}
+									</div>
+								</PopoverTrigger>
+								<PopoverContent className="w-40 p-2">
+									<p className="truncate text-sm mb-2 w-36">{user?.email}</p>
+									<Button
+										variant="outline"
+										onClick={handleLogout}
+										className="w-full"
+									>
+										Logout
+									</Button>
+								</PopoverContent>
+							</Popover>
+						) : (
+							<>
+								<Button
+									variant="secondary"
+									onClick={() => router.push("/login")}
+								>
+									Login
 								</Button>
-							</PopoverContent>
-						</Popover>
-					) : (
-						<>
-							<Button variant="secondary" onClick={() => router.push("/login")}>
-								Login
-							</Button>
-							<Button variant="default" onClick={() => router.push("/signup")}>
-								Sign up
-							</Button>
-						</>
-					)}
+								<Button
+									variant="default"
+									onClick={() => router.push("/signup")}
+								>
+									Sign up
+								</Button>
+							</>
+						)}
+					</div>
 				</div>
 			</NavigationMenu>
 		);
