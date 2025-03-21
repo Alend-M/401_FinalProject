@@ -42,63 +42,68 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 	if (!hideNavbar || override)
 		return (
 			<NavigationMenu className="space-x-medium">
-				<NavigationMenuList>
-					<NavigationMenuItem>
-						<Link href="/" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/" && activeStyling
-								)}
-							>
-								Home
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link href="/about" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/about" && activeStyling
-								)}
-							>
-								About Us
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					<NavigationMenuItem>
-						<Link href="/contact" legacyBehavior passHref>
-							<NavigationMenuLink
-								className={cn(
-									navigationMenuTriggerStyle(),
-									pathname === "/contact" && activeStyling
-								)}
-							>
-								Contact Us
-							</NavigationMenuLink>
-						</Link>
-					</NavigationMenuItem>
-					{isAuthenticated && (
+				{/* Scrollable container for nav items */}
+				<div className="overflow-x-auto whitespace-nowrap flex w-full px-2" style={{ scrollbarWidth: 'none' }}>
+					<NavigationMenuList className="flex space-x-4">
 						<NavigationMenuItem>
-							<Link href="/history" legacyBehavior passHref>
+							<Link href="/" legacyBehavior passHref>
 								<NavigationMenuLink
 									className={cn(
 										navigationMenuTriggerStyle(),
-										pathname === "/history" && activeStyling
+										pathname === "/" && activeStyling
 									)}
 								>
-									Build History
+									Home
 								</NavigationMenuLink>
 							</Link>
 						</NavigationMenuItem>
-					)}
-				</NavigationMenuList>
+						<NavigationMenuItem>
+							<Link href="/about" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={cn(
+										navigationMenuTriggerStyle(),
+										pathname === "/about" && activeStyling
+									)}
+								>
+									About Us
+								</NavigationMenuLink>
+							</Link>
+						</NavigationMenuItem>
+						<NavigationMenuItem>
+							<Link href="/contact" legacyBehavior passHref>
+								<NavigationMenuLink
+									className={cn(
+										navigationMenuTriggerStyle(),
+										pathname === "/contact" && activeStyling
+									)}
+								>
+									Contact Us
+								</NavigationMenuLink>
+							</Link>
+						</NavigationMenuItem>
+						{isAuthenticated && (
+							<NavigationMenuItem>
+								<Link href="/history" legacyBehavior passHref>
+									<NavigationMenuLink
+										className={cn(
+											navigationMenuTriggerStyle(),
+											pathname === "/history" && activeStyling
+										)}
+									>
+										Build History
+									</NavigationMenuLink>
+								</Link>
+							</NavigationMenuItem>
+						)}
+					</NavigationMenuList>
+				</div>
+		
+				{/* User Profile/Login Section */}
 				<div className="flex flex-row justify-center align-center space-x-minor">
 					{isAuthenticated ? (
 						<Popover>
 							<PopoverTrigger asChild>
-								<div className="cursor-pointer flex-shrink-0 ">
+								<div className="cursor-pointer flex-shrink-0">
 									{user?.user_metadata?.avatar_url ? (
 										<Image
 											src={user?.user_metadata.avatar_url}
@@ -108,20 +113,13 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 											className="rounded-full object-cover"
 										/>
 									) : (
-										<AccountCircleIcon
-											className="text-white"
-											style={{ fontSize: 40 }}
-										/>
+										<AccountCircleIcon className="text-white" style={{ fontSize: 40 }} />
 									)}
 								</div>
 							</PopoverTrigger>
 							<PopoverContent className="w-40 p-2">
 								<p className="truncate text-sm mb-2 w-36">{user?.email}</p>
-								<Button
-									variant="outline"
-									onClick={handleLogout}
-									className="w-full"
-								>
+								<Button variant="outline" onClick={handleLogout} className="w-full">
 									Logout
 								</Button>
 							</PopoverContent>
@@ -139,6 +137,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 				</div>
 			</NavigationMenu>
 		);
+		
 }
 
 export default NavigationBar;
