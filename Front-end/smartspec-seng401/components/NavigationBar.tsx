@@ -43,7 +43,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 		return (
 			<NavigationMenu className="space-x-medium">
 				{/* Scrollable container for nav items */}
-				<div className="overflow-x-auto whitespace-nowrap flex w-full px-2" style={{ scrollbarWidth: 'none' }}>
+				<div className="overflow-x-auto whitespace-nowrap flex w-full px-2 items-end sm:justify-end" style={{ scrollbarWidth: 'none' }}>
 					<NavigationMenuList className="flex space-x-4">
 						<NavigationMenuItem>
 							<Link href="/" legacyBehavior passHref>
@@ -96,10 +96,10 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 							</NavigationMenuItem>
 						)}
 					</NavigationMenuList>
-				</div>
+				
 		
 				{/* User Profile/Login Section */}
-				<div className="flex flex-row justify-center align-center space-x-minor">
+				
 					{isAuthenticated ? (
 						<Popover>
 							<PopoverTrigger asChild>
