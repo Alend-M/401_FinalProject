@@ -89,7 +89,7 @@ function BuildAccordion({ components }: BuildAccordionProps) {
 	}
 
 	return (
-		<div className="flex flex-col w-screen md:w-10/12 lg:w-bigCard p-2 sm:p-major bg-white border rounded-md border-veryNiceGray">
+		<div className="flex flex-col w-screen md:w-full lg:w-bigCard p-2 sm:p-major bg-white border rounded-md border-veryNiceGray">
 			<Accordion type="multiple" className="w-full">
 				{Object.entries(buildData)
 					.filter(

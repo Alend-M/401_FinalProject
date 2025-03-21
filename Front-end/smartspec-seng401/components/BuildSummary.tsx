@@ -62,7 +62,7 @@ function Games({ gamesList }: GamesProps) {
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-1">
 					{gamesList.map((game) => {
 						return (
-							<Card key={game} className="p-minor w-fit sm:w-full">
+							<Card key={game} className="p-minor w-full">
 								{game}
 							</Card>
 						);
@@ -109,7 +109,7 @@ function BuildSummary({
 	}
 
 	return (
-		<div className="flex flex-col w-screen lg:w-bigCard sm:p-major p-3 space-y-medium bg-white border rounded-md border-veryNiceGray">
+		<div className="flex flex-col w-screen md:w-full lg:w-bigCard sm:p-major p-3 space-y-medium bg-white border rounded-md border-veryNiceGray">
 			<div className="flex flex-col lg:flex-row justify-between">
 				<Specifications
 					specifications={specifications}
