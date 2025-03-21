@@ -99,7 +99,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 				
 		
 				{/* User Profile/Login Section */}
-				
+				<div className="flex flex-row justify-center align-center space-x-minor">
 					{isAuthenticated ? (
 						<Popover>
 							<PopoverTrigger asChild>
@@ -134,6 +134,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 							</Button>
 						</>
 					)}
+				</div>
 				</div>
 			</NavigationMenu>
 		);
