@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import SliderInput from "./SliderInput";
 import { Separator } from "@/components/ui/separator";
 import GamesInput from "./GamesInput";
@@ -9,9 +9,11 @@ import { Save, Zap } from "lucide-react";
 import { useFormBuilderContext } from "@/context/formBuilderContext";
 import { useRouter } from "next/navigation";
 import { useLoginContext } from "@/context/loginContext";
+import { Spinner } from "@heroui/spinner";
 
 function BuildForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const {
     budget,
     minFps,
@@ -28,11 +30,19 @@ function BuildForm() {
   const { isAuthenticated } = useLoginContext();
 
   function handleSubmitForm() {
-    submitForm().then(() => router.push("/results"));
+    setLoading(true);
+    submitForm().finally(() => {
+      router.push("/results");
+      setLoading(false);
+    });
   }
 
   function handleSubmitFormAndSave() {
-    submitFormAndSave().then(() => router.push("/history"));
+    setLoading(true);
+    submitFormAndSave().finally(() => {
+      router.push("/history");
+      setLoading(false);
+    });
   }
 
   return (
@@ -84,11 +94,16 @@ function BuildForm() {
       <Separator />
       <ComponentInput />
       <Separator />
-      <Button onClick={handleSubmitForm} fullWidth>
-        <Zap />
-        Get Build
-        <Zap />
-      </Button>
+      {!loading ? (
+        <Button onClick={handleSubmitForm} fullWidth>
+          <Zap />
+          Get Build
+          <Zap />
+        </Button>
+      ) : (
+        <Spinner />
+      )}
+      
       {isAuthenticated && (
         <Button
           onClick={handleSubmitFormAndSave}

@@ -15,6 +15,9 @@ import {
 import { Input } from "./ui/input";
 
 import { Textarea } from "./ui/textarea";
+import toast, { Toaster } from "react-hot-toast";
+import React from "react";
+import { Spinner } from "@heroui/spinner";
 
 const DEBUG = 1; // Debug flag
 
@@ -56,18 +59,29 @@ const ContactUsForm: React.FC = () => {
 		},
 	});
 
+	const [loading, setLoading] = React.useState(false);
+
 	// Defining Form Submit Handler
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		// ✅ This will be type-safe and validated.
+		setLoading(true);
+		try {
+			const response = await fetch("/api/contact", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(values),
+			});
 
-		if (DEBUG) console.log("Values: ", values);
-
-		// const { name, surname, email, message } = values;
-		// TODO: Send details to gmail account.
+			const result = await response.json();
+			toast.success(result.success || result.error);
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			toast.error("Failed to submit form");
+		}
+		setLoading(false);
 	}
 
 	return (
-		<div className="flex flex-col items-center">
+		<div className="flex flex-col items-center mt-2">
 			<div className="flex flex-col bg-white rounded-md p-major space-y-medium w-smallCard">
 				{/* Contact Us Form */}
 				<Form {...form}>
@@ -135,12 +149,19 @@ const ContactUsForm: React.FC = () => {
 								);
 							}}
 						/>
-						<Button fullWidth type="submit">
-							Submit
-						</Button>
+						{loading ? (
+							<div className="flex justify-center">
+								<Spinner />
+							</div>
+						) : (
+							<Button fullWidth type="submit">
+								Submit
+							</Button>
+						)}
 					</form>
 				</Form>
 			</div>
+			<Toaster />
 		</div>
 	);
 };
