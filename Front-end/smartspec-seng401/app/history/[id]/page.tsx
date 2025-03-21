@@ -17,16 +17,16 @@ export default async function ViewBuildPage({
 	}
 
 	return (
-		<div className="flex flex-col items-center mb-10">
+		<div className="flex flex-col items-center mb-10 m-5">
 			<div className="flex items-center space-x-4">
 				<Link
 					href="/history"
-					className="w-12 h-12 bg-primaryColor text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all"
+					className="w-12 h-12 bg-primaryColor text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all mb-5"
 					aria-label="Go back to history"
 				>
 					<ArrowLeft size={24} />
 				</Link>
-				<Title className="text-secondaryColor">{`Build ${id}`}</Title>
+				<Title className="text-secondaryColor mb-5">{`Build ${id}`}</Title>
 			</div>
 			<BuildDetailsComponent buildId={id} />
 		</div>
