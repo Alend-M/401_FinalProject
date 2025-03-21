@@ -6,25 +6,25 @@ import Image from "next/image";
 import Link from "next/link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
+	Popover,
+	PopoverTrigger,
+	PopoverContent,
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 
 // Navigation Components:
 import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { useLoginContext } from "@/context/loginContext";
 import { cn } from "@/lib/utils";
 
 interface NavigationBarProps {
-  override?: boolean;
+	override?: boolean;
 }
 
 function NavigationBar({ override = false }: NavigationBarProps) {
@@ -32,12 +32,12 @@ function NavigationBar({ override = false }: NavigationBarProps) {
   const pathname = usePathname();
   const hideNavbar = pathname === "/";
   const activeStyling = "bg-tertiaryColor text-black";
+  
+	const { logout, isAuthenticated, user } = useLoginContext();
 
-  const { logout, isAuthenticated, user } = useLoginContext();
-
-  const handleLogout = () => {
-    logout();
-  };
+	const handleLogout = () => {
+		logout();
+	};
 
   if (!hideNavbar || override)
     return (
