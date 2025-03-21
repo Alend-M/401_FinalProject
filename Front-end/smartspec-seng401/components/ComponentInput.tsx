@@ -62,16 +62,17 @@ function ComponentInput() {
       <SmallText className="text-subheadingGray">
         Add the pc components you already own
       </SmallText>
+      <div className="md:space-y-0  space-y-major">
       {preOwnedHardware.map((part, i) => {
         return (
           <div
             key={i}
-            className="flex flex-row justify-between items-center space-x-minor"
+            className="flex md:flex-row flex-col justify-between md:items-center items-end space-x-minor"
           >
             <DropdownMenu>
               <DropdownMenuTrigger
                 asChild
-                className="flex flex-row justify-start w-56"
+                className="flex flex-row justify-start md:w-56 w-full"
               >
                 {/* hardcoded widths to match */}
                 <Button
@@ -81,7 +82,7 @@ function ComponentInput() {
                   {part.type} <ChevronDown />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-44">
+              <DropdownMenuContent className="md:w-44">
                 {/* hardcoded widths to match */}
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup
@@ -99,15 +100,21 @@ function ComponentInput() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Input
+              className="m-1"
               defaultValue={part.name}
               onChange={(e) => handleComponentNameChange(i, e.target.value)}
             />
-            <div className="w-fit cursor-pointer">
-              <X size={16} onClick={() => handleDeleteComponent(i)} />
+            <div
+              className="flex md:w-fit w-full justify-center items-center h-9 cursor-pointer border md:border-none border-danger-500 text-danger-500 rounded-md"
+              onClick={() => handleDeleteComponent(i)}
+            >
+              <X size={16} />
             </div>
           </div>
         );
       })}
+      </div>
+
 
       <Button variant={"outline"} onClick={handleAddComponent}>
         <Plus />
