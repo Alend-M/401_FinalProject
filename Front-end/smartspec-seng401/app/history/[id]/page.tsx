@@ -17,7 +17,7 @@ export default async function ViewBuildPage({
   }
 
   return (
-    <div className="flex flex-col items-center space-y-major sm:py-massive py-major">
+    <div className="flex flex-col items-center space-y-major mb-20">
       <div className="flex items-center space-x-4">
         <Link
           href="/history"
