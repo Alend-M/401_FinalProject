@@ -48,7 +48,7 @@ const BuildHistory = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="mb-20">
 			<div className="flex flex-col items-center justify-center text-center">
 				<Title className="text-secondaryColor">Build History</Title>
 				<Subtitle className="mb-1">

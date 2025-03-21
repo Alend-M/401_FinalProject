@@ -31,4 +31,3 @@ export default async function ViewBuildPage({
 			<BuildDetailsComponent buildId={id} />
 		</div>
 	);
-}

@@ -44,8 +44,11 @@ function GamesInput() {
                 handleInputChange(i, e.target.value);
               }}
             />
-            <div className="w-fit">
-              <X size={16} onClick={() => handleDeleteGame(i)} />
+            <div
+              className="flex h-9 w-9 justify-center items-center cursor-pointer border border-veryNiceGray text-danger rounded-md"
+              onClick={() => handleDeleteGame(i)}
+            >
+              <X size={16} />
             </div>
           </div>
         );
