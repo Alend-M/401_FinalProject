@@ -62,7 +62,7 @@ function HomePage() {
 			</div>
 
 			{/* Scroll to top button */}
-			{showScrollTop && (
+			{/* {showScrollTop && (
 				<button
 					onClick={scrollToTop}
 					className="fixed bottom-6 right-6 w-12 h-12 bg-primaryColor text-white rounded-full flex items-center justify-center shadow-lg hover:bg-opacity-90 transition-all z-50"
@@ -70,7 +70,7 @@ function HomePage() {
 				>
 					<ArrowUp size={24} />
 				</button>
-			)}
+			)} */}
 		</div>
 	);
 }

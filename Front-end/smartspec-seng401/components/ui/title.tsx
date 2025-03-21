@@ -10,7 +10,7 @@ export function Title({ children, className }: TitleProps) {
   return (
     <h1 
       className={cn(
-        "text-7xl md:leading-normal leading-none text-white font-semibold tracking-tighter",
+        "text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight sm:leading-tight md:leading-none text-white font-semibold tracking-tighter",
         className
       )}
     >

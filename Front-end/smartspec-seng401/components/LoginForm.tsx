@@ -111,12 +111,13 @@ const LoginForm: React.FC = () => {
 
   return (
     <Suspense>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full">
         <Title className="text-secondaryColor">Login</Title>
-        <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
+        <div className="flex flex-col bg-white sm:w-smallCard w-full rounded-md p-major space-y-medium">
           {/* Alternate Login Strategies */}
-          <div className="flex flex-row space-x-medium">
+          <div className="flex flex-row flex-wrap gap-x-medium gap-y-minor justify-center items-center">
             <Button
+              className="w-full sm:w-fit"
               variant={"secondary"}
               onClick={() => {
                 loginWithGithub(!!redirectRoute);
@@ -126,6 +127,7 @@ const LoginForm: React.FC = () => {
               Log in with GitHub
             </Button>
             <Button
+              className="w-full sm:w-fit"
               variant={"outlineBlack"}
               onClick={() => {
                 loginWithGoogle(!!redirectRoute);

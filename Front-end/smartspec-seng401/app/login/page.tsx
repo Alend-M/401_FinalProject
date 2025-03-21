@@ -6,7 +6,7 @@ const LoginPage = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ProtectedAuthRoute>
-        <div className="flex items-center justify-center m-14 mb-40 bg-offWhite">
+        <div className="flex items-center justify-center m-14 mb-40 w-full bg-offWhite">
           <LoginForm />
         </div>
       </ProtectedAuthRoute>
