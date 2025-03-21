@@ -30,7 +30,7 @@ const BuildHistory = () => {
 
 	return (
 		<div>
-			<div className="flex flex-col items-center">
+			<div className="flex flex-col items-center justify-center text-center">
 				<Title className="text-secondaryColor">Build History</Title>
 				<Subtitle className="mb-1">
 					A list of all your previous builds!

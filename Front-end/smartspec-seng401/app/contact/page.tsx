@@ -5,10 +5,10 @@ import React from "react";
 
 function ContactUsPage() {
 	return (
-		<div className="mb-20">
-			<div className="flex flex-col items-center">
+		<div className="mb-20 flex flex-col items-center justify-center">
+			<div className="w-screen flex flex-col items-center justify-center">
 				<Title className="text-secondaryColor">Contact Us</Title>
-				<Subtitle className="mb-1">
+				<Subtitle className="mb-1 text-center">
 					Do you have a suggestion? Feel free to write to us
 				</Subtitle>
 			</div>
