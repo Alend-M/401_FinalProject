@@ -63,58 +63,60 @@ function ComponentInput() {
         Add the pc components you already own
       </SmallText>
       <div className="md:space-y-0  space-y-major">
-      {preOwnedHardware.map((part, i) => {
-        return (
-          <div
-            key={i}
-            className="flex md:flex-row flex-col justify-between md:items-center items-end space-x-minor"
-          >
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                asChild
-                className="flex flex-row justify-start md:w-56 w-full"
-              >
-                {/* hardcoded widths to match */}
-                <Button
-                  variant="outline"
-                  className="flex flex-row justify-between font-normal text-secondaryColor rounded-md hover:border-black"
-                >
-                  {part.type} <ChevronDown />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="md:w-44">
-                {/* hardcoded widths to match */}
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                  value={part.type}
-                  onValueChange={(value) => {
-                    handleComponentTypeChange(i, value as ComponentType);
-                  }}
-                >
-                  {Object.values(ComponentType).map((type) => (
-                    <DropdownMenuRadioItem key={type} value={type}>
-                      {type}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Input
-              className="m-1"
-              defaultValue={part.name}
-              onChange={(e) => handleComponentNameChange(i, e.target.value)}
-            />
+        {preOwnedHardware.map((part, i) => {
+          return (
             <div
-              className="flex md:w-fit w-full justify-center items-center h-9 cursor-pointer border md:border-none border-danger-500 text-danger-500 rounded-md"
-              onClick={() => handleDeleteComponent(i)}
+              key={i}
+              className="flex flex-row justify-between md:items-center items-start space-x-minor"
             >
-              <X size={16} />
-            </div>
-          </div>
-        );
-      })}
-      </div>
+              <div className="flex md:flex-row flex-col w-full justify-between items-center md:space-x-minor">
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    asChild
+                    className="flex flex-row justify-start md:w-56 w-full"
+                  >
+                    {/* hardcoded widths to match */}
+                    <Button
+                      variant="outline"
+                      className="flex flex-row justify-between font-normal text-secondaryColor rounded-md hover:border-black"
+                    >
+                      {part.type} <ChevronDown />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="md:w-44">
+                    {/* hardcoded widths to match */}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuRadioGroup
+                      value={part.type}
+                      onValueChange={(value) => {
+                        handleComponentTypeChange(i, value as ComponentType);
+                      }}
+                    >
+                      {Object.values(ComponentType).map((type) => (
+                        <DropdownMenuRadioItem key={type} value={type}>
+                          {type}
+                        </DropdownMenuRadioItem>
+                      ))}
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Input
+                  className="m-1 w-full"
+                  defaultValue={part.name}
+                  onChange={(e) => handleComponentNameChange(i, e.target.value)}
+                />
+              </div>
 
+              <div
+                className="flex h-9 w-9 justify-center items-center cursor-pointer border border-veryNiceGray text-danger rounded-md"
+                onClick={() => handleDeleteComponent(i)}
+              >
+                <X size={16} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       <Button variant={"outline"} onClick={handleAddComponent}>
         <Plus />

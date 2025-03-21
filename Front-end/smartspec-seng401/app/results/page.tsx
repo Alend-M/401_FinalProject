@@ -5,6 +5,7 @@ import BuildSummary from "@/components/BuildSummary";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { useBuildResultContext } from "@/context/buildResultContext";
+import { Spinner } from "@heroui/spinner";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 
@@ -49,7 +50,7 @@ function ResultsContent() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col items-center space-y-major">
+    <div className="flex flex-col items-center space-y-major mb-20">
       <div className="flex flex-col items-center">
         <Title className="text-secondaryColor">Build Results</Title>
         <Subtitle className="text-subheadingGray">
@@ -73,7 +74,7 @@ function ResultsContent() {
 // Main component that wraps the content in Suspense
 function ResultsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <ResultsContent />
     </Suspense>
   );

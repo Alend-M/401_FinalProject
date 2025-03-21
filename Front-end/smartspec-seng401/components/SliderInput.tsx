@@ -44,9 +44,9 @@ function SliderInput({
   return (
     <div className="flex flex-col space-y-tiny">
       <BaseText>{name}</BaseText>
-      <div className="flex flex-row justify-between items-end space-x-tiny">
-        <SmallText className="text-subheadingGray flex-1">{description}</SmallText>
-        <BaseText className="text-nowrap flex-2 text-end">
+      <div className="flex flex-row justify-between items-end gap-x-medium">
+        <SmallText className="text-subheadingGray">{description}</SmallText>
+        <BaseText className="text-nowrap text-end">
           {prefix ? unit + formComponent : formComponent + " " + unit}
         </BaseText>
       </div>

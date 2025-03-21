@@ -1,12 +1,13 @@
 import ProtectedAuthRoute from "@/components/ProtectedAuthRoute";
 import SignUpForm from "@/components/signUpForm";
+import { Spinner } from "@heroui/spinner";
 import React, { Suspense } from "react";
 
 const SignupPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <ProtectedAuthRoute>
-        <div className="flex items-center justify-center m-14 mb-20 bg-offWhite">
+        <div className="flex items-center justify-center mb-20 w-full bg-offWhite">
           <SignUpForm />
         </div>
       </ProtectedAuthRoute>

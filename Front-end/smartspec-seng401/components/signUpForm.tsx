@@ -108,12 +108,13 @@ const SignUpForm: React.FC = () => {
 
   return (
     <Suspense>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center w-full gap-y-medium">
         <Title className="text-secondaryColor">Sign up</Title>
-        <div className="flex flex-col bg-white rounded-md p-major space-y-medium">
+        <div className="flex flex-col max-w-smallCard w-full bg-white rounded-md p-major space-y-medium">
           {/* Alternate Signup Strategies */}
-          <div className="flex flex-row space-x-medium">
+          <div className="flex flex-wrap flex-row gap-x-medium gap-y-minor justify-center">
             <Button
+              className="w-full sm:w-fit"
               variant={"secondary"}
               onClick={() => {
                 loginWithGithub(!!redirectRoute);
@@ -123,6 +124,7 @@ const SignUpForm: React.FC = () => {
               Sign up with GitHub
             </Button>
             <Button
+              className="w-full sm:w-fit"
               variant={"outlineBlack"}
               onClick={() => {
                 loginWithGoogle(!!redirectRoute);
