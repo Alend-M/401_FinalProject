@@ -6,12 +6,12 @@ import axios from "axios";
 import BuildCard from "@/components/PastBuildCard";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Spinner } from "@heroui/spinner";
-import { BuildData } from "@/types";
+import { BuildData, BuildString } from "@/types";
 import { useLoginContext } from "@/context/loginContext";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 
 interface fetchedBuild {
-  id: string;
+  buildid: string;
   buildjson: BuildData;
   created_at?: string;
 }
@@ -49,10 +49,14 @@ const PastBuilds = () => {
   }, [isAuthenticated, user?.id]);
 
   // Format build data for display - computed on demand
-  const getFormattedBuild = (build: fetchedBuild, index: number) => {
+  const getFormattedBuild = (
+    build: fetchedBuild,
+    index: number
+  ): BuildString => {
     const buildData = build.buildjson;
+    const buildid = Number(build.buildid);
     return {
-      build_id: index + 1,
+      build_id: buildid,
       name: `Build ${index + 1}`,
       cpu: buildData.CPUs?.name || "Unknown CPU",
       gpu: buildData.GPUs?.name || "Unknown GPU",

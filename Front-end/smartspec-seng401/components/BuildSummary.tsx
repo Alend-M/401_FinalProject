@@ -106,32 +106,36 @@ function BuildSummary({
     }
   }
 
-  return (
-    <div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
-      <div className="flex flex-row justify-between">
-        <Specifications
-          specifications={specifications}
-          preOwnedHardware={preOwnedHardware}
-        />
-        <Games gamesList={gamesList} />
-      </div>
-      <Separator />
-      <div className="flex flex-row justify-between">
-        <BaseText>Total Price: </BaseText>
-        <div>{`$${totalPrice}`}</div>
-        <Button
-          variant={"outline"}
-          className="text-danger hover:border-danger"
-          onClick={handleDiscardBuild}
-        >
-          Discard Build
-        </Button>
-        <Button variant={"default"} onClick={handleSaveBuild}>
-          Save Build
-        </Button>
-      </div>
-    </div>
-  );
+	return (
+		<div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
+			<div className="flex flex-row justify-between">
+				<Specifications
+					specifications={specifications}
+					preOwnedHardware={preOwnedHardware}
+				/>
+				<Games gamesList={gamesList} />
+			</div>
+			<Separator />
+			<div className="flex flex-row justify-between">
+				<div className="flex flex-row">
+					<BaseText>Total Price: </BaseText>
+					<div className="ml-3">{`$${totalPrice}`}</div>
+				</div>
+				<Button
+					variant={"outline"}
+					className="text-danger hover:border-danger"
+					onClick={handleDiscardBuild}
+				>
+					Discard Build
+				</Button>
+				{saveBuildResult && (
+					<Button variant={"default"} onClick={handleSaveBuild}>
+						Save Build
+					</Button>
+				)}
+			</div>
+		</div>
+	);
 }
 
 export default BuildSummary;

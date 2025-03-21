@@ -6,7 +6,7 @@ import { Spinner } from "@heroui/spinner";
 import BuildAccordion from "@/components/BuildAccordion";
 import BuildSummary from "@/components/BuildSummary";
 import axios from "axios";
-import { BuildData } from "@/types";
+import { Build, BuildData } from "@/types";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 import { useLoginContext } from "@/context/loginContext";
 
@@ -14,16 +14,13 @@ interface BuildDetailsComponentProps {
   buildId: string;
 }
 
-interface Build {
-  buildjson: BuildData;
-}
-
 const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
   buildId,
 }) => {
-  const router = useRouter();
-  const [buildData, setBuildData] = useState<BuildData | null>(null);
-  const [loading, setLoading] = useState(true);
+	const router = useRouter();
+	const [buildData, setBuildData] = useState<BuildData | null>(null);
+	const [buildDatabaseId, setBuildDatabaseId] = useState<string | null>(null);
+	const [loading, setLoading] = useState(true);
 
   const { isAuthenticated, user } = useLoginContext();
 
@@ -35,17 +32,18 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
       // Try to get the build from localStorage
       const storedBuild = localStorage.getItem("selectedBuild");
 
-      if (storedBuild) {
-        try {
-          const parsedBuild: Build = JSON.parse(storedBuild);
-          setBuildData(parsedBuild.buildjson);
-          setLoading(false);
-          return;
-        } catch (error) {
-          console.error("Error parsing stored build:", error);
-          // Continue to fetch from API if parsing fails
-        }
-      }
+			if (storedBuild) {
+				try {
+					const parsedBuild: Build = JSON.parse(storedBuild);
+					setBuildData(parsedBuild.buildjson);
+					setBuildDatabaseId(parsedBuild.buildid);
+					setLoading(false);
+					return;
+				} catch (error) {
+					console.error("Error parsing stored build:", error);
+					// Continue to fetch from API if parsing fails
+				}
+			}
 
       // If not in localStorage or parsing failed, fetch from API
       if (!isAuthenticated) {
@@ -122,20 +120,29 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
     qualityString,
   ];
 
-  const gamesList = buildData.input.gamesList;
-  const preOwnedHardWare = buildData.input.preOwnedHardware;
+	const gamesList = buildData.input.gamesList;
+	const preOwnedHardWare = buildData.input.preOwnedHardware;
 
-  return (
-    <div className="w-full max-w-4xl space-y-8">
-      <BuildAccordion components={components} />
-      <BuildSummary
-        specifications={buildSpecificaitons}
-        totalPrice={calculatedTotalPrice}
-        gamesList={gamesList}
-        preOwnedHardware={preOwnedHardWare}
-      />
-    </div>
-  );
+	const deleteBuild = () => {
+		// PASS THE BUILD ID AS IT IS NOW IN THE RETURNED JSON as build.buildid!
+		axios.delete(
+			`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/delete/${buildDatabaseId}`
+		);
+		router.push("/history");
+	};
+
+	return (
+		<div className="w-full max-w-4xl space-y-8">
+			<BuildAccordion components={components} />
+			<BuildSummary
+				specifications={buildSpecificaitons}
+				totalPrice={calculatedTotalPrice}
+				gamesList={gamesList}
+				preOwnedHardware={preOwnedHardWare}
+				discardBuildResult={deleteBuild}
+			/>
+		</div>
+	);
 };
 
 export default BuildDetailsComponent;
