@@ -30,7 +30,7 @@ function AboutPage() {
 	];
 
 	return (
-		<div className="mb-20">
+		<div className="space-y-major sm:py-massive py-major">
 			<div className="flex flex-col items-center text-center">
 				<Title className="text-secondaryColor">Meet the Team 👋</Title>
 				<Subtitle>The Team That Brought You SmartSpec</Subtitle>

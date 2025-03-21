@@ -7,7 +7,7 @@ const LoginPage = () => {
   return (
     <Suspense fallback={<Spinner />}>
       <ProtectedAuthRoute>
-        <div className="flex items-center justify-center m-14 mb-40 w-full bg-offWhite">
+        <div className="flex items-center justify-center sm:py-massive py-major w-full bg-offWhite">
           <LoginForm />
         </div>
       </ProtectedAuthRoute>

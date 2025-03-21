@@ -29,7 +29,7 @@ const BuildHistory = () => {
 	}, []);
 
 	return (
-		<div>
+		<div className="sm:py-massive py-major space-y-major">
 			<div className="flex flex-col items-center">
 				<Title className="text-secondaryColor">Build History</Title>
 				<Subtitle className="mb-1">
