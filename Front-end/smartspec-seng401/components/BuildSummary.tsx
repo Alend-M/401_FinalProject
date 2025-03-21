@@ -137,7 +137,7 @@ function BuildSummary({
 				)}
 				<Button
 					variant={"outline"}
-					className="text-danger hover:border-danger w-full sm:w-auto"
+					className="text-danger hover:border-danger"
 					onClick={() => {
 						if (confirmDiscard) {
 							handleDiscardBuild();
