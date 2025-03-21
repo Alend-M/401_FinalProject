@@ -108,9 +108,9 @@ const SignUpForm: React.FC = () => {
 
   return (
     <Suspense>
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full gap-y-medium">
         <Title className="text-secondaryColor">Sign up</Title>
-        <div className="flex flex-col sm:w-smallCard w-full bg-white rounded-md p-major space-y-medium">
+        <div className="flex flex-col max-w-smallCard w-full bg-white rounded-md p-major space-y-medium">
           {/* Alternate Signup Strategies */}
           <div className="flex flex-wrap flex-row gap-x-medium gap-y-minor justify-center">
             <Button

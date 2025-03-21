@@ -26,12 +26,10 @@ export default function RootLayout({
     <LoginProvider>
       <BuildResultsProvider>
         <html lang="en">
-          {/* return <p className={cn("text-secondaryColor", className)}>{children}</p>; */}
-
           <body
             className={cn(
               inter.className,
-              "flex flex-col justify-start bg-primaryColor min-h-screen"
+              "flex flex-col justify-start bg-secondaryColor min-h-screen"
             )}
           >
             <NavigationBar />

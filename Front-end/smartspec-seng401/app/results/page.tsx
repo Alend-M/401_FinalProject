@@ -5,6 +5,7 @@ import BuildSummary from "@/components/BuildSummary";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { useBuildResultContext } from "@/context/buildResultContext";
+import { Spinner } from "@heroui/spinner";
 import { useSearchParams } from "next/navigation";
 import React, { Suspense } from "react";
 
@@ -73,7 +74,7 @@ function ResultsContent() {
 // Main component that wraps the content in Suspense
 function ResultsPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Spinner />}>
       <ResultsContent />
     </Suspense>
   );

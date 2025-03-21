@@ -111,9 +111,9 @@ const LoginForm: React.FC = () => {
 
   return (
     <Suspense>
-      <div className="flex flex-col items-center w-full">
+      <div className="flex flex-col items-center w-full gap-y-medium">
         <Title className="text-secondaryColor">Login</Title>
-        <div className="flex flex-col bg-white sm:w-smallCard w-full rounded-md p-major space-y-medium">
+        <div className="flex flex-col bg-white max-w-smallCard w-full rounded-md p-major space-y-medium">
           {/* Alternate Login Strategies */}
           <div className="flex flex-row flex-wrap gap-x-medium gap-y-minor justify-center items-center">
             <Button

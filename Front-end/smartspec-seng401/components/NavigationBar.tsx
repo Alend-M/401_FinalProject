@@ -21,6 +21,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { useLoginContext } from "@/context/loginContext";
+import { cn } from "@/lib/utils";
 
 interface NavigationBarProps {
   override?: boolean;
@@ -30,6 +31,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const hideNavbar = pathname === "/";
+  const activeStyling = "bg-tertiaryColor text-black";
 
   const { logout, isAuthenticated, user } = useLoginContext();
 
@@ -43,32 +45,54 @@ function NavigationBar({ override = false }: NavigationBarProps) {
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  pathname === "/" && activeStyling
+                )}
+              >
                 Home
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/about" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  pathname === "/about" && activeStyling
+                )}
+              >
                 About Us
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Link href="/contact" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              <NavigationMenuLink
+                className={cn(
+                  navigationMenuTriggerStyle(),
+                  pathname === "/contact" && activeStyling
+                )}
+              >
                 Contact Us
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/history" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                Build History
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
+          {isAuthenticated && (
+            <NavigationMenuItem>
+              <Link href="/history" legacyBehavior passHref>
+                <NavigationMenuLink
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    pathname === "/history" && activeStyling
+                  )}
+                >
+                  Build History
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          )}
         </NavigationMenuList>
         <div className="flex flex-row justify-center align-center space-x-minor">
           {isAuthenticated ? (

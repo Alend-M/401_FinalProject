@@ -22,7 +22,7 @@ const NavigationMenu = React.forwardRef<
 			ref={ref}
 			className={cn(
 				// Custom styling with dynamic background color
-				`relative z-10 flex min-w-full ${bgColor} items-center justify-end p-medium sticky top-0 overflow-scroll`,
+				`relative z-10 flex min-w-full ${bgColor} items-center justify-end p-medium sticky top-0 overflow-scroll sm:overflow-hidden`,
 				className
 			)}
 			{...props}

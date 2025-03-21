@@ -19,10 +19,10 @@ function Hero({ onButtonClick }: { onButtonClick: () => void }) {
       style={{ backgroundImage: "url('/landingpage.jpg')" }}
     >
       <div className="absolute inset-0 h-screen bg-black/50 flex flex-col justify-center items-center gap-y-2 px-4 md:px-0 mb-10 md:mb-20">
-        <Title className="text-5xl sm:text-7xl md:text-9xl font-bold text-center">
+        <Title className="md:!text-9xl sm:!text-7xl !text-5xl !font-bold">
           SmartSpec
         </Title>
-        <Subtitle className="text-xl sm:text-2xl md:text-4xl font-normal text-white text-center">
+        <Subtitle className="!text-xl sm:!text-2xl md:!text-4xl font-normal text-white">
           Your PC Building Pal
         </Subtitle>
 
