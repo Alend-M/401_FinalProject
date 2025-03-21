@@ -2,24 +2,24 @@
 
 import React from "react";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BaseText } from "./ui/baseText";
 import Link from "next/link";
 import { ComponentResponse } from "@/types";
 
 function parseComponentName(name: string) {
-  // Parses component names replacing spaces with + for URL
-  return name.replace(/ /g, "+");
+	// Parses component names replacing spaces with + for URL
+	return name.replace(/ /g, "+");
 }
 
 interface BuildRowProps {
-  type: string;
-  name: string;
-  price: string;
+	type: string;
+	name: string;
+	price: string;
 }
 
 function BuildRow({ type, name, price }: BuildRowProps) {
@@ -32,7 +32,7 @@ function BuildRow({ type, name, price }: BuildRowProps) {
 				<BaseText className="font-semibold w-24 md:w-32 lg:w-[150px] text-clip md:text-nowrap">
 					{formattedType}
 				</BaseText>
-				<BaseText className="w-36 md:w-60 lg:w-[250px] text-nowrap truncate">
+				<BaseText className="w-28 md:w-60 lg:w-[250px] text-nowrap truncate">
 					{name}
 				</BaseText>
 			</div>
@@ -58,36 +58,35 @@ function BuildRow({ type, name, price }: BuildRowProps) {
 }
 
 interface JustificationPayloadProps {
-  justification: string;
+	justification: string;
 }
 
 function JustificationPayload({ justification }: JustificationPayloadProps) {
 	return (
 		<BaseText className="text-subheadingGray p-1">{justification}</BaseText>
 	);
-
 }
 
 interface BuildAccordionProps {
-  components?: {
-    CPUs: ComponentResponse;
-    GPUs: ComponentResponse;
-    RAM: ComponentResponse;
-    Motherboards: ComponentResponse;
-    Storage: ComponentResponse;
-    Power_Supply: ComponentResponse;
-    Case: ComponentResponse;
-    Cooling: ComponentResponse;
-  };
+	components?: {
+		CPUs: ComponentResponse;
+		GPUs: ComponentResponse;
+		RAM: ComponentResponse;
+		Motherboards: ComponentResponse;
+		Storage: ComponentResponse;
+		Power_Supply: ComponentResponse;
+		Case: ComponentResponse;
+		Cooling: ComponentResponse;
+	};
 }
 
 function BuildAccordion({ components }: BuildAccordionProps) {
-  const buildData = components;
+	const buildData = components;
 
-  // Skip rendering if no data is available
-  if (!buildData) {
-    return <div>No build data available</div>;
-  }
+	// Skip rendering if no data is available
+	if (!buildData) {
+		return <div>No build data available</div>;
+	}
 
 	return (
 		<div className="flex flex-col w-screen md:w-full lg:w-bigCard p-2 sm:p-major bg-white border rounded-md border-veryNiceGray">
@@ -105,24 +104,24 @@ function BuildAccordion({ components }: BuildAccordionProps) {
 						const justification =
 							component?.Justification || "No information available";
 
-            return (
-              <AccordionItem value={category} key={category}>
-                <AccordionTrigger className="space-x-minor">
-                  <BuildRow
-                    type={category}
-                    name={componentName}
-                    price={componentPrice}
-                  />
-                </AccordionTrigger>
-                <AccordionContent>
-                  <JustificationPayload justification={justification} />
-                </AccordionContent>
-              </AccordionItem>
-            );
-          })}
-      </Accordion>
-    </div>
-  );
+						return (
+							<AccordionItem value={category} key={category}>
+								<AccordionTrigger className="space-x-minor">
+									<BuildRow
+										type={category}
+										name={componentName}
+										price={componentPrice}
+									/>
+								</AccordionTrigger>
+								<AccordionContent>
+									<JustificationPayload justification={justification} />
+								</AccordionContent>
+							</AccordionItem>
+						);
+					})}
+			</Accordion>
+		</div>
+	);
 }
 
 export default BuildAccordion;
