@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { BaseText } from "./ui/baseText";
 import { SmallText } from "./ui/smallText";
 import { Input } from "./ui/input";
@@ -12,12 +12,6 @@ function GamesInput() {
   // const [gamesList, setGamesList] = useState(defaultGames);
   const { gamesList, addToGamesList, removeFromGamesList, updateGameFromList } =
     useFormBuilderContext();
-
-  useEffect(() => {
-    // On component mount, set the games list to this default (will remove in future);
-    addToGamesList("Marvel Rivals");
-    addToGamesList("Fortnite");
-  }, []);
 
   function handleAddGame() {
     addToGamesList("");
