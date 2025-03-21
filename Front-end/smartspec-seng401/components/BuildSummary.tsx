@@ -92,6 +92,7 @@ function BuildSummary({
 	discardBuildResult,
 	saveBuildResult,
 }: BuildSummaryProps) {
+	const [confirmDiscard, setConfirmDiscard] = React.useState(false);
 	const router = useRouter();
 
 	function handleDiscardBuild() {
@@ -136,10 +137,16 @@ function BuildSummary({
 				)}
 				<Button
 					variant={"outline"}
-					className="text-danger hover:border-danger"
-					onClick={handleDiscardBuild}
+					className="text-danger hover:border-danger w-full sm:w-auto"
+					onClick={() => {
+						if (confirmDiscard) {
+							handleDiscardBuild();
+						} else {
+							setConfirmDiscard(true);
+						}
+					}}
 				>
-					Discard Build
+					{confirmDiscard ? "Confirm" : "Discard Build"}
 				</Button>
 				{saveBuildResult && (
 					<Button variant={"default"} onClick={handleSaveBuild}>

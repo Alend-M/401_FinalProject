@@ -162,7 +162,7 @@ const ContactUsForm: React.FC = () => {
 					</form>
 				</Form>
 			</div>
-			<Toaster />
+			<Toaster position="top-center" reverseOrder={false} />
 		</div>
 	);
 };

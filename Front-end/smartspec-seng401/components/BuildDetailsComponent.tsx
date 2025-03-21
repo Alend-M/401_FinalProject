@@ -24,7 +24,6 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 
 	const { isAuthenticated, user } = useLoginContext();
 
-	// Hmmm...
 	useEffect(() => {
 		async function loadBuildData() {
 			setLoading(true);
@@ -41,11 +40,9 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 					return;
 				} catch (error) {
 					console.error("Error parsing stored build:", error);
-					// Continue to fetch from API if parsing fails
 				}
 			}
 
-			// If not in localStorage or parsing failed, fetch from API
 			if (!isAuthenticated) {
 				router.push("/login");
 				return;
@@ -124,11 +121,23 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 	const preOwnedHardWare = buildData.input.preOwnedHardware;
 
 	const deleteBuild = () => {
-		// PASS THE BUILD ID AS IT IS NOW IN THE RETURNED JSON as build.buildid!
-		axios.delete(
-			`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/delete/${buildDatabaseId}`
-		);
-		router.push("/history");
+		axios
+			.delete(
+				`${process.env.NEXT_PUBLIC_API_GATEWAY_URL}/delete/${buildDatabaseId}`
+			)
+			.then(() => {
+				localStorage.setItem("buildDeleteStatus", "success");
+				router.push("/history");
+			})
+			.catch((error) => {
+				console.error("Error deleting build:", error);
+				localStorage.setItem("buildDeleteStatus", "error");
+				localStorage.setItem(
+					"buildDeleteErrorMessage",
+					error.message || "Unknown error"
+				);
+				router.push("/history");
+			});
 	};
 
 	return (

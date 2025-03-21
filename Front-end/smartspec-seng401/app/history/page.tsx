@@ -5,6 +5,7 @@ import PastBuilds from "@/components/PastBuilds";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Title } from "@/components/ui/title";
 import { ArrowUp } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 const BuildHistory = () => {
 	const [showScrollTop, setShowScrollTop] = useState(false);
@@ -28,6 +29,24 @@ const BuildHistory = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	useEffect(() => {
+		const buildDeleteStatus = localStorage.getItem("buildDeleteStatus");
+
+		if (buildDeleteStatus === "success") {
+			setTimeout(() => {
+				toast.success("Build deleted successfully");
+			}, 300);
+			localStorage.removeItem("buildDeleteStatus");
+		} else if (buildDeleteStatus === "error") {
+			const errorMessage =
+				localStorage.getItem("buildDeleteErrorMessage") ||
+				"Error deleting build";
+			toast.error(errorMessage);
+			localStorage.removeItem("buildDeleteStatus");
+			localStorage.removeItem("buildDeleteErrorMessage");
+		}
+	}, []);
+
 	return (
 		<div>
 			<div className="flex flex-col items-center justify-center text-center">
@@ -47,6 +66,7 @@ const BuildHistory = () => {
 					<ArrowUp size={24} />
 				</button>
 			)}
+			<Toaster position={"top-center"} reverseOrder={false} />
 		</div>
 	);
 };
