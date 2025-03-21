@@ -42,9 +42,9 @@ function HomePage() {
 	}, []);
 
 	return (
-		<div>
+		<div className="w-full">
 			{/* Hero Section */}
-			<div className="w-screen h-screen">
+			<div className="w-full h-screen border border-black">
 				<NavigationBar override />
 				<Hero onButtonClick={scrollToBuildForm} />
 			</div>

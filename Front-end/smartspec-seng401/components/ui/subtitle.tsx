@@ -10,7 +10,7 @@ export function Subtitle({ children, className }: TitleProps) {
   return (
     <h1 
       className={cn(
-        "text-3xl leading-snug text-gray-500 font-light tracking-tight",
+        "text-3xl md:leading-snug leading-none text-gray-500 font-light tracking-tight",
         className
       )}
     >

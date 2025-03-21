@@ -40,7 +40,7 @@ function RadioInput({
         value={formComponent}
         defaultValue={defaultOption}
         onValueChange={handleOptionChange}
-        className="flex flex-row justify-between"
+        className="flex md:flex-row flex-col justify-between"
       >
         {options.map((option) => {
           return (
