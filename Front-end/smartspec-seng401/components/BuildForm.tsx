@@ -46,7 +46,7 @@ function BuildForm() {
   }
 
   return (
-    <div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
+    <div className="flex flex-col max-w-bigCard w-full p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
       <SliderInput
         name="Budget"
         formComponent={budget}
