@@ -6,14 +6,14 @@ import axios from "axios";
 import BuildCard from "@/components/PastBuildCard";
 import { Subtitle } from "@/components/ui/subtitle";
 import { Spinner } from "@heroui/spinner";
-import { BuildData } from "@/types";
+import { BuildData, BuildString } from "@/types";
 import { useLoginContext } from "@/context/loginContext";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 
 interface fetchedBuild {
-	buildid: string;
-	buildjson: BuildData;
-	created_at?: string;
+  buildid: string;
+  buildjson: BuildData;
+  created_at?: string;
 }
 
 const PastBuilds = () => {
@@ -48,22 +48,25 @@ const PastBuilds = () => {
     checkSessionAndFetchBuilds();
   }, [isAuthenticated, user?.id]);
 
-	// Format build data for display - computed on demand
-	const getFormattedBuild = (build: fetchedBuild, index: number) => {
-		const buildData = build.buildjson;
-		const buildid = build.buildid;
-		return {
-			build_id: buildid,
-			name: `Build ${index + 1}`,
-			cpu: buildData.CPUs?.name || "Unknown CPU",
-			gpu: buildData.GPUs?.name || "Unknown GPU",
-			ram: buildData.RAM?.name || "Unknown RAM",
-			date:
-				build.created_at?.split("T")[0] ||
-				new Date().toISOString().split("T")[0],
-			games: buildData.input.gamesList || [],
-		};
-	};
+  // Format build data for display - computed on demand
+  const getFormattedBuild = (
+    build: fetchedBuild,
+    index: number
+  ): BuildString => {
+    const buildData = build.buildjson;
+    const buildid = Number(build.buildid);
+    return {
+      build_id: buildid,
+      name: `Build ${index + 1}`,
+      cpu: buildData.CPUs?.name || "Unknown CPU",
+      gpu: buildData.GPUs?.name || "Unknown GPU",
+      ram: buildData.RAM?.name || "Unknown RAM",
+      date:
+        build.created_at?.split("T")[0] ||
+        new Date().toISOString().split("T")[0],
+      games: buildData.input.gamesList || [],
+    };
+  };
 
   const handleViewBuild = (buildIndex: number) => {
     localStorage.setItem("selectedBuild", JSON.stringify(builds[buildIndex]));

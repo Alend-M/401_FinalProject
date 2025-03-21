@@ -6,17 +6,12 @@ import { Spinner } from "@heroui/spinner";
 import BuildAccordion from "@/components/BuildAccordion";
 import BuildSummary from "@/components/BuildSummary";
 import axios from "axios";
-import { BuildData } from "@/types";
+import { Build, BuildData } from "@/types";
 import { NEXT_PUBLIC_API_GATEWAY_URL } from "@/constants";
 import { useLoginContext } from "@/context/loginContext";
 
 interface BuildDetailsComponentProps {
   buildId: string;
-}
-
-interface Build {
-	buildjson: BuildData;
-	buildid: string;
 }
 
 const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({

@@ -40,3 +40,18 @@ export interface BuildData {
 	Cooling: ComponentResponse;
 	input: FormData;
 }
+
+export interface Build {
+	buildjson: BuildData;
+	buildid: string;
+}
+
+export interface BuildString {
+  build_id: number;
+  name: string;
+  cpu: string;
+  gpu: string;
+  ram: string;
+  date: string;
+  games: string[];
+}
