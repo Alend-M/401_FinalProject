@@ -50,7 +50,7 @@ function ResultsContent() {
   }, [searchParams]);
 
   return (
-    <div className="flex flex-col items-center space-y-major">
+    <div className="flex flex-col items-center space-y-major sm:py-massive py-major">
       <div className="flex flex-col items-center">
         <Title className="text-secondaryColor">Build Results</Title>
         <Subtitle className="text-subheadingGray">
