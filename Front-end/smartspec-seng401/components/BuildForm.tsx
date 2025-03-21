@@ -103,8 +103,8 @@ function BuildForm() {
       ) : (
         <Spinner />
       )}
-      
-      {isAuthenticated && (
+
+      {isAuthenticated && !loading ? (
         <Button
           onClick={handleSubmitFormAndSave}
           variant="outline"
@@ -113,6 +113,8 @@ function BuildForm() {
           <Save />
           Build & Save
         </Button>
+      ) : (
+        <></>
       )}
     </div>
   );
