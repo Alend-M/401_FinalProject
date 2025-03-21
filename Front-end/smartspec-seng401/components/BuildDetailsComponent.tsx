@@ -132,7 +132,7 @@ const BuildDetailsComponent: React.FC<BuildDetailsComponentProps> = ({
 	};
 
 	return (
-		<div className="w-full max-w-4xl space-y-8">
+		<div className="w-full max-w-4xl space-y-3 flex flex-col items-center">
 			<BuildAccordion components={components} />
 			<BuildSummary
 				specifications={buildSpecificaitons}

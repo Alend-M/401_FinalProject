@@ -24,25 +24,30 @@ interface BuildRowProps {
 
 function BuildRow({ type, name, price }: BuildRowProps) {
 	const freePart = price === "$0";
+	const formattedType = type.replace(/_/g, " ");
 
 	return (
-		<div className="flex flex-row justify-between w-full space-x-massive cursor-default">
-			<BaseText className="font-semibold w-[100px] text-nowrap">
-				{type}
-			</BaseText>
-			<BaseText className="w-[250px] text-nowrap truncate">{name}</BaseText>
+		<div className="flex flex-row gap-x-10 md:gap-x-16 lg:justify-between w-full cursor-default">
+			<div className="flex flex-col md:flex-row lg:gap-x-8">
+				<BaseText className="font-semibold w-24 md:w-32 lg:w-[150px] text-clip md:text-nowrap">
+					{formattedType}
+				</BaseText>
+				<BaseText className="w-36 md:w-60 lg:w-[250px] text-nowrap truncate">
+					{name}
+				</BaseText>
+			</div>
 			{freePart ? (
-				<BaseText className="w-[50px] text-nowrap text-primaryColor">
+				<BaseText className="w-6 lg:w-[50px] text-nowrap text-primaryColor">
 					FREE
 				</BaseText>
 			) : (
-				<BaseText className="w-[50px] text-nowrap">{price}</BaseText>
+				<BaseText className="w-6 lg:w-[50px] text-nowrap">{price}</BaseText>
 			)}
 
 			<Link
 				href={`https://www.amazon.ca/s?k=${parseComponentName(name)}`}
 				target="_blank"
-				className="flex-2 text-nowrap w-[150px] text-end"
+				className="flex-2 text-wrap lg:text-nowrap w-[100px] text-center lg:w-[150px] lg:text-end"
 			>
 				<BaseText className="text-primaryColor underline">
 					{freePart ? "" : "View Buying Options"}
@@ -57,7 +62,9 @@ interface JustificationPayloadProps {
 }
 
 function JustificationPayload({ justification }: JustificationPayloadProps) {
-	return <BaseText className="text-subheadingGray">{justification}</BaseText>;
+	return (
+		<BaseText className="text-subheadingGray p-1">{justification}</BaseText>
+	);
 }
 
 interface BuildAccordionProps {
@@ -82,7 +89,7 @@ function BuildAccordion({ components }: BuildAccordionProps) {
 	}
 
 	return (
-		<div className="flex flex-col w-bigCard p-major space-y-medium bg-white border rounded-md border-veryNiceGray">
+		<div className="flex flex-col w-screen md:w-10/12 lg:w-bigCard p-2 sm:p-major bg-white border rounded-md border-veryNiceGray">
 			<Accordion type="multiple" className="w-full">
 				{Object.entries(buildData)
 					.filter(
