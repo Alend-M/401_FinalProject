@@ -43,7 +43,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 		return (
 			<NavigationMenu>
 				<div
-					className="overflow-x-auto whitespace-nowrap flex w-full space-x-6 items-end sm:justify-end"
+					className="overflow-x-auto whitespace-nowrap flex w-full space-x-2 sm:space-x-6 items-end sm:justify-end"
 					style={{ scrollbarWidth: "none" }}
 				>
 					<NavigationMenuList>
@@ -102,7 +102,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 						{isAuthenticated ? (
 							<Popover>
 								<PopoverTrigger asChild>
-									<div className="cursor-pointer flex-shrink-0 ">
+									<div className="cursor-pointer flex-shrink-0 ml-6 sm:ml-0">
 										{user?.user_metadata?.avatar_url ? (
 											<Image
 												src={user?.user_metadata.avatar_url}
