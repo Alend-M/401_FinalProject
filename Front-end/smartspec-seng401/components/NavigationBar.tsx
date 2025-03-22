@@ -43,7 +43,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 		return (
 			<NavigationMenu>
 				<div
-					className="overflow-x-auto whitespace-nowrap flex w-full space-x-6 items-end sm:justify-end"
+					className="overflow-x-auto whitespace-nowrap flex w-full space-x-2 sm:space-x-6 items-end sm:justify-end"
 					style={{ scrollbarWidth: "none" }}
 				>
 					<NavigationMenuList>
