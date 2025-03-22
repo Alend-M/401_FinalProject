@@ -5,16 +5,16 @@ import { Button } from "./ui/button";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { BuildString } from "@/types";
 
 interface BuildCardProps {
-  build: BuildString;
-  onViewBuild?: (buildId: number) => void;
+	build: BuildString;
+	onViewBuild?: (buildId: number) => void;
 }
 
 const BuildCard: React.FC<BuildCardProps> = ({ build, onViewBuild }) => {

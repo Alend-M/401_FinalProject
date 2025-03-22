@@ -7,12 +7,12 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { GitHub, Google } from "@mui/icons-material";
@@ -28,29 +28,29 @@ const DEBUG = 1; // Debug flag
 
 // Defining the Form field rules
 const formSchema = z
-  .object({
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email("Please enter a valid email address")
-      .max(255, "Email must be less than 255 characters")
-      .toLowerCase()
-      .trim(),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(100, "Password must be less than 100 characters"),
-    // #TODO: Uncomment the below for production
-    //   .regex(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
-    //     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-    //   ),
-    confirmPassword: z.string().min(1, "Please confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"], // path of error
-  });
+	.object({
+		email: z
+			.string()
+			.min(1, "Email is required")
+			.email("Please enter a valid email address")
+			.max(255, "Email must be less than 255 characters")
+			.toLowerCase()
+			.trim(),
+		password: z
+			.string()
+			.min(8, "Password must be at least 8 characters")
+			.max(100, "Password must be less than 100 characters"),
+		// #TODO: Uncomment the below for production
+		//   .regex(
+		//     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+		//     "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+		//   ),
+		confirmPassword: z.string().min(1, "Please confirm your password"),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords don't match",
+		path: ["confirmPassword"], // path of error
+	});
 
 const SignUpForm: React.FC = () => {
   const { signup, loginWithGithub, loginWithGoogle, changeLoginToastUp } =

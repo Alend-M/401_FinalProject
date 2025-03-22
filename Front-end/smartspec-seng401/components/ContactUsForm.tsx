@@ -83,7 +83,7 @@ const ContactUsForm: React.FC = () => {
 
 	return (
 		<div className="flex flex-col items-center mt-2">
-			<div className="flex flex-col bg-white rounded-md p-major space-y-medium w-smallCard">
+			<div className="flex flex-col bg-white rounded-md p-major space-y-medium w-screen sm:w-smallCard">
 				{/* Contact Us Form */}
 				<Form {...form}>
 					<form
@@ -162,7 +162,7 @@ const ContactUsForm: React.FC = () => {
 					</form>
 				</Form>
 			</div>
-			<Toaster />
+			<Toaster position="top-center" reverseOrder={false} />
 		</div>
 	);
 };

@@ -30,7 +30,7 @@ function AboutPage() {
 	];
 
 	return (
-		<div className="space-y-major mb-20">
+		<div className="space-y-major mb-20 mt-5">
 			<div className="flex flex-col items-center text-center">
 				<Title className="text-secondaryColor">Meet the Team 👋</Title>
 				<Subtitle>The Team That Brought You SmartSpec</Subtitle>
