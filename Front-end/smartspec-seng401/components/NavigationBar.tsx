@@ -102,7 +102,7 @@ function NavigationBar({ override = false }: NavigationBarProps) {
 						{isAuthenticated ? (
 							<Popover>
 								<PopoverTrigger asChild>
-									<div className="cursor-pointer flex-shrink-0 ">
+									<div className="cursor-pointer flex-shrink-0 ml-6 sm:ml-0">
 										{user?.user_metadata?.avatar_url ? (
 											<Image
 												src={user?.user_metadata.avatar_url}
