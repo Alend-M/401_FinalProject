@@ -50,7 +50,7 @@ function ResultsContent() {
 	}, [searchParams]);
 
 	return (
-		<div className="flex flex-col items-center space-y-major mb-20">
+		<div className="flex flex-col items-center space-y-major mb-20 mt-5">
 			<div className="flex flex-col items-center text-center">
 				<Title className="text-secondaryColor">Build Results</Title>
 				<Subtitle className="text-subheadingGray">
@@ -73,11 +73,11 @@ function ResultsContent() {
 
 // Main component that wraps the content in Suspense
 function ResultsPage() {
-  return (
-    <Suspense fallback={<Spinner />}>
-      <ResultsContent />
-    </Suspense>
-  );
+	return (
+		<Suspense fallback={<Spinner />}>
+			<ResultsContent />
+		</Suspense>
+	);
 }
 
 export default ResultsPage;
